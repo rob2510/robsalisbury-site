@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SALISBURY'S COMIC — Mostly an Email Address (Price: Free or a Pint)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Anton & Bangers for 80s comic mastheads, Comic Neue for speech bubbles, Courier Prime for cheap classifieds -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Comic+Neue:ital,wght@0,700;1,700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        masthead: ['Anton', 'sans-serif'],
+                        comic: ['Bangers', 'cursive'],
+                        bubble: ['Comic Neue', 'cursive'],
+                        print: ['Courier Prime', 'monospace'],
+                        corporate: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        newsprint: '#F3EED9',
+                        newsprintDark: '#E5DEC3',
+                        ink: '#111111',
+                        vizRed: '#E31C24',
+                        vizYellow: '#FFD100',
+                        vizCyan: '#009FE3',
+                        poshBeige: '#F4F2EE',
+                    },
+                    boxShadow: {
+                        'comic': '5px 5px 0px 0px #111111',
+                        'comic-lg': '8px 8px 0px 0px #111111',
+                        'comic-sm': '3px 3px 0px 0px #111111',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Cheap 1980s Newsprint & Ben-Day Halftone Patterns */
+        .bg-newsprint-paper {
+            background-color: #F3EED9;
+            background-image: 
+                radial-gradient(rgba(17, 17, 17, 0.08) 1px, transparent 0),
+                radial-gradient(rgba(227, 28, 36, 0.04) 1px, transparent 0);
+            background-size: 16px 16px;
+            background-position: 0 0, 8px 8px;
+        }
+
+        .halftone-yellow {
+            background-color: #FFD100;
+            background-image: radial-gradient(#E31C24 1.5px, transparent 1.5px);
+            background-size: 8px 8px;
+        }
+
+        .halftone-cyan {
+            background-color: #009FE3;
+            background-image: radial-gradient(#111111 1.25px, transparent 1.25px);
+            background-size: 7px 7px;
+        }
+
+        .halftone-cream {
+            background-color: #FAF6E8;
+            background-image: radial-gradient(rgba(17, 17, 17, 0.14) 1.25px, transparent 1.25px);
+            background-size: 8px 8px;
+        }
+
+        /* Heavy Comic Text Stroke for Masthead */
+        .viz-logo-text {
+            color: #FFD100;
+            -webkit-text-stroke: 3px #111111;
+            text-shadow: 5px 5px 0px #111111;
+            letter-spacing: 0.02em;
+        }
+
+        @media (max-width: 640px) {
+            .viz-logo-text {
+                -webkit-text-stroke: 2px #111111;
+                text-shadow: 3px 3px 0px #111111;
+            }
+        }
+
+        /* Classic Comic Speech Bubble Pointer */
+        .speech-bubble {
+            position: relative;
+            background: #FFFFFF;
+            border: 3px solid #111111;
+            border-radius: 9999px;
+        }
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -14px;
+            left: 28px;
+            border-width: 14px 12px 0 0;
+            border-style: solid;
+            border-color: #111111 transparent transparent transparent;
+        }
+        .speech-bubble::before {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 30px;
+            border-width: 10px 8px 0 0;
+            border-style: solid;
+            border-color: #FFFFFF transparent transparent transparent;
+            z-index: 1;
+        }
+
+        /* Corporate Mode Overrides */
+        body.posh-mode {
+            background-color: #F4F2EE !important;
+            background-image: none !important;
+            font-family: 'Inter', sans-serif !important;
+        }
+        body.posh-mode .comic-border {
+            border-width: 1px !important;
+            border-color: #D1D5DB !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+            border-radius: 8px !important;
+        }
+        body.posh-mode .halftone-yellow,
+        body.posh-mode .halftone-cyan,
+        body.posh-mode .halftone-cream {
+            background-image: none !important;
+            background-color: #FFFFFF !important;
+        }
+        body.posh-mode .viz-logo-text {
+            color: #1F2937 !important;
+            -webkit-text-stroke: 0px !important;
+            text-shadow: none !important;
+        }
+    </style>
+</head>
+<body class="bg-newsprint-paper text-ink font-print antialiased selection:bg-vizYellow selection:text-ink min-h-screen flex flex-col justify-between transition-all duration-200" id="page-body">
+
+    <!-- Top Newsagent Shelf Strip -->
+    <header class="border-b-4 border-ink bg-vizYellow sticky top-0 z-40 comic-border" id="top-strip">
+        <div class="max-w-5xl mx-auto px-3 sm:px-6 py-2 flex flex-wrap items-center justify-between gap-2 text-xs font-print font-bold">
+            <div class="flex items-center space-x-2">
+                <span class="bg-ink text-vizYellow px-2 py-0.5 uppercase tracking-wider" id="issue-tag">ISSUE No. 1</span>
+                <span class="hidden sm:inline uppercase" id="top-tagline">★ NOT FOR SALE TO CHILDREN OR POSH GITS ★</span>
+            </div>
+
+            <!-- Corporate Mode Toggle Switch -->
+            <div class="flex items-center space-x-2">
+                <span class="hidden md:inline uppercase text-ink" id="mode-label">EDITION: 1980s NEWSPRINT</span>
+                <button 
+                    id="corporate-toggle"
+                    onclick="toggleCorporateMode()"
+                    class="px-3 py-1 bg-white hover:bg-vizRed hover:text-white text-ink border-2 border-ink font-print font-bold uppercase shadow-comic-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer flex items-center gap-1.5"
+                >
+                    <span id="toggle-icon">🎩</span>
+                    <span id="toggle-text">Posh Corporate Git Mode</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Comic Page Container -->
+    <main class="max-w-5xl mx-auto w-full px-3 sm:px-6 py-6 sm:py-8 space-y-7">
+
+        <!-- CLASSIC 1980s VIZ MASTHEAD COVER -->
+        <section class="bg-vizRed border-4 border-ink shadow-comic-lg overflow-hidden comic-border" id="masthead-box">
+            <!-- Top Sub-banner -->
+            <div class="bg-ink text-newsprint px-3 py-1.5 flex flex-wrap items-center justify-between text-[11px] sm:text-xs font-print uppercase tracking-widest border-b-2 border-ink">
+                <span>INCORPORATING "EMAIL" &amp; "GENERAL TIMEWASTING"</span>
+                <span class="text-vizYellow font-bold">PRICE: FREE (OR A PINT)</span>
+            </div>
+
+            <div class="p-5 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 relative">
+                <!-- Left: Giant Block Masthead -->
+                <div class="text-center md:text-left space-y-2 z-10">
+                    <div class="inline-block bg-vizYellow text-ink border-2 border-ink px-2.5 py-0.5 font-comic text-base sm:text-lg tracking-wider transform -rotate-1 shadow-comic-sm" id="masthead-kicker">
+                        ROBSALISBURY.COM — EST. WHENEVER I BOUGHT THE DOMAIN
+                    </div>
+                    
+                    <h1 class="font-masthead text-6xl sm:text-7xl md:text-8xl uppercase leading-none viz-logo-text select-none" id="masthead-title">
+                        ROB'S COMIC
+                    </h1>
+                    
+                    <p class="font-bubble font-bold text-lg sm:text-xl text-white drop-shadow-[2px_2px_0px_#111111] max-w-xl pt-1" id="masthead-subtitle">
+                        "Britain’s Least Essential Website! Basically just a glorified Post Office box for <span class="bg-ink text-vizYellow px-1.5 py-0.5 font-print text-base">@robsalisbury.com</span>."
+                    </p>
+                </div>
+
+                <!-- Right: Scruffy 80s Comic Bloke with Mug of Tea + Speech Bubble -->
+                <div class="flex flex-col items-center shrink-0 z-10 max-w-xs" id="mascot-box">
+                    <!-- Speech Bubble -->
+                    <div class="speech-bubble px-4 py-3 mb-3 shadow-comic-sm transform rotate-1">
+                        <p class="font-bubble font-bold text-sm sm:text-base text-ink leading-tight text-center" id="mascot-speech">
+                            "Fnar, fnar! You’ve clicked on the wrong website, haven’t you?"
+                        </p>
+                    </div>
+
+                    <!-- Custom Inline SVG Doodle: Scruffy 80s Comic Bloke with Tea Mug -->
+                    <svg class="w-32 h-32 sm:w-36 sm:h-36 drop-shadow-[3px_3px_0px_#111111]" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Cartoon bloke holding a steaming mug of tea">
+                        <!-- Yellow Starburst Behind Head -->
+                        <polygon points="80,8 95,32 125,20 120,50 150,60 128,82 148,108 118,112 122,142 94,128 80,154 66,128 38,142 42,112 12,108 32,82 10,60 40,50 35,20 65,32" fill="#FFD100" stroke="#111111" stroke-width="3"/>
+                        <!-- Messy 80s Spiky Hair -->
+                        <path d="M44 64 L36 42 L55 50 L62 30 L78 46 L94 28 L100 48 L120 40 L112 64 Z" fill="#111111"/>
+                        <!-- Face / Head -->
+                        <ellipse cx="80" cy="78" rx="34" ry="36" fill="#FAD7B8" stroke="#111111" stroke-width="3.5"/>
+                        <!-- Wonky Googly Comic Eyes -->
+                        <circle cx="68" cy="70" r="8" fill="#FFFFFF" stroke="#111111" stroke-width="2.5"/>
+                        <circle cx="70" cy="70" r="2.5" fill="#111111"/>
+                        <circle cx="91" cy="69" r="9" fill="#FFFFFF" stroke="#111111" stroke-width="2.5"/>
+                        <circle cx="89" cy="71" r="2.5" fill="#111111"/>
+                        <!-- Big Comic Nose -->
+                        <path d="M78 73 C88 73, 92 86, 78 88" fill="#FAD7B8" stroke="#111111" stroke-width="3" stroke-linecap="round"/>
+                        <!-- Cheeky Toothless Grin -->
+                        <path d="M58 92 Q80 112 102 92 Z" fill="#E31C24" stroke="#111111" stroke-width="3"/>
+                        <rect x="72" y="93" width="7" height="6" fill="#FFFFFF" stroke="#111111" stroke-width="1.5"/>
+                        <rect x="82" y="93" width="7" height="6" fill="#FFFFFF" stroke="#111111" stroke-width="1.5"/>
+                        <!-- Stubble Dots -->
+                        <circle cx="62" cy="98" r="1.2" fill="#111111"/>
+                        <circle cx="67" cy="103" r="1.2" fill="#111111"/>
+                        <circle cx="94" cy="102" r="1.2" fill="#111111"/>
+                        <circle cx="99" cy="97" r="1.2" fill="#111111"/>
+                        <!-- Stripy 80s Jumper -->
+                        <path d="M40 144 C40 120, 120 120, 120 144 Z" fill="#009FE3" stroke="#111111" stroke-width="3.5"/>
+                        <path d="M46 132 L114 132" stroke="#FFD100" stroke-width="4"/>
+                        <!-- Mug of Builders Tea -->
+                        <rect x="98" y="106" width="28" height="32" rx="3" fill="#FFFFFF" stroke="#111111" stroke-width="3"/>
+                        <path d="M126 112 H134 C138 112, 138 130, 134 130 H126" fill="none" stroke="#111111" stroke-width="3"/>
+                        <text x="103" y="126" font-family="Anton, sans-serif" font-size="11" fill="#E31C24">TEA</text>
+                        <!-- Steam Lines -->
+                        <path d="M106 100 Q102 93 107 87" stroke="#111111" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M116 100 Q120 93 115 87" stroke="#111111" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- PANEL 1: "WHY ARE YOU HERE?" (4-Panel Comic Strip Selector) -->
+        <section class="bg-white border-4 border-ink shadow-comic comic-border" id="comic-strip-section">
+            <div class="bg-ink text-vizYellow px-4 py-2 flex flex-wrap items-center justify-between gap-2">
+                <h2 class="font-comic text-2xl sm:text-3xl tracking-wider uppercase" id="strip-heading">
+                    ★ WHY ARE YOU HERE? (PICK YOUR EXCUSE, SUNSHINE) ★
+                </h2>
+                <span class="font-print text-xs text-newsprint uppercase">CLICK A PANEL FOR INSTANT JUDGEMENT</span>
+            </div>
+
+            <div class="p-4 sm:p-6 halftone-cream">
+                <!-- 4 Comic Strip Panels -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="comic-panels">
+                    <!-- Panel 1 -->
+                    <button onclick="selectExcuse('legit')" data-excuse="legit" class="excuse-panel text-left bg-white border-3 border-ink p-3.5 shadow-comic-sm hover:bg-vizYellow/40 active:translate-x-[2px] active:translate-y-[2px] transition-all cursor-pointer flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between border-b-2 border-ink pb-1 mb-2">
+                                <span class="bg-ink text-white font-comic text-sm px-1.5">PANEL 1</span>
+                                <span class="font-print text-[11px] font-bold text-vizRed">SUSPICIOUS</span>
+                            </div>
+                            <p class="font-bubble font-bold text-base leading-snug">
+                                "Checking if <span class="underline">rob@robsalisbury.com</span> is a real bloke."
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-dashed border-ink font-print text-[11px] text-neutral-600">
+                            [Click to verify]
+                        </div>
+                    </button>
+
+                    <!-- Panel 2 -->
+                    <button onclick="selectExcuse('pints')" data-excuse="pints" class="excuse-panel text-left bg-white border-3 border-ink p-3.5 shadow-comic-sm hover:bg-vizYellow/40 active:translate-x-[2px] active:translate-y-[2px] transition-all cursor-pointer flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between border-b-2 border-ink pb-1 mb-2">
+                                <span class="bg-ink text-white font-comic text-sm px-1.5">PANEL 2</span>
+                                <span class="font-print text-[11px] font-bold text-vizCyan">WOBBLY</span>
+                            </div>
+                            <p class="font-bubble font-bold text-base leading-snug">
+                                "Fat-fingered a URL after three pints of bitter."
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-dashed border-ink font-print text-[11px] text-neutral-600">
+                            [Click for sympathy]
+                        </div>
+                    </button>
+
+                    <!-- Panel 3 -->
+                    <button onclick="selectExcuse('posh')" data-excuse="posh" class="excuse-panel text-left bg-white border-3 border-ink p-3.5 shadow-comic-sm hover:bg-vizYellow/40 active:translate-x-[2px] active:translate-y-[2px] transition-all cursor-pointer flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between border-b-2 border-ink pb-1 mb-2">
+                                <span class="bg-ink text-white font-comic text-sm px-1.5">PANEL 3</span>
+                                <span class="font-print text-[11px] font-bold text-emerald-700">WRONG ROB</span>
+                            </div>
+                            <p class="font-bubble font-bold text-base leading-snug">
+                                "Looking for a posh financial advisor or speaker."
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-dashed border-ink font-print text-[11px] text-neutral-600">
+                            [Click to be disappointed]
+                        </div>
+                    </button>
+
+                    <!-- Panel 4 -->
+                    <button onclick="selectExcuse('bot')" data-excuse="bot" class="excuse-panel text-left bg-white border-3 border-ink p-3.5 shadow-comic-sm hover:bg-vizYellow/40 active:translate-x-[2px] active:translate-y-[2px] transition-all cursor-pointer flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between border-b-2 border-ink pb-1 mb-2">
+                                <span class="bg-ink text-white font-comic text-sm px-1.5">PANEL 4</span>
+                                <span class="font-print text-[11px] font-bold text-purple-700">DODGY</span>
+                            </div>
+                            <p class="font-bubble font-bold text-base leading-snug">
+                                "I am a Nigerian Prince / cold-email SEO bot."
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-dashed border-ink font-print text-[11px] text-neutral-600">
+                            [Click at own peril]
+                        </div>
+                    </button>
+                </div>
+
+                <!-- Comic Punchline & Sound Effect Box -->
+                <div class="mt-5 bg-vizYellow border-3 border-ink p-4 sm:p-5 shadow-comic-sm flex flex-col sm:flex-row items-center gap-4" id="punchline-box">
+                    <!-- Comic Sound Effect Burst -->
+                    <div class="shrink-0 bg-vizRed text-vizYellow border-3 border-ink px-4 py-2 transform -rotate-3 shadow-comic-sm">
+                        <span class="font-comic text-3xl sm:text-4xl tracking-wider uppercase drop-shadow-[2px_2px_0px_#111111]" id="sfx-badge">
+                            OO-ER!
+                        </span>
+                    </div>
+                    <!-- Punchline Text -->
+                    <div class="text-center sm:text-left">
+                        <div class="font-print text-xs font-bold uppercase tracking-wider text-ink mb-0.5" id="excuse-subtitle">
+                            EDITOR'S VERDICT:
+                        </div>
+                        <p class="font-bubble font-bold text-lg sm:text-xl text-ink leading-snug" id="excuse-response">
+                            Go on then, click one of the four boxes above so we know what game you’re playing!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MIDDLE TWO-COLUMN SPREAD: LETTERBOCKS (Left) + TOP TIPS & PROFANISAURUS (Right) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-7">
+
+            <!-- LEFT COLUMN (7 cols): LETTERBOCKS — SEND ROB AN ELECTRONIC LETTER -->
+            <section class="lg:col-span-7 bg-white border-4 border-ink shadow-comic flex flex-col justify-between comic-border" id="letterbocks-card">
+                <div>
+                    <!-- Header Banner -->
+                    <div class="bg-vizRed text-white px-4 py-2.5 border-b-4 border-ink flex items-center justify-between">
+                        <h2 class="font-comic text-2xl sm:text-3xl tracking-wider uppercase drop-shadow-[2px_2px_0px_#111111]" id="letterbocks-title">
+                            LETTERBOCKS! (SEND ROB AN EMAIL)
+                        </h2>
+                        <span class="bg-vizYellow text-ink font-print text-xs font-bold px-2 py-0.5 border-2 border-ink">
+                            POSTAGE PAID
+                        </span>
+                    </div>
+
+                    <div class="p-5 sm:p-6 space-y-5">
+                        <p class="font-bubble font-bold text-base sm:text-lg text-ink leading-snug" id="letterbocks-intro">
+                            Got something to say? Write in to our postbag! Every single email is read personally by Rob (usually while avoiding actual work).
+                        </p>
+
+                        <!-- Copy Email Strip -->
+                        <div class="bg-newsprint border-3 border-ink p-3 flex flex-wrap items-center justify-between gap-2">
+                            <div>
+                                <span class="block font-print text-[10px] font-bold uppercase text-neutral-600">ELECTRONIC PIGEON ADDRESS:</span>
+                                <code class="font-print text-base sm:text-lg font-bold select-all text-ink" id="email-address">rob@robsalisbury.com</code>
+                            </div>
+                            <button 
+                                onclick="copyEmail()"
+                                id="copy-btn"
+                                class="px-3.5 py-2 bg-vizYellow hover:bg-amber-300 text-ink border-2 border-ink font-print text-xs font-bold uppercase shadow-comic-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
+                            >
+                                Copy Address
+                            </button>
+                        </div>
+
+                        <!-- Subject Line & Top Tip Generator -->
+                        <div class="space-y-2">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <label for="subject-input" class="font-print text-xs font-bold uppercase">
+                                    SUBJECT HEADING:
+                                </label>
+                                <button 
+                                    type="button"
+                                    onclick="generateSubject()"
+                                    class="px-2.5 py-1 bg-vizCyan text-white border-2 border-ink font-print text-xs font-bold uppercase shadow-comic-sm hover:brightness-110 active:translate-x-[1px] active:translate-y-[1px] cursor-pointer flex items-center gap-1"
+                                >
+                                    <span>🎲</span> Random Subject / Top Tip
+                                </button>
+                            </div>
+                            <input 
+                                type="text" 
+                                id="subject-input" 
+                                value="Fnar fnar - urgent business"
+                                oninput="updateBollocksMeter()"
+                                placeholder="Write your headline here..."
+                                class="w-full px-3 py-2.5 bg-newsprint border-3 border-ink font-print text-sm font-bold focus:outline-none focus:bg-white"
+                            >
+                        </div>
+
+                        <!-- BOLLOCKS-O-METER™ -->
+                        <div class="bg-newsprint border-3 border-ink p-3.5 space-y-2" id="bollocks-box">
+                            <div class="flex flex-wrap items-center justify-between gap-1 font-print text-xs">
+                                <span class="font-bold uppercase">⚠️ THE BOLLOCKS-O-METER™:</span>
+                                <span id="bollocks-label" class="font-bold bg-vizYellow px-2 py-0.5 border border-ink text-ink">
+                                    14% — ACCEPTABLE BANTER
+                                </span>
+                            </div>
+                            <div class="w-full h-4 bg-white border-2 border-ink overflow-hidden p-0.5">
+                                <div id="bollocks-bar" class="h-full bg-vizCyan transition-all duration-300" style="width: 14%;"></div>
+                            </div>
+                            <p id="bollocks-hint" class="font-bubble font-bold text-sm text-ink">
+                                Warning: Words like "synergy", "circle back", "kindly", or "SEO" will trigger immediate alarm bells.
+                            </p>
+                        </div>
+
+                        <!-- Launch Default Email App Button -->
+                        <button 
+                            onclick="launchEmail()"
+                            class="w-full py-3.5 px-4 bg-vizRed hover:bg-red-700 text-vizYellow font-comic text-2xl sm:text-3xl tracking-wider uppercase border-3 border-ink shadow-comic active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer flex items-center justify-center gap-2 drop-shadow-[1px_1px_0px_#111111]"
+                        >
+                            <span>✉️</span>
+                            <span id="launch-btn-text">SEND ELECTRONIC LETTER NOW!</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-ink text-newsprint px-4 py-2 font-print text-[11px] flex items-center justify-between">
+                    <span>SPF / DKIM / DMARC: TICKETY-BOO</span>
+                    <span>NO SPAM, NO CRYPTO, NO NONSENSE</span>
+                </div>
+            </section>
+
+            <!-- RIGHT COLUMN (5 cols): ROB'S TOP TIPS + THE PROFANISAURUS STATUS -->
+            <div class="lg:col-span-5 flex flex-col justify-between gap-7">
+
+                <!-- ROB'S TOP TIPS BOX -->
+                <section class="bg-white border-4 border-ink shadow-comic comic-border overflow-hidden" id="toptips-card">
+                    <div class="bg-vizYellow px-4 py-2 border-b-4 border-ink flex items-center justify-between">
+                        <h2 class="font-comic text-2xl sm:text-3xl tracking-wider uppercase text-ink" id="toptips-title">
+                            ROB’S TOP TIPS!
+                        </h2>
+                        <!-- Thumbs Up Caricature SVG -->
+                        <svg class="w-9 h-9" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Thumbs up icon">
+                            <circle cx="24" cy="24" r="21" fill="#E31C24" stroke="#111111" stroke-width="3"/>
+                            <path d="M18 23 V35 H13 V23 H18 Z M20 35 H31 C33 35 34 33.5 34 32 L36 25 C36.5 23.5 35.2 22 33.5 22 H27 L28 16 C28.2 14.5 27 13 25.5 13 C24.5 13 23.8 13.6 23.4 14.5 L20 22 V35 Z" fill="#FFD100" stroke="#111111" stroke-width="2.2" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+
+                    <div class="p-5 halftone-cyan space-y-4">
+                        <div class="bg-white border-3 border-ink p-4 shadow-comic-sm relative">
+                            <span class="inline-block bg-ink text-vizYellow font-print text-[10px] font-bold px-2 py-0.5 uppercase mb-2" id="toptip-credit">
+                                SENT IN BY: A. BLOKE, NEWCASTLE
+                            </span>
+                            <p class="font-bubble font-bold text-base sm:text-lg text-ink leading-snug" id="toptip-text">
+                                "SAVE MONEY on expensive postage stamps by simply typing your message into an email and sending it to rob@robsalisbury.com instead."
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <button 
+                                onclick="nextTopTip()"
+                                class="py-2 px-3 bg-vizYellow hover:bg-amber-300 text-ink border-2 border-ink font-print text-xs font-bold uppercase shadow-comic-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
+                            >
+                                ↻ Next Top Tip
+                            </button>
+                            <button 
+                                onclick="useTipAsSubject()"
+                                class="py-2 px-3 bg-white hover:bg-newsprint text-ink border-2 border-ink font-print text-xs font-bold uppercase shadow-comic-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
+                            >
+                                ✉️ Email This Tip
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- THE PROFANISAURUS / ROB'S CURRENT STATUS -->
+                <section class="bg-white border-4 border-ink shadow-comic comic-border overflow-hidden flex-1 flex flex-col justify-between" id="profanisaurus-card">
+                    <div>
+                        <div class="bg-ink text-white px-4 py-2 border-b-4 border-ink flex items-center justify-between">
+                            <h2 class="font-comic text-2xl tracking-wider uppercase text-vizYellow" id="prof-title">
+                                THE PROFANISAURUS
+                            </h2>
+                            <span class="font-print text-[11px] uppercase text-vizCyan font-bold">LIVE STATUS</span>
+                        </div>
+
+                        <div class="p-5 space-y-4">
+                            <!-- Dictionary Entry Style -->
+                            <div class="border-l-4 border-vizRed pl-3.5 py-1 bg-newsprint/60">
+                                <div class="flex items-baseline gap-2 flex-wrap">
+                                    <span class="font-print font-bold text-lg uppercase text-ink" id="status-word">
+                                        MAKING A BREW
+                                    </span>
+                                    <span class="font-print italic text-xs text-neutral-600" id="status-pos">
+                                        (verb, British)
+                                    </span>
+                                </div>
+                                <p class="font-bubble font-bold text-base text-ink mt-1 leading-snug" id="status-def">
+                                    The sacred 15-minute ritual of boiling a kettle and staring out the kitchen window to avoid replying to emails.
+                                </p>
+                            </div>
+
+                            <button 
+                                onclick="cycleProfanisaurus()"
+                                class="w-full py-2 px-3 bg-newsprint hover:bg-vizYellow text-ink border-2 border-ink font-print text-xs font-bold uppercase shadow-comic-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
+                            >
+                                📖 Flip Page (Update Rob’s Status)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- FNAR FNAR Double-Entendre Counter Bar -->
+                    <div class="bg-vizYellow border-t-4 border-ink px-4 py-3 flex items-center justify-between gap-2">
+                        <div>
+                            <div class="font-comic text-lg leading-none uppercase text-ink">FINBARR’S FNAR BUTTON</div>
+                            <div class="font-print text-[11px] font-bold text-ink">Fnars given: <span id="fnar-count" class="bg-white px-1.5 border border-ink">0</span></div>
+                        </div>
+                        <button 
+                            onclick="triggerFnar()"
+                            class="px-3.5 py-1.5 bg-vizRed text-white font-comic text-xl tracking-wider uppercase border-2 border-ink shadow-comic-sm hover:brightness-110 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
+                        >
+                            FNAR! FNAR!
+                        </button>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+
+        <!-- BACK-PAGE CHEAP CLASSIFIED ADVERTS -->
+        <section class="bg-newsprintDark border-4 border-ink shadow-comic p-4 sm:p-5 comic-border" id="classifieds-section">
+            <div class="border-b-2 border-ink pb-1.5 mb-3 flex flex-wrap items-center justify-between gap-2">
+                <h3 class="font-masthead text-xl sm:text-2xl uppercase tracking-wide text-ink" id="classifieds-header">
+                    SMALL ADS &amp; GENUINE BARGAINS (BACK PAGE)
+                </h3>
+                <span class="font-print text-[11px] font-bold uppercase">ALL SALES FINAL — NO REFUNDS</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 font-print text-xs">
+                <div class="bg-white border-2 border-ink p-3">
+                    <div class="font-bold uppercase bg-ink text-white px-1.5 py-0.5 inline-block mb-1.5">FOR SALE / NOT FOR SALE</div>
+                    <p class="leading-relaxed" id="ad-1">
+                        <strong>GENUINE PERSONAL DOMAIN.</strong> One careful owner (Rob). Used solely for sending emails and confusing nosey parkers. No timewasters.
+                    </p>
+                </div>
+                <div class="bg-white border-2 border-ink p-3">
+                    <div class="font-bold uppercase bg-vizRed text-white px-1.5 py-0.5 inline-block mb-1.5">PUBLIC NOTICE</div>
+                    <p class="leading-relaxed" id="ad-2">
+                        <strong>NO COOKIES OR TRACKERS.</strong> We don’t know who you are, where you live, or what biscuits you dunk in your tea. Carry on.
+                    </p>
+                </div>
+                <div class="bg-white border-2 border-ink p-3">
+                    <div class="font-bold uppercase bg-vizCyan text-white px-1.5 py-0.5 inline-block mb-1.5">WANTED</div>
+                    <p class="leading-relaxed" id="ad-3">
+                        <strong>ZERO COLD CALLERS.</strong> Recruitment consultants, crypto bros, and SEO wizards will be fed to the hounds. Proper humans welcome.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Comic Footer -->
+    <footer class="border-t-4 border-ink bg-ink text-newsprint mt-6">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 font-print text-xs">
+            <div>
+                PUBLISHED BY ROB SALISBURY • PRINTED ON 100% RECYCLED PIXELS • © <span id="year">2026</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="bg-vizYellow text-ink font-bold px-2 py-0.5 uppercase">END OF COMIC</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Comic Speech Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-28 opacity-0 transition-all duration-300 pointer-events-none max-w-xs sm:max-w-sm">
+        <div class="bg-vizYellow text-ink border-3 border-ink px-4 py-3 shadow-comic flex items-center gap-3">
+            <span class="bg-vizRed text-white font-comic text-lg px-2 py-0.5 border-2 border-ink uppercase shrink-0" id="toast-sfx">POW!</span>
+            <span class="font-bubble font-bold text-sm sm:text-base leading-tight" id="toast-message">Copied to clipboard!</span>
+        </div>
+    </div>
+
+    <script>
+        // Set current year dynamically
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // State
+        let isCorporateMode = false;
+        let currentTipIndex = 0;
+        let currentProfIndex = 0;
+        let currentSubjectIndex = 0;
+        let fnarCount = 0;
+        let activeExcuse = null;
+
+        // 1. Excuse Panels Data (Why are you here?)
+        const excuseData = {
+            legit: {
+                sfx: "TICKETY-BOO!",
+                verdict: "VERIFIED REAL BLOKE:",
+                casual: "Put your magnifying glass away, Sherlock! Yes, Rob Salisbury is an actual living human and @robsalisbury.com is his genuine email address. Not a scammer in sight!",
+                corporate: "Identity verification complete. Correspondence originating from @robsalisbury.com is fully authenticated via enterprise DMARC protocols."
+            },
+            pints: {
+                sfx: "HIC! OO-ER!",
+                verdict: "PUB NAVIGATOR DETECTED:",
+                casual: "Been down the Dog & Duck, have we? Happens to the best of us. Have a glass of water, click the Fnar button a couple of times, and mind the step on your way out.",
+                corporate: "Navigational anomaly logged. Please utilize your browser's back functionality to return to your intended enterprise workflow."
+            },
+            posh: {
+                sfx: "BOG OFF!",
+                verdict: "MISTAKEN IDENTITY:",
+                casual: "Wrong Rob Salisbury, mate! If you’re after a fancy leadership guru, motivational speaker, or bloke in a pinstriped suit, you’ve taken a wrong turn at the roundabout.",
+                corporate: "Disambiguation alert: This domain is privately held and unaffiliated with similarly named corporate consultancy entities."
+            },
+            bot: {
+                sfx: "CRIVVENS!",
+                verdict: "DODGY ALGORITHM SPOTTED:",
+                casual: "01000010 01101111 01100111 00100000 01101111 01100110 01100110! Go scrape someone else’s inbox—Rob’s spam filter eats cold-outreach bots for breakfast.",
+                corporate: "Automated crawler acknowledged. Please respect robots.txt directives and exclude this endpoint from outbound lead-generation sequences."
+            }
+        };
+
+        // 2. Rob's Top Tips Data
+        const topTips = [
+            {
+                credit: "SENT IN BY: A. BLOKE, NEWCASTLE",
+                tip: "\"SAVE MONEY on expensive postage stamps by simply typing your message into an email and sending it to rob@robsalisbury.com instead.\""
+            },
+            {
+                credit: "SENT IN BY: MRS. M. MIGGINS, HULL",
+                tip: "\"FOOL FRIENDS into thinking you’re a high-powered tech mogul by buying your own surname as a .com and doing absolutely nothing with it.\""
+            },
+            {
+                credit: "SENT IN BY: D. TRUMPET, BASINGSTOKE",
+                tip: "\"AVOID HAVING TO REPLY to tedious work emails by pretending your internet has gone down and making another mug of Builders tea.\""
+            },
+            {
+                credit: "SENT IN BY: G. WHEEZER, SUNDERLAND",
+                tip: "\"RECRUITERS! Save valuable hours of your day by NOT emailing Rob about an 'exciting Synergy Ninja role' in another city.\""
+            },
+            {
+                credit: "SENT IN BY: T. TOSSPOT, LEEDS",
+                tip: "\"CONVINCE PEOPLE you have a bustling social life by sending yourself emails from your own domain and laughing loudly at your phone on the bus.\""
+            }
+        ];
+
+        // 3. The Profanisaurus Status Entries
+        const profanisaurusEntries = [
+            {
+                word: "MAKING A BREW",
+                pos: "(verb, British)",
+                def: "The sacred 15-minute ritual of boiling a kettle and staring out the kitchen window to avoid replying to emails."
+            },
+            {
+                word: "ON THE BOG",
+                pos: "(prep. phrase)",
+                def: "Temporarily indisposed in the smallest room in the house with a copy of Viz and zero intention of rushing."
+            },
+            {
+                word: "DOWN THE BOOZER",
+                pos: "(adverbial, Friday)",
+                def: "Conducting vital face-to-face networking over three pints of lukewarm ale and a packet of dry-roasted peanuts."
+            },
+            {
+                word: "LOOKING BUSY",
+                pos: "(gerund, corporate)",
+                def: "Frowning intensely at a spreadsheet while actually deciding what to have for tea."
+            },
+            {
+                word: "INBOX DODGING",
+                pos: "(extreme sport)",
+                def: "Marking an email as 'Unread' three weeks in a row until the problem quietly resolves itself."
+            }
+        ];
+
+        // 4. Cheeky Email Subjects
+        const cheekySubjects = [
+            "Fnar fnar - urgent business",
+            "TOP TIP: Save money on stamps by emailing Rob",
+            "Have you seen my missing wheelie bin?",
+            "Checking if you're a real bloke",
+            "Can I buy you a pint? (Just kidding)",
+            "Found your comic on the internet",
+            "Genuine human inquiry (zero synergy)"
+        ];
+
+        const fnarQuips = [
+            "Fnar, fnar! Oo-er missus!",
+            "Said the actress to the bishop! Fnar!",
+            "Ooh, matron! Steady on!",
+            "Fnar, fnar! Right up your alley!",
+            "Oo-er! Mind how you handle that!"
+        ];
+
+        // Toast Notification Helper
+        let toastTimer;
+        function showComicToast(sfx, msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-sfx').textContent = sfx;
+            document.getElementById('toast-message').textContent = msg;
+
+            toast.classList.remove('translate-y-28', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-28', 'opacity-0');
+            }, 2800);
+        }
+
+        // Select Excuse Panel
+        function selectExcuse(key) {
+            activeExcuse = key;
+            const data = excuseData[key];
+            if (!data) return;
+
+            document.querySelectorAll('.excuse-panel').forEach(panel => {
+                if (panel.dataset.excuse === key) {
+                    panel.classList.remove('bg-white');
+                    panel.classList.add('bg-vizYellow');
+                } else {
+                    panel.classList.remove('bg-vizYellow');
+                    panel.classList.add('bg-white');
+                }
+            });
+
+            document.getElementById('sfx-badge').textContent = data.sfx;
+            document.getElementById('excuse-subtitle').textContent = data.verdict;
+            document.getElementById('excuse-response').textContent = isCorporateMode ? data.corporate : data.casual;
+        }
+
+        // Cycle Top Tips
+        function nextTopTip() {
+            currentTipIndex = (currentTipIndex + 1) % topTips.length;
+            const item = topTips[currentTipIndex];
+            document.getElementById('toptip-credit').textContent = item.credit;
+            document.getElementById('toptip-text').textContent = item.tip;
+        }
+
+        // Load current Top Tip into Email Subject
+        function useTipAsSubject() {
+            const rawTip = topTips[currentTipIndex].tip.replace(/^"|"$/g, '');
+            const shortTip = rawTip.length > 58 ? rawTip.substring(0, 55) + "..." : rawTip;
+            document.getElementById('subject-input').value = "TOP TIP: " + shortTip;
+            updateBollocksMeter();
+            showComicToast("BOSH!", "Top Tip loaded into Letterbocks!");
+        }
+
+        // Cycle Profanisaurus Status
+        function cycleProfanisaurus() {
+            currentProfIndex = (currentProfIndex + 1) % profanisaurusEntries.length;
+            const entry = profanisaurusEntries[currentProfIndex];
+            document.getElementById('status-word').textContent = entry.word;
+            document.getElementById('status-pos').textContent = entry.pos;
+            document.getElementById('status-def').textContent = entry.def;
+        }
+
+        // Finbarr Saunders Fnar Button
+        function triggerFnar() {
+            fnarCount++;
+            document.getElementById('fnar-count').textContent = fnarCount;
+            const quip = fnarQuips[fnarCount % fnarQuips.length];
+            showComicToast("FNAR!", quip);
+        }
+
+        // Copy Email (iframe-safe document.execCommand)
+        function copyEmail() {
+            const email = "rob@robsalisbury.com";
+            const tempInput = document.createElement("textarea");
+            tempInput.value = email;
+            tempInput.style.position = "fixed";
+            tempInput.style.opacity = "0";
+            document.body.appendChild(tempInput);
+            tempInput.select();
+
+            try {
+                document.execCommand("copy");
+                const btn = document.getElementById('copy-btn');
+                btn.textContent = "NICKED IT!";
+                btn.classList.add('bg-vizCyan', 'text-white');
+                showComicToast("YOINK!", "rob@robsalisbury.com copied to clipboard!");
+
+                setTimeout(() => {
+                    btn.textContent = "Copy Address";
+                    btn.classList.remove('bg-vizCyan', 'text-white');
+                }, 2000);
+            } catch (err) {
+                showComicToast("BLIMEY!", "Select rob@robsalisbury.com and copy manually!");
+            }
+            document.body.removeChild(tempInput);
+        }
+
+        // Randomize Subject Line
+        function generateSubject() {
+            currentSubjectIndex = (currentSubjectIndex + 1) % cheekySubjects.length;
+            document.getElementById('subject-input').value = cheekySubjects[currentSubjectIndex];
+            updateBollocksMeter();
+        }
+
+        // Live Bollocks-o-Meter™
+        function updateBollocksMeter() {
+            const val = document.getElementById('subject-input').value.toLowerCase();
+            const bar = document.getElementById('bollocks-bar');
+            const label = document.getElementById('bollocks-label');
+            const hint = document.getElementById('bollocks-hint');
+
+            const bollocksWords = [
+                'synergy', 'circle back', 'kindly', 'seo', 'leads', 'crypto',
+                'bitcoin', 'web3', 'nft', 'bandwidth', 'touch base', 'quick question',
+                'leverage', 'paradigm', 'disrupt', 'thought leader', 'roi', 'dear sir'
+            ];
+
+            let score = 12;
+            if (val.trim().length === 0) score = 40;
+            if (val === val.toUpperCase() && val.length > 5) score += 30;
+
+            bollocksWords.forEach(word => {
+                if (val.includes(word)) score += 32;
+            });
+
+            score = Math.min(100, Math.max(5, score));
+            bar.style.width = score + "%";
+
+            if (score < 35) {
+                bar.className = "h-full bg-vizCyan transition-all duration-300";
+                label.className = "font-bold bg-vizYellow px-2 py-0.5 border border-ink text-ink";
+                label.textContent = `${score}% — ACCEPTABLE BANTER`;
+                hint.textContent = "Grand job! Reads like a proper human being, not a suit.";
+            } else if (score < 70) {
+                bar.className = "h-full bg-vizYellow transition-all duration-300";
+                label.className = "font-bold bg-amber-300 px-2 py-0.5 border border-ink text-ink";
+                label.textContent = `${score}% — BIT PONGY`;
+                hint.textContent = "Careful now, you’re starting to sound like a middle manager.";
+            } else {
+                bar.className = "h-full bg-vizRed transition-all duration-300";
+                label.className = "font-bold bg-vizRed px-2 py-0.5 border border-ink text-white animate-pulse";
+                label.textContent = `${score}% — UTTER BALDERDASH!`;
+                hint.textContent = "ALARM! Corporate waffle detected! Rob’s spam bin awaits!";
+            }
+        }
+
+        // Launch Email Client
+        function launchEmail() {
+            const subject = encodeURIComponent(document.getElementById('subject-input').value || "Hello from Rob's Comic");
+            const body = encodeURIComponent(
+                isCorporateMode
+                ? "Dear Rob,\n\nI visited robsalisbury.com and wished to connect regarding...\n\nKind regards,"
+                : "Alright Rob,\n\nJust saw your comic on robsalisbury.com and thought I'd drop you a line.\n\nCheers,"
+            );
+            window.location.href = `mailto:rob@robsalisbury.com?subject=${subject}&body=${body}`;
+            showComicToast("POSTIE!", "Firing up your email contraption...");
+        }
+
+        // Posh Corporate Git Mode Toggle
+        function toggleCorporateMode() {
+            isCorporateMode = !isCorporateMode;
+            const body = document.getElementById('page-body');
+            const toggleText = document.getElementById('toggle-text');
+            const toggleIcon = document.getElementById('toggle-icon');
+            const modeLabel = document.getElementById('mode-label');
+
+            if (isCorporateMode) {
+                body.classList.add('posh-mode');
+                modeLabel.textContent = "EDITION: STERILE LINKEDIN BEIGE";
+                toggleIcon.textContent = "📰";
+                toggleText.textContent = "Back to 1980s Comic";
+
+                document.getElementById('masthead-box').classList.remove('bg-vizRed');
+                document.getElementById('masthead-box').classList.add('bg-white');
+                document.getElementById('masthead-title').textContent = "Rob Salisbury";
+                document.getElementById('masthead-subtitle').classList.remove('text-white');
+                document.getElementById('masthead-subtitle').classList.add('text-neutral-700');
+                document.getElementById('masthead-subtitle').textContent = "Principal Email Domain Holder & Asynchronous Communications Specialist.";
+
+                showComicToast("URGH!", "Put it back! It's all sterile and beige!");
+            } else {
+                body.classList.remove('posh-mode');
+                modeLabel.textContent = "EDITION: 1980s NEWSPRINT";
+                toggleIcon.textContent = "🎩";
+                toggleText.textContent = "Posh Corporate Git Mode";
+
+                document.getElementById('masthead-box').classList.remove('bg-white');
+                document.getElementById('masthead-box').classList.add('bg-vizRed');
+                document.getElementById('masthead-title').textContent = "ROB'S COMIC";
+                document.getElementById('masthead-subtitle').classList.remove('text-neutral-700');
+                document.getElementById('masthead-subtitle').classList.add('text-white');
+                document.getElementById('masthead-subtitle').innerHTML = `"Britain’s Least Essential Website! Basically just a glorified Post Office box for <span class="bg-ink text-vizYellow px-1.5 py-0.5 font-print text-base">@robsalisbury.com</span>."`;
+
+                showComicToast("PHEW!", "Proper 1980s cheap newsprint restored!");
+            }
+
+            if (activeExcuse) {
+                selectExcuse(activeExcuse);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateBollocksMeter();
+        });
+    </script>
+</body>
+</html>
