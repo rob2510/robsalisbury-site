@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>robsalisbury.com — Mostly an Email Address</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Space Grotesk, Inter, and JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        cream: '#F7F5F0',
+                        ink: '#141414',
+                        cobalt: '#1E40FF',
+                        acid: '#D9FF00',
+                        coral: '#FF5A36',
+                        mint: '#00E599',
+                    },
+                    boxShadow: {
+                        'brutal': '4px 4px 0px 0px #141414',
+                        'brutal-lg': '8px 8px 0px 0px #141414',
+                        'brutal-sm': '2px 2px 0px 0px #141414',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-cream text-ink font-sans antialiased selection:bg-acid selection:text-ink min-h-screen flex flex-col justify-between transition-colors duration-300" id="page-body">
+
+    <!-- Top Retro OS Utility Bar -->
+    <header class="border-b-2 border-ink bg-white sticky top-0 z-40 transition-colors duration-300" id="top-bar">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-12 flex items-center justify-between text-xs font-mono">
+            <div class="flex items-center space-x-3">
+                <span class="inline-block w-3 h-3 rounded-full bg-coral border border-ink"></span>
+                <span class="inline-block w-3 h-3 rounded-full bg-acid border border-ink"></span>
+                <span class="inline-block w-3 h-3 rounded-full bg-mint border border-ink"></span>
+                <span class="font-bold tracking-tight pl-1" id="os-title">ROB_OS v2.6 // robsalisbury.com</span>
+            </div>
+
+            <!-- Corporate Mode Toggle Switch -->
+            <div class="flex items-center space-x-2">
+                <span class="hidden sm:inline text-neutral-600" id="mode-label">VIBE: ACTUAL ROB</span>
+                <button 
+                    id="corporate-toggle"
+                    onclick="toggleCorporateMode()"
+                    class="px-2.5 py-1 rounded border-2 border-ink bg-acid hover:bg-yellow-300 active:translate-x-[1px] active:translate-y-[1px] font-bold shadow-brutal-sm transition-all cursor-pointer flex items-center gap-1.5"
+                    title="Switch between Actual Rob and Serious LinkedIn Mode"
+                >
+                    <span id="toggle-icon">🕶️</span>
+                    <span id="toggle-text">Corporate Mode</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-5xl mx-auto w-full px-4 sm:px-6 py-8 sm:py-12 space-y-8">
+
+        <!-- Hero Window Card -->
+        <section class="bg-white border-2 border-ink rounded-xl shadow-brutal-lg overflow-hidden transition-all" id="hero-card">
+            <!-- Window Header -->
+            <div class="bg-ink text-cream px-4 py-2 flex items-center justify-between font-mono text-xs">
+                <span>README.txt — 1.4 KB</span>
+                <span class="text-acid" id="hero-badge">● MX RECORDS ACTIVE</span>
+            </div>
+            
+            <div class="p-6 sm:p-10">
+                <div class="flex flex-col md:flex-row md:items-start justify-between gap-6">
+                    <div class="space-y-4 max-w-2xl">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border-2 border-ink bg-cream text-xs font-mono font-semibold">
+                            <span>👋</span>
+                            <span id="hero-kicker">Congratulations, you found a domain name.</span>
+                        </div>
+                        
+                        <h1 class="font-display text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05]" id="hero-title">
+                            Hi, I’m Rob Salisbury. <br class="hidden sm:inline">
+                            <span class="bg-acid px-2 rounded-md border-2 border-ink inline-block mt-1">This is mostly an email server.</span>
+                        </h1>
+                        
+                        <p class="text-base sm:text-lg text-neutral-700 leading-relaxed pt-2" id="hero-subtitle">
+                            You probably ended up here because you saw <code class="font-mono text-sm bg-cream px-1.5 py-0.5 rounded border border-ink font-semibold">@robsalisbury.com</code> in your inbox, typed a random URL out of boredom, or are doing mild internet sleuthing. Whatever the reason, welcome to my tiny corner of the DNS.
+                        </p>
+                    </div>
+
+                    <!-- Live Status Widget -->
+                    <div class="w-full md:w-64 shrink-0 bg-cream border-2 border-ink rounded-xl p-4 shadow-brutal flex flex-col justify-between space-y-4" id="status-card">
+                        <div>
+                            <div class="flex items-center justify-between text-xs font-mono text-neutral-500 mb-2">
+                                <span>CURRENT_STATUS</span>
+                                <span class="relative flex h-2.5 w-2.5">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-mint opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-mint border border-ink"></span>
+                                </span>
+                            </div>
+                            <p class="font-display font-bold text-lg leading-snug" id="status-text">
+                                Avoiding inbox zero
+                            </p>
+                            <p class="font-mono text-xs text-neutral-500 mt-1" id="status-subtext">
+                                Updated: Just now (probably)
+                            </p>
+                        </div>
+                        <button 
+                            onclick="cycleStatus()"
+                            class="w-full py-2 px-3 bg-white hover:bg-acid border-2 border-ink rounded-lg font-mono text-xs font-bold shadow-brutal-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer flex items-center justify-center gap-2"
+                        >
+                            <span>↻</span>
+                            <span>Refresh Rob’s Status</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Two-Column Interactive Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            <!-- Left Column: "Why are you here?" Diagnostic (7 cols) -->
+            <section class="lg:col-span-7 bg-white border-2 border-ink rounded-xl shadow-brutal flex flex-col justify-between overflow-hidden" id="diagnostic-card">
+                <div>
+                    <div class="bg-cobalt text-white px-4 py-2.5 border-b-2 border-ink flex items-center justify-between font-mono text-xs">
+                        <span class="font-bold">VISITOR_DIAGNOSTIC.exe</span>
+                        <span>STEP 1 OF 1</span>
+                    </div>
+
+                    <div class="p-6 sm:p-8 space-y-5">
+                        <div>
+                            <h2 class="font-display text-2xl font-bold" id="diag-title">Wait—why are you actually here?</h2>
+                            <p class="text-sm text-neutral-600 mt-1" id="diag-desc">Select the scenario that best describes your current browsing session:</p>
+                        </div>
+
+                        <!-- Diagnostic Options Grid -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="diagnostic-options">
+                            <button onclick="selectReason('legit')" data-reason="legit" class="reason-btn text-left p-3.5 rounded-lg border-2 border-ink bg-cream hover:bg-acid/60 shadow-brutal-sm active:translate-x-[1px] active:translate-y-[1px] transition-all cursor-pointer">
+                                <div class="font-mono text-xs font-bold text-cobalt mb-1">[01] VERIFICATION</div>
+                                <div class="font-semibold text-sm">Checking if Rob’s email is legit</div>
+                            </button>
+
+                            <button onclick="selectReason('typo')" data-reason="typo" class="reason-btn text-left p-3.5 rounded-lg border-2 border-ink bg-cream hover:bg-acid/60 shadow-brutal-sm active:translate-x-[1px] active:translate-y-[1px] transition-all cursor-pointer">
+                                <div class="font-mono text-xs font-bold text-coral mb-1">[02] FAT FINGERS</div>
+                                <div class="font-semibold text-sm">I made a typo / typing random URLs</div>
+                            </button>
+
+                            <button onclick="selectReason('other_rob')" data-reason="other_rob" class="reason-btn text-left p-3.5 rounded-lg border-2 border-ink bg-cream hover:bg-acid/60 shadow-brutal-sm active:translate-x-[1px] active:translate-y-[1px] transition-all cursor-pointer">
+                                <div class="font-mono text-xs font-bold text-ink mb-1">[03] MISTAKEN IDENTITY</div>
+                                <div class="font-semibold text-sm">Looking for a different Rob Salisbury</div>
+                            </button>
+
+                            <button onclick="selectReason('bot')" data-reason="bot" class="reason-btn text-left p-3.5 rounded-lg border-2 border-ink bg-cream hover:bg-acid/60 shadow-brutal-sm active:translate-x-[1px] active:translate-y-[1px] transition-all cursor-pointer">
+                                <div class="font-mono text-xs font-bold text-emerald-700 mb-1">[04] AUTOMATED</div>
+                                <div class="font-semibold text-sm">I am a web scraper / lost bot</div>
+                            </button>
+                        </div>
+
+                        <!-- Diagnostic Output Box -->
+                        <div class="bg-cream border-2 border-ink rounded-lg p-4 sm:p-5 relative mt-4" id="diagnostic-result">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-mono text-xs font-bold uppercase tracking-wider px-2 py-0.5 bg-ink text-cream rounded" id="diag-tag">SYSTEM OUTPUT</span>
+                                <span class="font-mono text-xs text-neutral-500" id="diag-code">STATUS: 200 OK</span>
+                            </div>
+                            <p class="text-sm sm:text-base font-medium leading-relaxed text-ink" id="diag-response">
+                                Click any button above so I can properly validate your life choices and explain what this page is doing on the internet.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Useless Button Footer Bar -->
+                <div class="bg-cream border-t-2 border-ink px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+                    <div class="text-xs font-mono text-neutral-600">
+                        <span class="font-bold text-ink">USELESS BUTTON™</span> — Does nothing, feels great.
+                    </div>
+                    <button 
+                        onclick="incrementUseless()"
+                        id="useless-btn"
+                        class="px-3.5 py-1.5 bg-coral text-white font-mono text-xs font-bold border-2 border-ink rounded-lg shadow-brutal-sm hover:brightness-105 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
+                    >
+                        Clicks: <span id="useless-count">0</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Right Column: Email Rob Quick-Composer (5 cols) -->
+            <section class="lg:col-span-5 bg-white border-2 border-ink rounded-xl shadow-brutal overflow-hidden flex flex-col justify-between" id="email-card">
+                <div>
+                    <div class="bg-acid text-ink px-4 py-2.5 border-b-2 border-ink flex items-center justify-between font-mono text-xs">
+                        <span class="font-bold">SMTP_DISPATCH.sh</span>
+                        <span>PORT 587</span>
+                    </div>
+
+                    <div class="p-6 space-y-5">
+                        <div>
+                            <h2 class="font-display text-2xl font-bold" id="email-title">Send an actual email</h2>
+                            <p class="text-sm text-neutral-600 mt-1" id="email-desc">Since email is literally why I pay $12/year for this domain.</p>
+                        </div>
+
+                        <!-- One-Click Copy Address Box -->
+                        <div class="flex items-center justify-between p-3 bg-cream border-2 border-ink rounded-lg">
+                            <code class="font-mono text-sm font-bold truncate select-all" id="email-address">rob@robsalisbury.com</code>
+                            <button 
+                                onclick="copyEmail()"
+                                id="copy-btn"
+                                class="ml-2 shrink-0 px-3 py-1.5 bg-white hover:bg-acid border-2 border-ink rounded-md font-mono text-xs font-bold shadow-brutal-sm active:translate-x-[1px] active:translate-y-[1px] transition-all cursor-pointer"
+                            >
+                                Copy
+                            </button>
+                        </div>
+
+                        <!-- Cheeky Subject Line Generator -->
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <label for="subject-input" class="font-mono text-xs font-bold uppercase">Subject Line</label>
+                                <button 
+                                    type="button"
+                                    onclick="generateSubject()"
+                                    class="font-mono text-xs text-cobalt hover:underline font-bold cursor-pointer flex items-center gap-1"
+                                >
+                                    <span>🎲</span> Randomize Subject
+                                </button>
+                            </div>
+                            <input 
+                                type="text" 
+                                id="subject-input" 
+                                value="Saw your weird website"
+                                oninput="updateSpamMeter()"
+                                placeholder="Type a subject..."
+                                class="w-full px-3 py-2 bg-cream border-2 border-ink rounded-lg font-mono text-sm focus:outline-none focus:ring-2 focus:ring-cobalt"
+                            >
+                        </div>
+
+                        <!-- Spam-o-Meter -->
+                        <div class="space-y-1.5 bg-cream p-3 rounded-lg border-2 border-ink">
+                            <div class="flex items-center justify-between font-mono text-xs">
+                                <span class="font-bold">SPAM-O-METER™</span>
+                                <span id="spam-label" class="font-bold text-emerald-700">12% (Delightfully Human)</span>
+                            </div>
+                            <div class="w-full h-3 bg-white border border-ink rounded-full overflow-hidden p-0.5">
+                                <div id="spam-bar" class="h-full bg-mint rounded-full transition-all duration-300" style="width: 12%;"></div>
+                            </div>
+                            <p id="spam-hint" class="font-mono text-[11px] text-neutral-600">
+                                Tip: Avoid words like "synergy", "crypto", or "quick question".
+                            </p>
+                        </div>
+
+                        <!-- Launch Mailto Button -->
+                        <button 
+                            onclick="launchEmail()"
+                            class="w-full py-3 px-4 bg-cobalt hover:bg-blue-700 text-white font-display font-bold text-base border-2 border-ink rounded-xl shadow-brutal active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer flex items-center justify-center gap-2"
+                        >
+                            <span>✉️</span>
+                            <span id="launch-btn-text">Open in Default Mail App</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Micro Footer Note inside Email Card -->
+                <div class="px-6 py-3 bg-cream border-t-2 border-ink font-mono text-[11px] text-neutral-600 flex items-center justify-between">
+                    <span>SPF / DKIM / DMARC: Passing</span>
+                    <span>No newsletters. Ever.</span>
+                </div>
+            </section>
+        </div>
+
+        <!-- Bottom Mini FAQ / Domain Facts Strip -->
+        <section class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="bg-white border-2 border-ink rounded-xl p-4 shadow-brutal-sm">
+                <div class="font-mono text-xs font-bold text-cobalt mb-1">01 // TRACKING & COOKIES</div>
+                <p class="text-sm text-neutral-700" id="fact-1">Zero analytics, zero cookies, zero tracking pixels. I genuinely do not know you are here.</p>
+            </div>
+            <div class="bg-white border-2 border-ink rounded-xl p-4 shadow-brutal-sm">
+                <div class="font-mono text-xs font-bold text-coral mb-1">02 // PORTFOLIO?</div>
+                <p class="text-sm text-neutral-700" id="fact-2">Not hosted here. If we’re working together, you already have the right links. If not, enjoy the retro borders.</p>
+            </div>
+            <div class="bg-white border-2 border-ink rounded-xl p-4 shadow-brutal-sm">
+                <div class="font-mono text-xs font-bold text-emerald-700 mb-1">03 // UPTIME GUARANTEE</div>
+                <p class="text-sm text-neutral-700" id="fact-3">99.9% uptime for receiving personal emails; 100% chance I’ll reply after my second coffee.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t-2 border-ink bg-white mt-8">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-neutral-600">
+            <div>
+                © <span id="year">2026</span> Rob Salisbury. Hand-coded in one HTML file with zero frameworks harmed.
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="px-2 py-0.5 bg-cream border border-ink rounded text-ink font-semibold">EOF</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Toast Notification (Replaces alert()) -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-ink text-cream border-2 border-acid px-4 py-3 rounded-xl shadow-brutal font-mono text-xs flex items-center gap-2.5">
+            <span class="text-acid text-base">✓</span>
+            <span id="toast-message">Copied to clipboard!</span>
+        </div>
+    </div>
+
+    <script>
+        // Set current year dynamically
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // State variables
+        let isCorporateMode = false;
+        let currentStatusIndex = 0;
+        let currentSubjectIndex = 0;
+        let uselessClicks = 0;
+
+        // Status options for the Live Status widget
+        const casualStatuses = [
+            { text: "Avoiding inbox zero", sub: "Updated: Just now (probably)" },
+            { text: "Questioning domain renewal fees", sub: "Happens every November" },
+            { text: "Brewing a suspiciously strong coffee", sub: "Productivity imminent" },
+            { text: "Reading terms & conditions (lying)", sub: "Scrolled to bottom" },
+            { text: "Organizing folders I'll never open", sub: "Digital spring cleaning" },
+            { text: "Actually offline touching grass", sub: "Rare occurrence" }
+        ];
+
+        const corporateStatuses = [
+            { text: "Synergizing cross-functional paradigms", sub: "Status: Q4 Aligned" },
+            { text: "Leveraging core competencies", sub: "Status: High Bandwidth" },
+            { text: "Circling back on action items", sub: "Status: Per my last email" },
+            { text: "Optimizing stakeholder deliverables", sub: "Status: Moving the needle" }
+        ];
+
+        // Diagnostic responses
+        const diagnosticData = {
+            legit: {
+                tag: "VERIFIED HUMAN",
+                code: "DMARC: PASS",
+                casual: "Good news: yes, I am a real person and this is my actual personal domain! If I emailed you, it wasn't a phishing simulation (unless you're my mom, in which case, still not phishing, just saying hi).",
+                corporate: "Verification confirmed. All electronic correspondence originating from @robsalisbury.com adheres to enterprise-grade authentication protocols and represents legitimate stakeholder outreach."
+            },
+            typo: {
+                tag: "HAPPY ACCIDENT",
+                code: "HTTP 404-ISH",
+                casual: "Honestly, impressive typing. Welcome! Since you're already here, feel free to click the Useless Button below a few times to get your dopamine fix before heading back to whatever you were actually searching for.",
+                corporate: "You have experienced a navigational deviation. Please leverage the back button in your browser client to realign with your intended digital destination."
+            },
+            other_rob: {
+                tag: "WRONG ROB",
+                code: "ERR_NAME_COLLISION",
+                casual: "There are dozens of us! Dozens! If you're looking for the leadership speaker, the musician, or the guy who owes you twenty bucks—sorry, wrong Rob Salisbury. I just hoard this .com.",
+                corporate: "Disambiguation notice: This digital property represents a distinct individual entity and is not affiliated with alternative Rob Salisbury enterprises."
+            },
+            bot: {
+                tag: "BEEP BOOP",
+                code: "ROBOTS.TXT: ¯\\_(ツ)_/¯",
+                casual: "01001000 01101001! Feel free to index this page, scrape the HTML, or train an LLM on my jokes. Just please don't sign me up for enterprise SaaS cold-email sequences.",
+                corporate: "Greetings, automated crawler. Please index our value proposition responsibly and exclude this domain from unsolicited outbound marketing funnels."
+            }
+        };
+
+        // Cheeky subject lines
+        const cheekySubjects = [
+            "Saw your weird website",
+            "Urgent: Nothing at all",
+            "Actual human inquiry (not a bot)",
+            "Is this domain for sale? (Just kidding)",
+            "Hello from the internet",
+            "Testing your MX records",
+            "Quick question (actually quick)"
+        ];
+
+        const corporateSubjects = [
+            "Strategic Synergy Opportunity",
+            "Circling Back: Action Items",
+            "Touching Base re: Deliverables",
+            "Quick Sync on Q4 Bandwidth"
+        ];
+
+        // Toast Helper
+        let toastTimeout;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = msg;
+            
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 2600);
+        }
+
+        // Cycle Live Status
+        function cycleStatus() {
+            const list = isCorporateMode ? corporateStatuses : casualStatuses;
+            currentStatusIndex = (currentStatusIndex + 1) % list.length;
+            const item = list[currentStatusIndex];
+            
+            const statusText = document.getElementById('status-text');
+            const statusSub = document.getElementById('status-subtext');
+            
+            statusText.style.opacity = 0;
+            setTimeout(() => {
+                statusText.textContent = item.text;
+                statusSub.textContent = item.sub;
+                statusText.style.opacity = 1;
+            }, 120);
+        }
+
+        // Select Diagnostic Reason
+        let activeReason = null;
+        function selectReason(reasonKey) {
+            activeReason = reasonKey;
+            const data = diagnosticData[reasonKey];
+            if (!data) return;
+
+            // Highlight active button
+            document.querySelectorAll('.reason-btn').forEach(btn => {
+                if (btn.dataset.reason === reasonKey) {
+                    btn.classList.remove('bg-cream');
+                    btn.classList.add('bg-acid');
+                } else {
+                    btn.classList.remove('bg-acid');
+                    btn.classList.add('bg-cream');
+                }
+            });
+
+            // Update output card
+            document.getElementById('diag-tag').textContent = data.tag;
+            document.getElementById('diag-code').textContent = data.code;
+            document.getElementById('diag-response').textContent = isCorporateMode ? data.corporate : data.casual;
+        }
+
+        // Useless Button Counter
+        function incrementUseless() {
+            uselessClicks++;
+            const countEl = document.getElementById('useless-count');
+            countEl.textContent = uselessClicks;
+
+            if (uselessClicks === 1) showToast("Nice click. Very tactile.");
+            if (uselessClicks === 5) showToast("5 clicks! Still does nothing.");
+            if (uselessClicks === 10) showToast("10 clicks. Are you procrastinating?");
+            if (uselessClicks === 25) showToast("25 clicks! You have unlocked: Nothing.");
+            if (uselessClicks === 50) showToast("50 clicks. Please go outside.");
+        }
+
+        // Copy Email using document.execCommand('copy') for universal iframe compatibility
+        function copyEmail() {
+            const email = "rob@robsalisbury.com";
+            const tempInput = document.createElement("textarea");
+            tempInput.value = email;
+            tempInput.style.position = "fixed";
+            tempInput.style.opacity = "0";
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            
+            try {
+                document.execCommand("copy");
+                const copyBtn = document.getElementById('copy-btn');
+                copyBtn.textContent = "Copied!";
+                copyBtn.classList.add('bg-mint');
+                showToast("Copied rob@robsalisbury.com to clipboard!");
+                
+                setTimeout(() => {
+                    copyBtn.textContent = "Copy";
+                    copyBtn.classList.remove('bg-mint');
+                }, 2000);
+            } catch (err) {
+                showToast("Could not copy automatically—select and copy manually!");
+            }
+            document.body.removeChild(tempInput);
+        }
+
+        // Randomize Subject Line
+        function generateSubject() {
+            const list = isCorporateMode ? corporateSubjects : cheekySubjects;
+            currentSubjectIndex = (currentSubjectIndex + 1) % list.length;
+            const input = document.getElementById('subject-input');
+            input.value = list[currentSubjectIndex];
+            updateSpamMeter();
+        }
+
+        // Live Spam-o-Meter analyzer
+        function updateSpamMeter() {
+            const subject = document.getElementById('subject-input').value.toLowerCase();
+            const bar = document.getElementById('spam-bar');
+            const label = document.getElementById('spam-label');
+            const hint = document.getElementById('spam-hint');
+
+            const spamTriggers = [
+                'synergy', 'crypto', 'bitcoin', 'quick question', 'seo', 'leads',
+                'unsubscribe', 'guarantee', 'free money', 'urgent!', 'act now',
+                'partnership', 'circle back', 'bandwidth', 'web3', 'nft', 'roi'
+            ];
+
+            let score = 10;
+            if (subject.length === 0) score = 45;
+            if (subject === subject.toUpperCase() && subject.length > 4) score += 35;
+
+            spamTriggers.forEach(word => {
+                if (subject.includes(word)) score += 28;
+            });
+
+            score = Math.min(99, Math.max(5, score));
+            bar.style.width = score + "%";
+
+            if (score < 30) {
+                bar.className = "h-full bg-mint rounded-full transition-all duration-300";
+                label.className = "font-bold text-emerald-700";
+                label.textContent = `${score}% (Delightfully Human)`;
+                hint.textContent = "Looks great! Straight to the primary inbox.";
+            } else if (score < 65) {
+                bar.className = "h-full bg-acid rounded-full transition-all duration-300";
+                label.className = "font-bold text-amber-700";
+                label.textContent = `${score}% (Mildly Suspicious)`;
+                hint.textContent = "Hmm, sounds slightly like a cold outreach template.";
+            } else {
+                bar.className = "h-full bg-coral rounded-full transition-all duration-300";
+                label.className = "font-bold text-red-600";
+                label.textContent = `${score}% (Danger Zone)`;
+                hint.textContent = "Buzzword alert! Rob's spam filter is sweating.";
+            }
+        }
+
+        // Launch mailto link
+        function launchEmail() {
+            const subject = encodeURIComponent(document.getElementById('subject-input').value || "Hello Rob");
+            const body = encodeURIComponent(
+                isCorporateMode 
+                ? "Hi Rob,\n\nI visited robsalisbury.com and would love to connect regarding...\n\nBest regards,"
+                : "Hey Rob,\n\nI stumbled across robsalisbury.com and figured I'd say hi.\n\n-"
+            );
+            window.location.href = `mailto:rob@robsalisbury.com?subject=${subject}&body=${body}`;
+            showToast("Opening your email client...");
+        }
+
+        // Easter Egg: Toggle "Serious Corporate Mode" vs "Actual Rob Mode"
+        function toggleCorporateMode() {
+            isCorporateMode = !isCorporateMode;
+            
+            const body = document.getElementById('page-body');
+            const modeLabel = document.getElementById('mode-label');
+            const toggleText = document.getElementById('toggle-text');
+            const toggleIcon = document.getElementById('toggle-icon');
+            const toggleBtn = document.getElementById('corporate-toggle');
+
+            if (isCorporateMode) {
+                // Switch to Serious Corporate Mode
+                body.classList.remove('bg-cream');
+                body.classList.add('bg-slate-200');
+                modeLabel.textContent = "VIBE: LINKEDIN THOUGHT LEADER";
+                toggleText.textContent = "Actual Rob Mode";
+                toggleIcon.textContent = "👔";
+                toggleBtn.classList.remove('bg-acid');
+                toggleBtn.classList.add('bg-white');
+
+                document.getElementById('os-title').textContent = "SALISBURY_ENTERPRISE_PORTAL // v4.0";
+                document.getElementById('hero-kicker').textContent = "Welcome to the premier digital gateway of Rob Salisbury.";
+                document.getElementById('hero-title').innerHTML = `Rob Salisbury. <br class="hidden sm:inline"><span class="bg-cobalt text-white px-2 rounded-md border-2 border-ink inline-block mt-1">Maximizing Email Synergy.</span>`;
+                document.getElementById('hero-subtitle').textContent = "This domain serves as a centralized communications hub facilitating high-impact asynchronous correspondence and mission-critical inbox deliverables.";
+                document.getElementById('diag-title').textContent = "Stakeholder Intent Discovery";
+                document.getElementById('diag-desc').textContent = "Please self-select your visitor persona to optimize your digital journey:";
+                document.getElementById('email-title').textContent = "Initiate Asynchronous Outreach";
+                document.getElementById('email-desc').textContent = "Leverage our primary SMTP endpoint to drive meaningful dialogue.";
+                document.getElementById('fact-1').textContent = "Zero-cookie architecture ensuring 100% GDPR/CCPA compliance by sheer virtue of doing nothing.";
+                document.getElementById('fact-2').textContent = "Thought leadership assets are gated. Reach out via email to unlock bespoke value propositions.";
+                document.getElementById('fact-3').textContent = "99.9% SLA on inbound packet reception; response latency dependent on caffeine KPIs.";
+
+                showToast("Corporate Synergy Mode Activated 👔");
+            } else {
+                // Switch back to Actual Rob Mode
+                body.classList.remove('bg-slate-200');
+                body.classList.add('bg-cream');
+                modeLabel.textContent = "VIBE: ACTUAL ROB";
+                toggleText.textContent = "Corporate Mode";
+                toggleIcon.textContent = "🕶️";
+                toggleBtn.classList.remove('bg-white');
+                toggleBtn.classList.add('bg-acid');
+
+                document.getElementById('os-title').textContent = "ROB_OS v2.6 // robsalisbury.com";
+                document.getElementById('hero-kicker').textContent = "Congratulations, you found a domain name.";
+                document.getElementById('hero-title').innerHTML = `Hi, I’m Rob Salisbury. <br class="hidden sm:inline"><span class="bg-acid px-2 rounded-md border-2 border-ink inline-block mt-1">This is mostly an email server.</span>`;
+                document.getElementById('hero-subtitle').innerHTML = `You probably ended up here because you saw <code class="font-mono text-sm bg-cream px-1.5 py-0.5 rounded border border-ink font-semibold">@robsalisbury.com</code> in your inbox, typed a random URL out of boredom, or are doing mild internet sleuthing. Whatever the reason, welcome to my tiny corner of the DNS.`;
+                document.getElementById('diag-title').textContent = "Wait—why are you actually here?";
+                document.getElementById('diag-desc').textContent = "Select the scenario that best describes your current browsing session:";
+                document.getElementById('email-title').textContent = "Send an actual email";
+                document.getElementById('email-desc').textContent = "Since email is literally why I pay $12/year for this domain.";
+                document.getElementById('fact-1').textContent = "Zero analytics, zero cookies, zero tracking pixels. I genuinely do not know you are here.";
+                document.getElementById('fact-2').textContent = "Not hosted here. If we’re working together, you already have the right links. If not, enjoy the retro borders.";
+                document.getElementById('fact-3').textContent = "99.9% uptime for receiving personal emails; 100% chance I’ll reply after my second coffee.";
+
+                showToast("Restored Actual Rob Mode 🕶️");
+            }
+
+            // Refresh dynamic widgets to match mode
+            currentStatusIndex = -1;
+            cycleStatus();
+            generateSubject();
+            if (activeReason) {
+                selectReason(activeReason);
+            }
+        }
+
+        // Initialize Spam Meter on load
+        window.addEventListener('DOMContentLoaded', () => {
+            updateSpamMeter();
+        });
+    </script>
+</body>
+</html>
