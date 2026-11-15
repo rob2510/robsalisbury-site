@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R. Salisbury — Aetheric Telegraph &amp; Electronic Post (robsalisbury.com)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cinzel Decorative for ornate Victorian headers, Courier Prime for telegraph tape, Crimson Pro for parchment text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        victorian: ['"Cinzel Decorative"', 'Georgia', 'serif'],
+                        parchment: ['"Crimson Pro"', 'Georgia', 'serif'],
+                        telegraph: ['"Courier Prime"', 'Courier', 'monospace'],
+                    },
+                    colors: {
+                        mahogany: '#14100C',
+                        mahoganyMid: '#231A14',
+                        ironDark: '#1C1917',
+                        parchment: '#F2E6CE',
+                        parchmentAged: '#E5D3B0',
+                        brass: '#B58938',
+                        brassBright: '#D4AF37',
+                        brassDark: '#75541C',
+                        copper: '#B86335',
+                        copperDark: '#7D3E1D',
+                        inkSepia: '#2A1E14',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Deep Oiled Mahogany & Cast Iron Workshop Backdrop */
+        body {
+            background-color: #14100C;
+            background-image:
+                radial-gradient(circle at 20% 15%, rgba(184, 99, 53, 0.14) 0%, transparent 45%),
+                radial-gradient(circle at 80% 85%, rgba(212, 175, 55, 0.10) 0%, transparent 50%),
+                repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.22) 0px, rgba(0, 0, 0, 0.22) 2px, transparent 2px, transparent 14px);
+            color: #F2E6CE;
+            font-family: 'Crimson Pro', Georgia, serif;
+            overflow-x: hidden;
+        }
+
+        /* Aged Victorian Parchment Panel Texture */
+        .parchment-panel {
+            background-color: #F2E6CE;
+            background-image:
+                radial-gradient(rgba(117, 84, 28, 0.14) 1px, transparent 0),
+                linear-gradient(135deg, rgba(255, 252, 245, 0.45) 0%, rgba(214, 189, 142, 0.45) 100%);
+            background-size: 18px 18px, 100% 100%;
+            color: #2A1E14;
+            border: 3px solid #B58938;
+            box-shadow:
+                inset 0 0 28px rgba(117, 84, 28, 0.35),
+                0 10px 25px rgba(0, 0, 0, 0.7);
+            position: relative;
+        }
+
+        /* Tarnished Brass Frame & Rivets */
+        .brass-casing {
+            background: linear-gradient(145deg, #2B2118 0%, #18130E 100%);
+            border: 3px solid #B58938;
+            box-shadow:
+                inset 0 1px 2px rgba(212, 175, 55, 0.4),
+                0 12px 30px rgba(0, 0, 0, 0.75);
+            position: relative;
+        }
+
+        .brass-plaque {
+            background: linear-gradient(135deg, #D4AF37 0%, #B58938 45%, #8A6424 100%);
+            border: 2px solid #F3DC8B;
+            box-shadow:
+                inset 0 1px 1px rgba(255, 255, 255, 0.5),
+                inset 0 -2px 4px rgba(42, 30, 20, 0.7),
+                0 4px 10px rgba(0, 0, 0, 0.6);
+            color: #1A120B;
+        }
+
+        .copper-pipe-bar {
+            background: linear-gradient(180deg, #D68254 0%, #B86335 50%, #6E3618 100%);
+            border-top: 1px solid #E8A682;
+            border-bottom: 2px solid #3B1C0B;
+        }
+
+        /* Corner Rivet Bolts */
+        .rivet {
+            width: 10px;
+            height: 10px;
+            border-radius: 9999px;
+            background: radial-gradient(circle at 35% 35%, #F5E09B, #9A7026 70%, #4A340E 100%);
+            border: 1px solid #3B280A;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+            position: absolute;
+            z-index: 10;
+        }
+
+        /* Interlocking Gear Animations */
+        @keyframes spin-cw {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes spin-ccw {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+        .gear-cw {
+            transform-origin: center;
+            animation: spin-cw 18s linear infinite;
+        }
+        .gear-ccw {
+            transform-origin: center;
+            animation: spin-ccw 12s linear infinite;
+        }
+        .gears-overdrive .gear-cw {
+            animation-duration: 2.2s;
+        }
+        .gears-overdrive .gear-ccw {
+            animation-duration: 1.5s;
+        }
+
+        /* Steam Vent Puff Animation */
+        @keyframes steam-rise {
+            0% {
+                opacity: 0.9;
+                transform: translateY(0) scale(0.5);
+            }
+            60% {
+                opacity: 0.65;
+                transform: translateY(-45px) scale(1.35);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-90px) scale(1.9);
+            }
+        }
+        .steam-puff {
+            animation: steam-rise 1.3s ease-out forwards;
+        }
+
+        /* Tactile Brass Mechanical Button */
+        .brass-btn {
+            background: linear-gradient(180deg, #E3C35B 0%, #B58938 60%, #8A6424 100%);
+            border: 2px solid #F7E5A3;
+            color: #1A120B;
+            box-shadow: 0 4px 0 #573D12, 0 6px 12px rgba(0, 0, 0, 0.6);
+            transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.1s ease;
+        }
+        .brass-btn:hover {
+            filter: brightness(1.07);
+        }
+        .brass-btn:active, .brass-btn.pressed {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #573D12, 0 2px 5px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Telegraph Paper Tape Styling */
+        .paper-tape {
+            background: repeating-linear-gradient(
+                90deg,
+                #FAF3E3 0px,
+                #FAF3E3 28px,
+                #E8DBC0 29px
+            );
+            border-top: 2px dashed #9E8862;
+            border-bottom: 2px dashed #9E8862;
+            color: #1F160E;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Gauge Needle Smooth Transition */
+        #gauge-needle {
+            transform-origin: 100px 105px;
+            transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Spark Flash for Morse Key */
+        @keyframes spark-flash {
+            0% { opacity: 1; transform: scale(0.7); }
+            50% { opacity: 1; transform: scale(1.3); }
+            100% { opacity: 0; transform: scale(1.6); }
+        }
+        .morse-spark {
+            animation: spark-flash 0.28s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-brassBright selection:text-mahogany" id="workshop-body">
+
+    <!-- 1. TOP BAR: AETHERIC TELEGRAPH & BOILER STATUS -->
+    <header class="sticky top-0 z-40 bg-ironDark/95 backdrop-blur border-b-4 border-brass shadow-2xl">
+        <div class="max-w-5xl mx-auto px-3 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
+            <!-- Status Indicators -->
+            <div class="flex flex-wrap items-center gap-3 sm:gap-5 text-xs sm:text-sm font-telegraph">
+                <div class="flex items-center gap-2 bg-mahogany px-2.5 py-1 rounded border border-brass/60">
+                    <span id="boiler-led" class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34D399]"></span>
+                    <span class="text-parchmentAged uppercase">BOILER:</span>
+                    <span id="top-psi-readout" class="text-brassBright font-bold">42 PSI</span>
+                </div>
+
+                <div class="hidden sm:flex items-center gap-2 bg-mahogany px-2.5 py-1 rounded border border-copper/70">
+                    <span class="text-copper font-bold">⚙</span>
+                    <span class="text-parchmentAged uppercase">PNEUMATIC TUBE:</span>
+                    <span id="tube-status" class="text-emerald-300 font-bold">CLEAR</span>
+                </div>
+            </div>
+
+            <!-- Vent Steam Button + Steam Cloud Container -->
+            <div class="relative flex items-center gap-2">
+                <div id="steam-container" class="pointer-events-none absolute -bottom-2 left-6 w-24 h-24 overflow-visible z-50"></div>
+                <button
+                    id="vent-steam-btn"
+                    onclick="ventSteam()"
+                    class="brass-btn px-3 py-1 rounded font-telegraph font-bold text-xs sm:text-sm uppercase tracking-wider cursor-pointer flex items-center gap-1.5"
+                >
+                    <span>💨</span>
+                    <span>Vent Steam</span>
+                </button>
+            </div>
+        </div>
+        <!-- Decorative Copper Pipe Trim -->
+        <div class="h-1.5 w-full copper-pipe-bar"></div>
+    </header>
+
+    <!-- MAIN WORKSHOP CONTAINER -->
+    <main class="max-w-5xl mx-auto w-full px-3 sm:px-6 py-6 sm:py-9 space-y-8">
+
+        <!-- ORNATE VICTORIAN MASTHEAD WITH INTERLOCKING BRASS GEARS -->
+        <section class="brass-casing rounded-xl p-5 sm:p-8 overflow-hidden">
+            <!-- Corner Rivets -->
+            <span class="rivet top-2.5 left-2.5"></span>
+            <span class="rivet top-2.5 right-2.5"></span>
+            <span class="rivet bottom-2.5 left-2.5"></span>
+            <span class="rivet bottom-2.5 right-2.5"></span>
+
+            <!-- Decorative Animated Brass Interlocking Gears SVG (Top-Right Corner) -->
+            <div id="gear-assembly" class="absolute -top-8 -right-8 sm:-top-6 sm:-right-6 opacity-35 sm:opacity-55 pointer-events-none select-none" aria-hidden="true">
+                <svg class="w-40 h-40 sm:w-52 sm:h-52" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Large Brass Gear -->
+                    <g class="gear-cw" style="transform-origin: 78px 78px;">
+                        <circle cx="78" cy="78" r="44" stroke="#D4AF37" stroke-width="10" stroke-dasharray="14 9"/>
+                        <circle cx="78" cy="78" r="34" fill="#231A14" stroke="#B58938" stroke-width="4"/>
+                        <circle cx="78" cy="78" r="12" fill="#D4AF37" stroke="#14100C" stroke-width="3"/>
+                        <line x1="78" y1="44" x2="78" y2="112" stroke="#B58938" stroke-width="5"/>
+                        <line x1="44" y1="78" x2="112" y2="78" stroke="#B58938" stroke-width="5"/>
+                    </g>
+                    <!-- Interlocking Copper/Brass Smaller Gear -->
+                    <g class="gear-ccw" style="transform-origin: 138px 128px;">
+                        <circle cx="138" cy="128" r="30" stroke="#B86335" stroke-width="9" stroke-dasharray="11 7"/>
+                        <circle cx="138" cy="128" r="21" fill="#1C1917" stroke="#D4AF37" stroke-width="3"/>
+                        <circle cx="138" cy="128" r="7" fill="#B86335"/>
+                        <line x1="117" y1="128" x2="159" y2="128" stroke="#D4AF37" stroke-width="3.5"/>
+                        <line x1="138" y1="107" x2="138" y2="149" stroke="#D4AF37" stroke-width="3.5"/>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="relative z-10 max-w-3xl space-y-3">
+                <div class="inline-flex items-center gap-2 bg-mahogany border border-brass px-3 py-1 rounded text-xs font-telegraph tracking-widest text-brassBright uppercase">
+                    <span>EST. 1887 // IMPERIAL ELECTRONIC POST</span>
+                </div>
+
+                <h1 class="font-victorian text-3xl sm:text-5xl md:text-6xl font-black text-brassBright tracking-wide drop-shadow-[0_3px_4px_rgba(0,0,0,0.9)] leading-tight">
+                    R. Salisbury’s Aetheric Telegraph
+                </h1>
+
+                <p class="text-lg sm:text-xl text-parchment leading-relaxed max-w-2xl">
+                    Greetings, traveller. You have docked at <span class="font-telegraph text-brassBright font-bold bg-mahogany/90 px-2 py-0.5 rounded border border-brass/50">robsalisbury.com</span> — a strictly utilitarian brass-and-mahogany relay station maintained solely for electronic correspondence via <span class="underline decoration-brassBright underline-offset-4 font-semibold">rob@robsalisbury.com</span>.
+                </p>
+
+                <p class="font-telegraph text-xs sm:text-sm text-parchmentAged/90 italic">
+                    * No folios, mercantile ledgers, or unsolicited pamphlets are housed within these premises.
+                </p>
+            </div>
+        </section>
+
+        <!-- 2. VISITOR MANIFEST & INTERROGATION ENGINE -->
+        <section class="parchment-panel rounded-xl p-5 sm:p-7">
+            <span class="rivet top-2.5 left-2.5"></span>
+            <span class="rivet top-2.5 right-2.5"></span>
+            <span class="rivet bottom-2.5 left-2.5"></span>
+            <span class="rivet bottom-2.5 right-2.5"></span>
+
+            <div class="border-b-2 border-brassDark/40 pb-3 mb-5 flex flex-wrap items-center justify-between gap-2">
+                <div>
+                    <span class="font-telegraph text-xs uppercase tracking-widest text-copperDark font-bold block">
+                        FORM IV-B // HARBOURMASTER’S LOG
+                    </span>
+                    <h2 class="font-victorian text-2xl sm:text-3xl font-bold text-inkSepia">
+                        Visitor Manifest &amp; Interrogation Engine
+                    </h2>
+                </div>
+                <span class="font-telegraph text-xs bg-inkSepia text-parchment px-2.5 py-1 rounded uppercase">
+                    SELECT PUNCH-CARD
+                </span>
+            </div>
+
+            <p class="text-base sm:text-lg text-inkSepia/90 mb-4">
+                State your business at the telegraph wicket by depressing one of the four mechanical punch-cards below:
+            </p>
+
+            <!-- 4 Mechanical Punch-Card Buttons -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5" id="manifest-cards">
+                <button
+                    onclick="selectManifest(0)"
+                    data-manifest="0"
+                    class="manifest-card text-left p-3.5 rounded-lg border-2 border-brassDark bg-parchmentAged/70 hover:bg-brass/20 transition-all cursor-pointer flex items-start gap-3 shadow-sm"
+                >
+                    <span class="font-telegraph font-bold text-sm bg-inkSepia text-brassBright px-2 py-0.5 rounded shrink-0 mt-0.5">[I]</span>
+                    <div>
+                        <div class="font-bold text-base sm:text-lg text-inkSepia">Verifying Electronic Dispatch Origin</div>
+                        <div class="font-telegraph text-xs text-inkSepia/75">Confirming rob@robsalisbury.com is a genuine gentleman</div>
+                    </div>
+                </button>
+
+                <button
+                    onclick="selectManifest(1)"
+                    data-manifest="1"
+                    class="manifest-card text-left p-3.5 rounded-lg border-2 border-brassDark bg-parchmentAged/70 hover:bg-brass/20 transition-all cursor-pointer flex items-start gap-3 shadow-sm"
+                >
+                    <span class="font-telegraph font-bold text-sm bg-inkSepia text-brassBright px-2 py-0.5 rounded shrink-0 mt-0.5">[II]</span>
+                    <div>
+                        <div class="font-bold text-base sm:text-lg text-inkSepia">Navigational Error / Fog on the Thames</div>
+                        <div class="font-telegraph text-xs text-inkSepia/75">Mis-keyed the brass coordinates in your browser</div>
+                    </div>
+                </button>
+
+                <button
+                    onclick="selectManifest(2)"
+                    data-manifest="2"
+                    class="manifest-card text-left p-3.5 rounded-lg border-2 border-brassDark bg-parchmentAged/70 hover:bg-brass/20 transition-all cursor-pointer flex items-start gap-3 shadow-sm"
+                >
+                    <span class="font-telegraph font-bold text-sm bg-inkSepia text-brassBright px-2 py-0.5 rounded shrink-0 mt-0.5">[III]</span>
+                    <div>
+                        <div class="font-bold text-base sm:text-lg text-inkSepia">Seeking Another Gentleman Named Salisbury</div>
+                        <div class="font-telegraph text-xs text-inkSepia/75">Perhaps a cathedral, steak, or different fellow altogether</div>
+                    </div>
+                </button>
+
+                <button
+                    onclick="selectManifest(3)"
+                    data-manifest="3"
+                    class="manifest-card text-left p-3.5 rounded-lg border-2 border-brassDark bg-parchmentAged/70 hover:bg-brass/20 transition-all cursor-pointer flex items-start gap-3 shadow-sm"
+                >
+                    <span class="font-telegraph font-bold text-sm bg-inkSepia text-brassBright px-2 py-0.5 rounded shrink-0 mt-0.5">[IV]</span>
+                    <div>
+                        <div class="font-bold text-base sm:text-lg text-inkSepia">Clockwork Automaton / Web Crawler</div>
+                        <div class="font-telegraph text-xs text-inkSepia/75">Scraping the ether for keywords &amp; mercantile leads</div>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Stamped Victorian Parchment Receipt Output -->
+            <div class="bg-[#FAF4E6] border-2 border-dashed border-inkSepia/60 rounded-lg p-4 sm:p-5 relative overflow-hidden">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                    <span class="font-telegraph text-xs uppercase tracking-widest text-inkSepia/70 font-bold">
+                        TELEGRAPH CLERK’S STAMPED VERDICT:
+                    </span>
+                    <span
+                        id="verdict-stamp"
+                        class="font-telegraph font-bold text-xs sm:text-sm uppercase px-2.5 py-0.5 border-2 border-copperDark text-copperDark rounded transform -rotate-2 tracking-wider"
+                    >
+                        AWAITING PUNCH-CARD
+                    </span>
+                </div>
+                <p id="verdict-text" class="font-telegraph text-sm sm:text-base text-inkSepia leading-relaxed">
+                    Depress one of the four brass punch-cards above to receive official clearance from the workshop clerk.
+                </p>
+            </div>
+        </section>
+
+        <!-- GRID: 3. PNEUMATIC DISPATCH & MORSE TELEGRAPH + 4. THE CONTRAPTION -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-7">
+
+            <!-- 3. PNEUMATIC DISPATCH & MORSE TELEGRAPH (7 Columns on Desktop) -->
+            <section class="lg:col-span-7 brass-casing rounded-xl p-5 sm:p-6 flex flex-col justify-between space-y-5">
+                <span class="rivet top-2.5 left-2.5"></span>
+                <span class="rivet top-2.5 right-2.5"></span>
+                <span class="rivet bottom-2.5 left-2.5"></span>
+                <span class="rivet bottom-2.5 right-2.5"></span>
+
+                <div class="space-y-4">
+                    <div class="border-b border-brass/40 pb-2.5">
+                        <span class="font-telegraph text-xs text-copper uppercase tracking-widest block">
+                            STATION NO. 01 // ELECTRONIC POST
+                        </span>
+                        <h2 class="font-victorian text-2xl sm:text-3xl font-bold text-brassBright">
+                            Pneumatic Dispatch &amp; Morse Key
+                        </h2>
+                    </div>
+
+                    <!-- Engraved Brass Plaque with Copy to Ledger Lever -->
+                    <div class="brass-plaque rounded-lg p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-3">
+                        <div>
+                            <span class="font-telegraph text-[11px] uppercase tracking-widest font-bold block opacity-80">
+                                OFFICIAL ADDRESS PLAQUE
+                            </span>
+                            <span class="font-telegraph text-lg sm:text-2xl font-bold select-all tracking-tight">
+                                rob@robsalisbury.com
+                            </span>
+                        </div>
+
+                        <button
+                            onclick="copyEmailToLedger()"
+                            class="bg-mahogany hover:bg-ironDark text-brassBright border-2 border-mahoganyMid px-3.5 py-2 rounded font-telegraph font-bold text-xs sm:text-sm uppercase tracking-wider shadow cursor-pointer active:translate-y-0.5 transition-all"
+                        >
+                            📋 Copy to Ledger
+                        </button>
+                    </div>
+
+                    <!-- Interactive Morse Code Telegraph Key & Live Paper Tape -->
+                    <div class="bg-mahogany/90 border-2 border-brass/60 rounded-lg p-4 space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <span class="font-telegraph text-xs text-brassBright uppercase font-bold tracking-wider">
+                                ⚡ BRASS MORSE KEY (TAP FOR DIT • / HOLD FOR DAH —)
+                            </span>
+                            <button
+                                onclick="clearMorseTape()"
+                                class="font-telegraph text-xs text-parchmentAged underline hover:text-brassBright cursor-pointer"
+                            >
+                                [Tear Off Tape]
+                            </button>
+                        </div>
+
+                        <!-- Telegraph Key Button + Spark Visual -->
+                        <div class="flex flex-col sm:flex-row items-center gap-4">
+                            <div class="relative shrink-0">
+                                <div id="spark-container" class="pointer-events-none absolute -top-3 right-2 w-8 h-8"></div>
+                                <button
+                                    id="morse-key-btn"
+                                    onmousedown="pressMorseKey()"
+                                    onmouseup="releaseMorseKey()"
+                                    onmouseleave="cancelMorseKey()"
+                                    ontouchstart="handleMorseTouchStart(event)"
+                                    ontouchend="handleMorseTouchEnd(event)"
+                                    class="brass-btn px-5 py-3 rounded-lg font-telegraph font-bold text-sm uppercase tracking-wider cursor-pointer select-none flex items-center gap-2"
+                                >
+                                    <span class="w-3 h-3 rounded-full bg-copperDark border border-mahogany"></span>
+                                    <span>TAP MORSE KEY</span>
+                                </button>
+                            </div>
+
+                            <!-- Live Paper Tape Readout -->
+                            <div class="w-full paper-tape rounded px-3 py-2 font-telegraph text-sm sm:text-base min-h-[54px] flex flex-col justify-center overflow-x-auto">
+                                <div class="text-[10px] uppercase tracking-widest text-inkSepia/65 font-bold">
+                                    PAPER TAPE SPOOL:
+                                </div>
+                                <div id="morse-tape-signals" class="font-bold tracking-widest text-inkSepia truncate">
+                                    •••• • •—•• •—•• ———
+                                </div>
+                                <div id="morse-tape-decoded" class="text-xs text-copperDark font-bold">
+                                    DECODED: HELLO
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subject Line Crank & Electronic Post Dispatch -->
+                    <div class="space-y-2.5 pt-1">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <label for="victorian-subject" class="font-telegraph text-xs uppercase tracking-wider text-parchmentAged font-bold">
+                                MISSIVE SUBJECT HEADING:
+                            </label>
+                            <button
+                                onclick="crankSubjectLine()"
+                                class="font-telegraph text-xs text-brassBright hover:underline cursor-pointer flex items-center gap-1"
+                            >
+                                <span>⚙</span>
+                                <span>Crank Victorian Subject Line</span>
+                            </button>
+                        </div>
+
+                        <input
+                            id="victorian-subject"
+                            type="text"
+                            value="Urgent Pneumatic Missive Regarding Tea"
+                            class="w-full bg-parchment text-inkSepia font-telegraph text-sm sm:text-base px-3 py-2 rounded border-2 border-brass focus:outline-none focus:border-brassBright"
+                        />
+                    </div>
+                </div>
+
+                <!-- Launch Mailto Button -->
+                <div class="pt-2">
+                    <a
+                        id="dispatch-mailto-link"
+                        href="mailto:rob@robsalisbury.com?subject=Urgent%20Pneumatic%20Missive%20Regarding%20Tea"
+                        onclick="notifyDispatch()"
+                        class="brass-btn w-full py-3 px-4 rounded-lg font-victorian font-bold text-base sm:text-lg text-center uppercase tracking-wider block cursor-pointer"
+                    >
+                        ✉ Dispatch via Electronic Post
+                    </a>
+                </div>
+            </section>
+
+            <!-- 4. THE CONTRAPTION: BOILER PRESSURE & USELESS BRASS LEVER (5 Columns on Desktop) -->
+            <section class="lg:col-span-5 parchment-panel rounded-xl p-5 sm:p-6 flex flex-col justify-between space-y-4">
+                <span class="rivet top-2.5 left-2.5"></span>
+                <span class="rivet top-2.5 right-2.5"></span>
+                <span class="rivet bottom-2.5 left-2.5"></span>
+                <span class="rivet bottom-2.5 right-2.5"></span>
+
+                <div>
+                    <span class="font-telegraph text-xs uppercase tracking-widest text-copperDark font-bold block">
+                        AUXILIARY APPARATUS
+                    </span>
+                    <h2 class="font-victorian text-2xl font-bold text-inkSepia">
+                        The Contraption
+                    </h2>
+                    <p class="text-sm sm:text-base text-inkSepia/85 mt-1">
+                        Pump the brass lever to stoke the aetheric boiler. Do <em>not</em> exceed 100 PSI unless you fancy waking the neighbourhood.
+                    </p>
+                </div>
+
+                <!-- SVG Analog Brass Pressure Gauge -->
+                <div class="flex flex-col items-center justify-center my-2">
+                    <svg class="w-48 h-36 sm:w-52 sm:h-40 drop-shadow-md" viewBox="0 0 200 135" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Analog Brass Pressure Gauge">
+                        <!-- Outer Brass Bezel -->
+                        <path d="M15 110 A 85 85 0 0 1 185 110 L 175 122 L 25 122 Z" fill="#B58938" stroke="#2A1E14" stroke-width="4"/>
+                        <!-- Cream Gauge Face -->
+                        <path d="M25 108 A 75 75 0 0 1 175 108 Z" fill="#FAF4E6" stroke="#75541C" stroke-width="3"/>
+                        <!-- Danger Red Zone (80-100 PSI) -->
+                        <path d="M148 53 A 72 72 0 0 1 172 105 L 154 105 A 54 54 0 0 0 136 66 Z" fill="#B8332A" opacity="0.85"/>
+                        <!-- Tick Marks -->
+                        <line x1="33" y1="105" x2="45" y2="105" stroke="#2A1E14" stroke-width="3"/>
+                        <line x1="47" y1="62" x2="57" y2="70" stroke="#2A1E14" stroke-width="2.5"/>
+                        <line x1="100" y1="36" x2="100" y2="49" stroke="#2A1E14" stroke-width="3"/>
+                        <line x1="153" y1="62" x2="143" y2="70" stroke="#2A1E14" stroke-width="2.5"/>
+                        <line x1="167" y1="105" x2="155" y2="105" stroke="#B8332A" stroke-width="3"/>
+                        <!-- Dial Labels -->
+                        <text x="48" y="101" font-family="Courier Prime, monospace" font-size="10" font-weight="bold" fill="#2A1E14">0</text>
+                        <text x="93" y="61" font-family="Courier Prime, monospace" font-size="10" font-weight="bold" fill="#2A1E14">50</text>
+                        <text x="135" y="101" font-family="Courier Prime, monospace" font-size="10" font-weight="bold" fill="#B8332A">100</text>
+                        <text x="86" y="83" font-family="Courier Prime, monospace" font-size="11" font-weight="bold" fill="#75541C">PSI</text>
+                        <!-- Rotating Needle (Pivot at 100, 105; -85deg = 0 PSI, +85deg = 100 PSI) -->
+                        <g id="gauge-needle" style="transform: rotate(-14deg);">
+                            <polygon points="97,105 100,40 103,105" fill="#B8332A"/>
+                            <circle cx="100" cy="105" r="9" fill="#D4AF37" stroke="#2A1E14" stroke-width="2.5"/>
+                        </g>
+                    </svg>
+
+                    <div id="contraption-status" class="font-telegraph text-xs sm:text-sm text-center font-bold text-inkSepia bg-parchmentAged border border-brassDark px-3 py-1.5 rounded w-full">
+                        PRESSURE NOMINAL (42 PSI) — KETTLE SIMMERING NICELY
+                    </div>
+                </div>
+
+                <!-- Pump Brass Lever Button -->
+                <button
+                    id="pump-lever-btn"
+                    onclick="pumpBoilerLever()"
+                    class="brass-btn w-full py-3 px-4 rounded-lg font-telegraph font-bold text-sm sm:text-base uppercase tracking-wider cursor-pointer flex items-center justify-center gap-2"
+                >
+                    <span>🔧</span>
+                    <span>Pump Brass Lever (+14 PSI)</span>
+                </button>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- 5. WORKSHOP FOOTER -->
+    <footer class="border-t-4 border-brass bg-ironDark mt-8">
+        <div class="h-1.5 w-full copper-pipe-bar"></div>
+        <div class="max-w-5xl mx-auto px-4 py-5 text-center space-y-1.5">
+            <p class="font-telegraph text-xs sm:text-sm text-brassBright tracking-wide">
+                Constructed in the Workshop of R. Salisbury • Powered by Steam, Brass &amp; Earl Grey • Strictly No Zeppelin Parking
+            </p>
+            <p class="font-parchment text-xs text-parchmentAged/70 italic">
+                All pneumatic tubes lead exclusively to rob@robsalisbury.com
+            </p>
+        </div>
+    </footer>
+
+    <!-- Custom Victorian Toast Notification (No alert() used) -->
+    <div id="steampunk-toast" class="fixed bottom-5 right-5 z-50 hidden brass-plaque px-4 py-2.5 rounded-lg font-telegraph font-bold text-sm shadow-2xl max-w-xs">
+        <span id="steampunk-toast-msg">COPIED TO LEDGER</span>
+    </div>
+
+    <script>
+        // --- State ---
+        let boilerPSI = 42;
+        let morsePressStart = 0;
+        let morseSignals = ['••••', '•', '•—••', '•—••', '———']; // Starts with "HELLO"
+        let currentLetterBuffer = '';
+        let letterCommitTimer = null;
+
+        const victorianSubjects = [
+            "Urgent Pneumatic Missive Regarding Tea",
+            "Inquiry From the Dirigible Dock",
+            "Strictly Confidential Correspondence",
+            "Aether-Gram: Confirming Your Electronic Post",
+            "Telegraphic Greetings From the Foggy Thames",
+            "Request for Audience at the Brass Wicket"
+        ];
+        let subjectIdx = 0;
+
+        const manifestVerdicts = [
+            {
+                stamp: "VERIFIED GENUINE",
+                text: "DISPATCH AUTHENTICATED: The brass registers confirm rob@robsalisbury.com belongs to a real flesh-and-blood Englishman. Proceed to the Pneumatic Dispatch console below to transmit your missive."
+            },
+            {
+                stamp: "THAMES FOG ADVISORY",
+                text: "OFF COURSE: It appears your vessel drifted off the main shipping lanes into a quiet cul-de-sac of the ether. Warm yourself by the boiler, vent a little steam, and carry on safely."
+            },
+            {
+                stamp: "WRONG GENTLEMAN",
+                text: "MISTAKEN IDENTITY: Unless the R. Salisbury you seek operates a steam-powered telegraph relay from his parlour, you have knocked upon the wrong mahogany door."
+            },
+            {
+                stamp: "AUTOMATON DETECTED",
+                text: "HALT, CLOCKWORK CONTRAPTION: Our brass gears have detected a mechanical web-crawler. There are zero mercantile keywords, backlinks, or crypto-ledgers to harvest here. Shoo!"
+            }
+        ];
+
+        // Basic International Morse Code Lookup
+        const morseTable = {
+            '.-': 'A', '-...': 'B', '-.-.': 'C', '-..': 'D', '.': 'E',
+            '..-.': 'F', '--.': 'G', '....': 'H', '..': 'I', '.---': 'J',
+            '-.-': 'K', '.-..': 'L', '--': 'M', '-.': 'N', '---': 'O',
+            '.--.': 'P', '--.-': 'Q', '.-.': 'R', '...': 'S', '-': 'T',
+            '..-': 'U', '...-': 'V', '.--': 'W', '-..-': 'X', '-.--': 'Y',
+            '--..': 'Z', '-----': '0', '.----': '1', '..---': '2', '...--': '3',
+            '....-': '4', '.....': '5', '-....': '6', '--...': '7', '---..': '8',
+            '----.': '9'
+        };
+
+        // --- Toast Notification ---
+        function showToast(message) {
+            const toast = document.getElementById('steampunk-toast');
+            const msgEl = document.getElementById('steampunk-toast-msg');
+            msgEl.textContent = message;
+            toast.classList.remove('hidden');
+            clearTimeout(window._toastTimeout);
+            window._toastTimeout = setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        // --- Spin Gears Faster Briefly on Mechanical Interaction ---
+        function boostGears() {
+            const body = document.getElementById('workshop-body');
+            body.classList.add('gears-overdrive');
+            clearTimeout(window._gearTimer);
+            window._gearTimer = setTimeout(() => {
+                body.classList.remove('gears-overdrive');
+            }, 1400);
+        }
+
+        // --- Boiler Pressure & Analog Gauge Sync ---
+        function updateBoilerUI(customMessage) {
+            const topReadout = document.getElementById('top-psi-readout');
+            const led = document.getElementById('boiler-led');
+            const needle = document.getElementById('gauge-needle');
+            const statusBox = document.getElementById('contraption-status');
+            const tubeStatus = document.getElementById('tube-status');
+
+            topReadout.textContent = `${boilerPSI} PSI`;
+
+            // Map 0..100 PSI to -85deg..+85deg
+            const angle = -85 + (boilerPSI / 100) * 170;
+            needle.style.transform = `rotate(${angle}deg)`;
+
+            if (boilerPSI >= 80) {
+                led.className = 'inline-block w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#EF4444]';
+                tubeStatus.textContent = 'HIGH PRESSURE';
+                tubeStatus.className = 'text-amber-300 font-bold';
+            } else {
+                led.className = 'inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34D399]';
+                tubeStatus.textContent = 'CLEAR';
+                tubeStatus.className = 'text-emerald-300 font-bold';
+            }
+
+            if (customMessage) {
+                statusBox.textContent = customMessage;
+            } else if (boilerPSI < 25) {
+                statusBox.textContent = `PRESSURE LOW (${boilerPSI} PSI) — TEA WATER LUKEWARM`;
+            } else if (boilerPSI < 75) {
+                statusBox.textContent = `PRESSURE NOMINAL (${boilerPSI} PSI) — KETTLE SIMMERING NICELY`;
+            } else {
+                statusBox.textContent = `CAUTION (${boilerPSI} PSI) — SAFETY WHISTLE STRAINING!`;
+            }
+        }
+
+        // --- Top Bar: Vent Steam ---
+        function ventSteam() {
+            boostGears();
+            boilerPSI = Math.max(12, boilerPSI - 24);
+            updateBoilerUI(`STEAM VENTED (${boilerPSI} PSI) — CLOUDS BILLOWING OVER THE PARLOUR`);
+
+            // Spawn SVG Steam Puffs
+            const container = document.getElementById('steam-container');
+            for (let i = 0; i < 4; i++) {
+                const puff = document.createElement('div');
+                puff.className = 'steam-puff absolute bottom-2';
+                puff.style.left = `${i * 14}px`;
+                puff.style.animationDelay = `${i * 0.09}s`;
+                puff.innerHTML = `
+                    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="14" cy="20" r="9" fill="#F2E6CE" fill-opacity="0.85"/>
+                        <circle cx="22" cy="18" r="8" fill="#FFFFFF" fill-opacity="0.9"/>
+                        <circle cx="18" cy="13" r="7" fill="#E5D3B0" fill-opacity="0.8"/>
+                    </svg>
+                `;
+                container.appendChild(puff);
+                setTimeout(() => puff.remove(), 1500);
+            }
+
+            showToast('HISSSS! EXCESS STEAM VENTED');
+        }
+
+        // --- The Contraption: Pump Brass Lever ---
+        function pumpBoilerLever() {
+            boostGears();
+            boilerPSI += 14;
+
+            if (boilerPSI > 100) {
+                // Safety relief valve pops!
+                boilerPSI = 28;
+                ventSteam();
+                updateBoilerUI('POP! SAFETY VALVE BLEW AT 100+ PSI — TEA SPOON LAUNCHED INTO ORBIT!');
+                showToast('WHOOO-EEEE! SAFETY WHISTLE POPPED!');
+            } else {
+                updateBoilerUI();
+            }
+        }
+
+        // --- Visitor Manifest Selection ---
+        function selectManifest(idx) {
+            boostGears();
+            const cards = document.querySelectorAll('.manifest-card');
+            cards.forEach((card, i) => {
+                if (i === idx) {
+                    card.classList.add('bg-brass/35', 'ring-2', 'ring-inkSepia');
+                } else {
+                    card.classList.remove('bg-brass/35', 'ring-2', 'ring-inkSepia');
+                }
+            });
+
+            const choice = manifestVerdicts[idx];
+            document.getElementById('verdict-stamp').textContent = choice.stamp;
+            document.getElementById('verdict-text').textContent = choice.text;
+        }
+
+        // --- Copy Email to Ledger ---
+        function copyEmailToLedger() {
+            boostGears();
+            const email = 'rob@robsalisbury.com';
+            const temp = document.createElement('input');
+            temp.value = email;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast('INSCRIBED TO LEDGER: rob@robsalisbury.com');
+        }
+
+        // --- Crank Victorian Subject Line ---
+        function crankSubjectLine() {
+            boostGears();
+            subjectIdx = (subjectIdx + 1) % victorianSubjects.length;
+            const nextSubj = victorianSubjects[subjectIdx];
+            const input = document.getElementById('victorian-subject');
+            input.value = nextSubj;
+            updateMailtoHref();
+            showToast('SUBJECT CRANKED');
+        }
+
+        function updateMailtoHref() {
+            const subj = encodeURIComponent(document.getElementById('victorian-subject').value || 'Telegraphic Greeting');
+            document.getElementById('dispatch-mailto-link').href = `mailto:rob@robsalisbury.com?subject=${subj}`;
+        }
+
+        document.getElementById('victorian-subject').addEventListener('input', updateMailtoHref);
+
+        function notifyDispatch() {
+            boostGears();
+            showToast('DISPATCHING VIA ELECTRONIC POST...');
+        }
+
+        // --- Interactive Morse Code Telegraph Key ---
+        function triggerMorseSpark() {
+            const container = document.getElementById('spark-container');
+            const spark = document.createElement('div');
+            spark.className = 'morse-spark absolute inset-0';
+            spark.innerHTML = `
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 2 L16 11 L25 9 L18 15 L24 23 L15 18 L11 26 L11 17 L3 18 L10 13 Z" fill="#FDE047" stroke="#EA580C" stroke-width="1.5"/>
+                </svg>
+            `;
+            container.appendChild(spark);
+            setTimeout(() => spark.remove(), 320);
+        }
+
+        function pressMorseKey() {
+            if (morsePressStart !== 0) return;
+            morsePressStart = Date.now();
+            document.getElementById('morse-key-btn').classList.add('pressed');
+            triggerMorseSpark();
+            boostGears();
+        }
+
+        function releaseMorseKey() {
+            if (morsePressStart === 0) return;
+            const duration = Date.now() - morsePressStart;
+            morsePressStart = 0;
+            document.getElementById('morse-key-btn').classList.remove('pressed');
+
+            const isDah = duration >= 190;
+            const asciiSymbol = isDah ? '-' : '.';
+            const displaySymbol = isDah ? '—' : '•';
+
+            currentLetterBuffer += asciiSymbol;
+
+            // Append symbol to live tape
+            if (morseSignals.length > 14) {
+                morseSignals = [];
+            }
+            morseSignals.push(displaySymbol);
+            renderMorseTape();
+
+            clearTimeout(letterCommitTimer);
+            letterCommitTimer = setTimeout(() => {
+                const decodedChar = morseTable[currentLetterBuffer] || '?';
+                const decodedEl = document.getElementById('morse-tape-decoded');
+                const currentText = decodedEl.textContent.replace('DECODED: ', '');
+                const nextText = (currentText === 'HELLO' ? '' : currentText) + decodedChar;
+                decodedEl.textContent = `DECODED: ${nextText.slice(-24)}`;
+                currentLetterBuffer = '';
+            }, 650);
+        }
+
+        function cancelMorseKey() {
+            if (morsePressStart !== 0) {
+                releaseMorseKey();
+            }
+        }
+
+        function handleMorseTouchStart(e) {
+            e.preventDefault();
+            pressMorseKey();
+        }
+
+        function handleMorseTouchEnd(e) {
+            e.preventDefault();
+            releaseMorseKey();
+        }
+
+        function renderMorseTape() {
+            document.getElementById('morse-tape-signals').textContent = morseSignals.join(' ');
+        }
+
+        function clearMorseTape() {
+            morseSignals = [];
+            currentLetterBuffer = '';
+            document.getElementById('morse-tape-signals').textContent = '• • • (READY)';
+            document.getElementById('morse-tape-decoded').textContent = 'DECODED: ';
+            showToast('FRESH PAPER TAPE LOADED');
+        }
+
+        // Initialize UI on Load
+        window.onload = function () {
+            updateBoilerUI();
+            updateMailtoHref();
+        };
+    </script>
+</body>
+</html>
