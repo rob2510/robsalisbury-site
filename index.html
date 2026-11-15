@@ -1,1051 +1,702 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>robsalisbury.com // MAIL-ONLY TELEMETRY</title>
-  <style>
-    :root {
-      --bg-deep: #05080f;
-      --bg-panel: rgba(9, 15, 28, 0.86);
-      --bg-card: rgba(11, 19, 36, 0.78);
-      --border-subtle: rgba(148, 163, 184, 0.16);
-      --text-main: #e6f1ff;
-      --text-muted: #7f95b5;
-
-      /* Active accent tokens — default Cyan Telemetry */
-      --accent-primary: #00d4ff;
-      --accent-secondary: #38bdf8;
-      --accent-glow: rgba(0, 212, 255, 0.34);
-      --accent-soft: rgba(0, 212, 255, 0.12);
-      --accent-warm: #ff6b1a;
-      --accent-warm-glow: rgba(255, 107, 26, 0.32);
-    }
-
-    body.mode-amber {
-      --accent-primary: #ff6b1a;
-      --accent-secondary: #f59e0b;
-      --accent-glow: rgba(255, 107, 26, 0.36);
-      --accent-soft: rgba(255, 107, 26, 0.13);
-      --accent-warm: #00d4ff;
-      --accent-warm-glow: rgba(0, 212, 255, 0.28);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
-      min-height: 100%;
-      background-color: var(--bg-deep);
-      color: var(--text-main);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      line-height: 1.5;
-      overflow-x: hidden;
-    }
-
-    /* Midnight HUD grid & radial glow backdrop */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(circle at 50% 18%, var(--accent-soft), transparent 52%),
-        radial-gradient(circle at 15% 80%, rgba(0, 212, 255, 0.06), transparent 45%),
-        radial-gradient(circle at 85% 75%, rgba(255, 107, 26, 0.07), transparent 45%),
-        linear-gradient(rgba(148, 163, 184, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(148, 163, 184, 0.04) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 100% 100%, 36px 36px, 36px 36px;
-      z-index: 0;
-      transition: background 0.45s ease;
-    }
-
-    .hud-shell {
-      position: relative;
-      z-index: 1;
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 18px 18px 28px;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 24px;
-    }
-
-    /* 1. Top HUD Header Bar */
-    .hud-header {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 12px 18px;
-      border-radius: 14px;
-      background: var(--bg-panel);
-      border: 1px solid var(--border-subtle);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(10px);
-    }
-
-    .brand-cluster {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .pulse-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--accent-primary);
-      box-shadow: 0 0 12px var(--accent-primary);
-      animation: hudPulse 2.2s infinite ease-in-out;
-    }
-
-    @keyframes hudPulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.3); opacity: 0.65; }
-    }
-
-    .brand-title {
-      font-size: clamp(0.86rem, 1.8vw, 1rem);
-      font-weight: 700;
-      letter-spacing: 0.11em;
-      color: var(--text-main);
-    }
-
-    .brand-pill {
-      font-size: 0.72rem;
-      padding: 3px 9px;
-      border-radius: 999px;
-      border: 1px solid var(--accent-primary);
-      color: var(--accent-primary);
-      background: var(--accent-soft);
-      letter-spacing: 0.08em;
-    }
-
-    .header-controls {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .clock-box {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      padding: 5px 11px;
-      border-radius: 10px;
-      background: rgba(5, 8, 15, 0.7);
-      border: 1px solid rgba(148, 163, 184, 0.12);
-    }
-
-    .clock-box strong {
-      color: var(--text-main);
-      font-weight: 600;
-    }
-
-    .mode-switch {
-      display: inline-flex;
-      border-radius: 10px;
-      overflow: hidden;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      background: rgba(5, 8, 15, 0.85);
-    }
-
-    .mode-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-family: inherit;
-      font-size: 0.74rem;
-      font-weight: 700;
-      letter-spacing: 0.09em;
-      padding: 7px 13px;
-      cursor: pointer;
-      transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    .mode-btn.active {
-      background: var(--accent-soft);
-      color: var(--accent-primary);
-      box-shadow: inset 0 -2px 0 var(--accent-primary);
-    }
-
-    /* Sub-banner explaining the mail-only front door */
-    .telemetry-sub {
-      text-align: center;
-      max-width: 660px;
-      margin: 0 auto;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-    }
-
-    .telemetry-sub span {
-      color: var(--accent-primary);
-      font-weight: 700;
-    }
-
-    /* 2. Three-Column Gauge Grid */
-    .gauges-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 22px;
-      align-items: stretch;
-    }
-
-    @media (max-width: 960px) {
-      .gauges-grid {
-        grid-template-columns: 1fr;
-        max-width: 460px;
-        width: 100%;
-        margin: 0 auto;
-      }
-    }
-
-    .gauge-card {
-      position: relative;
-      border-radius: 20px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      padding: 20px 18px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(12px);
-      transition: border-color 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease;
-    }
-
-    .gauge-card:hover {
-      border-color: var(--accent-primary);
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.72), 0 0 26px var(--accent-glow);
-    }
-
-    .gauge-card.hero-card {
-      border-color: rgba(0, 212, 255, 0.32);
-      background: linear-gradient(180deg, rgba(14, 25, 48, 0.92), rgba(8, 13, 24, 0.94));
-    }
-
-    body.mode-amber .gauge-card.hero-card {
-      border-color: rgba(255, 107, 26, 0.36);
-      background: linear-gradient(180deg, rgba(36, 18, 12, 0.92), rgba(11, 12, 20, 0.95));
-    }
-
-    .gauge-head {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
-      color: var(--text-muted);
-      text-transform: uppercase;
-    }
-
-    .gauge-head .tag {
-      color: var(--accent-primary);
-      font-weight: 700;
-    }
-
-    /* Circular SVG Stage */
-    .dial-stage {
-      position: relative;
-      width: 100%;
-      max-width: 276px;
-      aspect-ratio: 1 / 1;
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .dial-stage svg {
-      width: 100%;
-      height: 100%;
-      overflow: visible;
-      filter: drop-shadow(0 0 14px var(--accent-glow));
-      transition: filter 0.35s ease;
-    }
-
-    .dial-center {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 44px;
-      pointer-events: none;
-    }
-
-    .dial-kicker {
-      font-size: 0.66rem;
-      letter-spacing: 0.14em;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      margin-bottom: 3px;
-    }
-
-    .dial-primary {
-      font-size: clamp(1.35rem, 2.4vw, 1.75rem);
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      color: var(--text-main);
-      text-shadow: 0 0 16px var(--accent-glow);
-      line-height: 1.15;
-    }
-
-    .dial-sub {
-      margin-top: 5px;
-      font-size: 0.72rem;
-      color: var(--accent-primary);
-      letter-spacing: 0.04em;
-      word-break: break-all;
-    }
-
-    .dial-micro {
-      margin-top: 4px;
-      font-size: 0.65rem;
-      color: var(--text-muted);
-      letter-spacing: 0.08em;
-    }
-
-    /* SVG Motion Helpers */
-    .needle-group {
-      transform-origin: 140px 140px;
-      transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .arc-animate {
-      transition: stroke-dashoffset 0.75s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.35s ease;
-    }
-
-    .slow-spin {
-      transform-origin: 140px 140px;
-      animation: orbitSpin 28s linear infinite;
-    }
-
-    .reverse-spin {
-      transform-origin: 140px 140px;
-      animation: orbitSpinReverse 38s linear infinite;
-    }
-
-    @keyframes orbitSpin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes orbitSpinReverse {
-      from { transform: rotate(360deg); }
-      to { transform: rotate(0deg); }
-    }
-
-    /* Interactive Selector Chips & Buttons inside Cards */
-    .chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 6px;
-      width: 100%;
-    }
-
-    .chip-btn {
-      font-family: inherit;
-      font-size: 0.68rem;
-      padding: 5px 9px;
-      border-radius: 8px;
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      background: rgba(5, 8, 15, 0.75);
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .chip-btn:hover {
-      border-color: var(--accent-primary);
-      color: var(--text-main);
-    }
-
-    .chip-btn.active {
-      border-color: var(--accent-primary);
-      background: var(--accent-soft);
-      color: var(--accent-primary);
-      font-weight: 700;
-      box-shadow: 0 0 12px var(--accent-glow);
-    }
-
-    .gauge-note {
-      width: 100%;
-      min-height: 44px;
-      padding: 8px 11px;
-      border-radius: 10px;
-      background: rgba(5, 8, 15, 0.68);
-      border: 1px solid rgba(148, 163, 184, 0.12);
-      font-size: 0.73rem;
-      color: var(--text-muted);
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .gauge-note strong {
-      color: var(--text-main);
-    }
-
-    /* 3. Bottom HUD Email Console Strip */
-    .console-strip {
-      border-radius: 18px;
-      background: var(--bg-panel);
-      border: 1px solid var(--border-subtle);
-      padding: 16px 18px;
-      box-shadow: 0 16px 38px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(12px);
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr) auto;
-      gap: 14px;
-      align-items: center;
-    }
-
-    @media (max-width: 900px) {
-      .console-strip {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .address-block {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 9px 12px;
-      border-radius: 12px;
-      background: rgba(5, 8, 15, 0.85);
-      border: 1px solid rgba(148, 163, 184, 0.16);
-    }
-
-    .address-label {
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      letter-spacing: 0.11em;
-      color: var(--text-muted);
-      display: block;
-    }
-
-    .address-value {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--accent-primary);
-    }
-
-    .action-btn {
-      font-family: inherit;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      padding: 8px 13px;
-      border-radius: 10px;
-      border: 1px solid var(--accent-primary);
-      background: var(--accent-soft);
-      color: var(--accent-primary);
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
-      white-space: nowrap;
-    }
-
-    .action-btn:hover {
-      background: var(--accent-primary);
-      color: #05080f;
-      box-shadow: 0 0 18px var(--accent-glow);
-    }
-
-    .action-btn:active {
-      transform: scale(0.98);
-    }
-
-    .action-btn.primary-launch {
-      background: var(--accent-primary);
-      color: #05080f;
-      padding: 11px 18px;
-      box-shadow: 0 0 20px var(--accent-glow);
-    }
-
-    .action-btn.primary-launch:hover {
-      filter: brightness(1.08);
-    }
-
-    .subject-selector {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .subject-selector label {
-      font-size: 0.66rem;
-      text-transform: uppercase;
-      letter-spacing: 0.11em;
-      color: var(--text-muted);
-    }
-
-    .subject-select {
-      width: 100%;
-      font-family: inherit;
-      font-size: 0.78rem;
-      color: var(--text-main);
-      background: rgba(5, 8, 15, 0.88);
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      border-radius: 10px;
-      padding: 9px 12px;
-      cursor: pointer;
-      outline: none;
-    }
-
-    .subject-select:focus {
-      border-color: var(--accent-primary);
-      box-shadow: 0 0 0 2px var(--accent-soft);
-    }
-
-    /* Footer with subtle swappable library note */
-    .hud-footer {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      padding: 0 6px;
-    }
-
-    .library-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px dashed rgba(148, 163, 184, 0.24);
-      color: var(--text-muted);
-    }
-
-    .library-badge code {
-      color: var(--accent-secondary);
-      font-size: 0.68rem;
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%) translateY(16px);
-      opacity: 0;
-      pointer-events: none;
-      z-index: 50;
-      padding: 8px 16px;
-      border-radius: 999px;
-      background: #081224;
-      border: 1px solid var(--accent-primary);
-      color: var(--text-main);
-      font-size: 0.75rem;
-      letter-spacing: 0.06em;
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.7), 0 0 18px var(--accent-glow);
-      transition: opacity 0.22s ease, transform 0.22s ease;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P100 ROBFAX — BBC Ceefax Personal Email Service (robsalisbury.com)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Retro Teletext / Pixel Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        teletext: ['"VT323"', 'monospace'],
+                        pixel: ['"Silkscreen"', 'monospace'],
+                    },
+                    colors: {
+                        ttBlack: '#000000',
+                        ttWhite: '#FFFFFF',
+                        ttYellow: '#FFFF00',
+                        ttCyan: '#00FFFF',
+                        ttGreen: '#00FF00',
+                        ttMagenta: '#FF00FF',
+                        ttRed: '#FF0000',
+                        ttBlue: '#0000FF',
+                        crtBezel: '#272522',
+                        crtPlastic: '#3A3732',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Classic Teletext Typography & Crisp Block Rendering */
+        body {
+            background-color: #121110;
+            color: #FFFFFF;
+            font-family: 'VT323', monospace;
+            overflow-x: hidden;
+        }
+
+        /* Retro 1980s CRT Television Casing */
+        .crt-casing {
+            background: linear-gradient(145deg, #3c3934 0%, #24221f 100%);
+            border: 4px solid #171614;
+            box-shadow:
+                inset 0 2px 4px rgba(255, 255, 255, 0.14),
+                inset 0 -4px 10px rgba(0, 0, 0, 0.7),
+                0 20px 50px rgba(0, 0, 0, 0.85);
+        }
+
+        .crt-inner-bezel {
+            background: #141312;
+            box-shadow: inset 0 6px 18px rgba(0, 0, 0, 0.95);
+        }
+
+        /* Authentic Pure Black Teletext Screen */
+        .teletext-screen {
+            background-color: #000000;
+            position: relative;
+            letter-spacing: 0.04em;
+            line-height: 1.25;
+        }
+
+        /* Subtle CRT Scanlines & Phosphor Vignette */
+        .crt-scanlines::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.34) 50%),
+                radial-gradient(circle at center, transparent 62%, rgba(0, 0, 0, 0.55) 100%);
+            background-size: 100% 4px, 100% 100%;
+            pointer-events: none;
+            z-index: 30;
+        }
+
+        /* Chunky Pixel Mosaic Blocks */
+        .mosaic-grid {
+            display: grid;
+            grid-template-columns: repeat(32, 1fr);
+            gap: 2px;
+        }
+
+        .teletext-btn {
+            transition: transform 0.06s ease, filter 0.06s ease;
+        }
+        .teletext-btn:active {
+            transform: translateY(2px);
+        }
+
+        /* Blinking Teletext Cursor / Status */
+        @keyframes tt-blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+        .animate-tt-blink {
+            animation: tt-blink 1s infinite;
+        }
+
+        /* Custom Scrollbar for Terminal Areas */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00FFFF;
+        }
+    </style>
 </head>
-<body>
-  <div class="hud-shell">
-    <!-- 1. Top HUD Header Bar -->
-    <header class="hud-header">
-      <div class="brand-cluster">
-        <span class="pulse-dot" aria-hidden="true"></span>
-        <span class="brand-title">ROBSALISBURY.COM // MAIL-ONLY TELEMETRY</span>
-        <span class="brand-pill" id="modePill">CYAN TELEMETRY</span>
-      </div>
+<body class="min-h-screen flex flex-col items-center justify-center p-2 sm:p-5 select-none">
 
-      <div class="header-controls">
-        <div class="clock-box" aria-live="polite">
-          <span>LOCAL <strong id="localClock">--:--:--</strong></span>
-          <span style="opacity: 0.35;">|</span>
-          <span>UTC <strong id="utcClock">--:--:--</strong></span>
+    <!-- Top TV Remote Control Strip -->
+    <div class="w-full max-w-4xl mb-3 bg-[#1E1D1B] border-2 border-[#3C3934] rounded-lg px-3 py-2 flex flex-wrap items-center justify-between gap-2 shadow-lg">
+        <div class="flex items-center gap-2">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-ttGreen shadow-[0_0_8px_#00FF00]" id="power-led"></span>
+            <span class="font-pixel text-[11px] sm:text-xs text-stone-300 tracking-wider uppercase">
+                TELETEXT DECODER // TYPE 3 DIGITS OR CLICK BUTTONS
+            </span>
         </div>
 
-        <div class="mode-switch" role="group" aria-label="Telemetry Accent Mode">
-          <button type="button" class="mode-btn active" id="btnCyan" onclick="setAccentMode('cyan')">
-            PING // CYAN
-          </button>
-          <button type="button" class="mode-btn" id="btnAmber" onclick="setAccentMode('amber')">
-            PULSE // AMBER
-          </button>
+        <div class="flex flex-wrap items-center gap-2">
+            <!-- Quick 3-Digit Page Jumper -->
+            <div class="flex items-center bg-black border border-stone-600 rounded px-2 py-0.5">
+                <label for="page-jump-input" class="text-ttCyan text-lg mr-1.5">P</label>
+                <input
+                    id="page-jump-input"
+                    type="text"
+                    maxlength="3"
+                    inputmode="numeric"
+                    placeholder="100"
+                    aria-label="Enter 3-digit Teletext page number"
+                    class="w-11 bg-black text-ttYellow font-teletext text-xl focus:outline-none uppercase tracking-widest"
+                />
+                <button
+                    onclick="jumpFromInput()"
+                    class="ml-1 px-2 py-0.5 bg-ttCyan text-black font-pixel text-[10px] font-bold uppercase hover:bg-ttYellow cursor-pointer"
+                >
+                    GO
+                </button>
+            </div>
+
+            <!-- HOLD Clock/Page Button -->
+            <button
+                id="hold-btn"
+                onclick="toggleHold()"
+                class="px-2.5 py-1 bg-stone-800 hover:bg-stone-700 text-ttYellow border border-stone-500 rounded font-pixel text-[10px] sm:text-xs uppercase cursor-pointer teletext-btn"
+            >
+                HOLD: OFF
+            </button>
+
+            <!-- CRT Scanline Toggle -->
+            <button
+                id="crt-btn"
+                onclick="toggleCRT()"
+                class="px-2.5 py-1 bg-stone-800 hover:bg-stone-700 text-ttGreen border border-stone-500 rounded font-pixel text-[10px] sm:text-xs uppercase cursor-pointer teletext-btn"
+            >
+                CRT: ON
+            </button>
         </div>
-      </div>
-    </header>
+    </div>
 
-    <p class="telemetry-sub">
-      Personal custom-domain front door for <span>rob@robsalisbury.com</span> — zero blog posts, zero portfolio decks, zero corporate pitch.
-    </p>
+    <!-- Retro 1980s Television Casing -->
+    <main class="w-full max-w-4xl crt-casing rounded-2xl p-3 sm:p-6">
+        <div class="crt-inner-bezel rounded-xl p-2 sm:p-3.5 border-2 border-black">
 
-    <!-- 2. Three-Column Circular SVG Telemetry Grid -->
-    <main class="gauges-grid" aria-label="Interactive Telemetry Gauges">
-      <!-- LEFT GAUGE: PING / LATENCY Ring Dial + Visitor Intent Selector -->
-      <section class="gauge-card" aria-labelledby="leftGaugeTitle">
-        <div class="gauge-head">
-          <span id="leftGaugeTitle">01 // VISITOR INTENT</span>
-          <span class="tag" id="leftTag">PING DIAL</span>
-        </div>
+            <!-- Pure Black Teletext Screen -->
+            <div id="teletext-screen" class="teletext-screen crt-scanlines rounded-lg p-3 sm:p-5 min-h-[540px] flex flex-col justify-between overflow-hidden">
 
-        <div class="dial-stage" id="leftDial" onclick="cycleIntent()" title="Click to cycle visitor intent">
-          <svg viewBox="0 0 280 280" aria-hidden="true">
-            <defs>
-              <linearGradient id="leftGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="var(--accent-primary)" />
-                <stop offset="100%" stop-color="var(--accent-warm)" />
-              </linearGradient>
-            </defs>
+                <!-- TOP TELETEXT HEADER BAR -->
+                <div>
+                    <div class="flex flex-wrap items-center justify-between gap-2 text-xl sm:text-2xl border-b-2 border-ttBlue pb-1 mb-3">
+                        <div class="flex items-center gap-3">
+                            <span id="header-page-code" class="text-ttWhite font-bold">P100</span>
+                            <span class="bg-ttWhite text-ttBlack px-1.5 font-bold tracking-wider">ROBFAX</span>
+                            <span id="header-page-num" class="text-ttCyan">1 100</span>
+                        </div>
 
-            <!-- Outer tick ring -->
-            <g class="slow-spin" opacity="0.45">
-              <circle cx="140" cy="140" r="126" fill="none" stroke="var(--accent-primary)" stroke-width="1.2" stroke-dasharray="3 7" />
-            </g>
+                        <div class="flex items-center gap-3">
+                            <span id="hold-indicator" class="hidden bg-ttRed text-ttWhite px-1.5 font-bold text-lg">HOLD</span>
+                            <span id="header-date" class="text-ttCyan hidden sm:inline">SAT 14 NOV</span>
+                            <span id="header-clock" class="text-ttYellow font-bold">20:55:00</span>
+                        </div>
+                    </div>
 
-            <!-- Background track -->
-            <circle cx="140" cy="140" r="108" fill="none" stroke="rgba(148,163,184,0.14)" stroke-width="14" stroke-dasharray="220 360" stroke-linecap="round" transform="rotate(140 140 140)" />
-            <circle cx="140" cy="140" r="88" fill="none" stroke="rgba(148,163,184,0.12)" stroke-width="2" stroke-dasharray="2 6" />
+                    <!-- CHUNKY PIXEL-BLOCK MOSAIC BANNER -->
+                    <div class="bg-ttBlue p-2 sm:p-3 mb-4 border-2 border-ttCyan">
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                            <!-- Pixel Mosaic Logo -->
+                            <div class="flex items-center gap-3">
+                                <div class="grid grid-cols-4 gap-0.5 bg-black p-1 border border-ttYellow shrink-0" aria-hidden="true">
+                                    <span class="w-2.5 h-2.5 bg-ttYellow block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttYellow block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttYellow block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttBlue block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttYellow block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttBlue block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttYellow block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttBlue block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttYellow block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttYellow block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttBlue block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttBlue block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttYellow block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttBlue block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttYellow block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttYellow block"></span>
+                                </div>
+                                <div>
+                                    <h1 class="font-pixel text-2xl sm:text-4xl text-ttYellow tracking-widest leading-none drop-shadow-[2px_2px_0px_#000000]">
+                                        ROBFAX
+                                    </h1>
+                                    <p class="text-ttCyan text-lg sm:text-xl leading-none mt-1">
+                                        CEEFAX PERSONAL EMAIL SERVICE - ROBSALISBURY.COM
+                                    </p>
+                                </div>
+                            </div>
 
-            <!-- Active segmented/arc indicator -->
-            <circle
-              id="leftArc"
-              cx="140"
-              cy="140"
-              r="108"
-              fill="none"
-              stroke="url(#leftGrad)"
-              stroke-width="14"
-              stroke-dasharray="145 679"
-              stroke-linecap="round"
-              transform="rotate(140 140 140)"
-              class="arc-animate"
-            />
+                            <!-- Right Page Quick-Badges -->
+                            <div class="flex flex-wrap justify-center gap-1.5 text-lg">
+                                <button onclick="loadPage('100')" class="px-2 py-0.5 bg-ttBlack text-ttYellow border border-ttYellow hover:bg-ttYellow hover:text-ttBlack cursor-pointer">100</button>
+                                <button onclick="loadPage('101')" class="px-2 py-0.5 bg-ttBlack text-ttGreen border border-ttGreen hover:bg-ttGreen hover:text-ttBlack cursor-pointer">101</button>
+                                <button onclick="loadPage('200')" class="px-2 py-0.5 bg-ttBlack text-ttCyan border border-ttCyan hover:bg-ttCyan hover:text-ttBlack cursor-pointer">200</button>
+                                <button onclick="loadPage('302')" class="px-2 py-0.5 bg-ttBlack text-ttMagenta border border-ttMagenta hover:bg-ttMagenta hover:text-ttBlack cursor-pointer">302</button>
+                                <button onclick="loadPage('888')" class="px-2 py-0.5 bg-ttBlack text-ttWhite border border-ttWhite hover:bg-ttWhite hover:text-ttBlack cursor-pointer">888</button>
+                            </div>
+                        </div>
+                    </div>
 
-            <!-- Inner core ring -->
-            <circle cx="140" cy="140" r="68" fill="rgba(5, 8, 15, 0.85)" stroke="var(--accent-primary)" stroke-width="1.5" stroke-opacity="0.45" />
+                    <!-- DYNAMIC TELETEXT PAGE CONTENT AREA -->
+                    <div id="page-content" class="space-y-4 text-xl sm:text-2xl">
+                        <!-- Rendered via JavaScript -->
+                    </div>
+                </div>
 
-            <!-- Sweep Needle -->
-            <g id="leftNeedle" class="needle-group" style="transform: rotate(-45deg);">
-              <line x1="140" y1="140" x2="140" y2="42" stroke="var(--accent-primary)" stroke-width="2.5" stroke-linecap="round" />
-              <circle cx="140" cy="42" r="4" fill="var(--accent-warm)" />
-              <circle cx="140" cy="140" r="7" fill="#05080f" stroke="var(--accent-primary)" stroke-width="2.5" />
-            </g>
-          </svg>
+                <!-- BOTTOM TELETEXT FOOTER & 4-COLOR FASTEXT BAR -->
+                <div class="mt-6 pt-2">
+                    <!-- Rolling Status Strip -->
+                    <div class="bg-ttBlue text-ttWhite px-2 py-0.5 text-lg sm:text-xl flex items-center justify-between mb-2">
+                        <span id="status-ticker" class="truncate">
+                            CEEFAX 1: ROBSALISBURY.COM — NO BLOGS, NO CRYPTO, JUST EMAIL
+                        </span>
+                        <span class="text-ttYellow font-bold ml-2 shrink-0 animate-tt-blink">■</span>
+                    </div>
 
-          <div class="dial-center">
-            <span class="dial-kicker">PING // INTENT</span>
-            <span class="dial-primary" id="leftPrimary">4.2 ms</span>
-            <span class="dial-sub" id="leftSub">HUMAN VISITOR</span>
-            <span class="dial-micro" id="leftDual">RX 15.3 · TX 45.7</span>
-          </div>
-        </div>
+                    <!-- Authentic 4-Color Fastext Navigation Buttons -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-lg sm:text-xl font-bold text-center">
+                        <button
+                            onclick="loadPage('100')"
+                            class="bg-ttRed text-ttWhite py-1.5 px-2 hover:brightness-110 cursor-pointer teletext-btn uppercase tracking-wide"
+                        >
+                            INDEX 100
+                        </button>
+                        <button
+                            onclick="loadPage('101')"
+                            class="bg-ttGreen text-ttBlack py-1.5 px-2 hover:brightness-110 cursor-pointer teletext-btn uppercase tracking-wide"
+                        >
+                            WHY HERE? 101
+                        </button>
+                        <button
+                            onclick="loadPage('200')"
+                            class="bg-ttYellow text-ttBlack py-1.5 px-2 hover:brightness-110 cursor-pointer teletext-btn uppercase tracking-wide"
+                        >
+                            EMAIL ROB 200
+                        </button>
+                        <button
+                            onclick="loadPage('888')"
+                            class="bg-ttCyan text-ttBlack py-1.5 px-2 hover:brightness-110 cursor-pointer teletext-btn uppercase tracking-wide"
+                        >
+                            SUBTITLES 888
+                        </button>
+                    </div>
+                </div>
 
-        <div class="chip-row" role="group" aria-label="Why did you click selector">
-          <button type="button" class="chip-btn active" data-intent="0" onclick="selectIntent(0)">Human Visitor</button>
-          <button type="button" class="chip-btn" data-intent="1" onclick="selectIntent(1)">Lost Bot</button>
-          <button type="button" class="chip-btn" data-intent="2" onclick="selectIntent(2)">Typo / Email Check</button>
-          <button type="button" class="chip-btn" data-intent="3" onclick="selectIntent(3)">Curious Wanderer</button>
-        </div>
-
-        <div class="gauge-note" id="leftNote">
-          <span><strong>Human detected:</strong> Welcome. If you meant <code>rob@robsalisbury.com</code>, the address is live.</span>
-        </div>
-      </section>
-
-      <!-- CENTER HERO GAUGE: 100% / MAIL ONLY -->
-      <section class="gauge-card hero-card" aria-labelledby="centerGaugeTitle">
-        <div class="gauge-head">
-          <span id="centerGaugeTitle">02 // CORE TELEMETRY</span>
-          <span class="tag" id="centerStatusPill">100% MAIL ONLY</span>
-        </div>
-
-        <div class="dial-stage" id="centerDial" onclick="cycleHeroTelemetry()" title="Click to cycle funny domain telemetry">
-          <svg viewBox="0 0 280 280" aria-hidden="true">
-            <defs>
-              <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="var(--accent-primary)" />
-                <stop offset="55%" stop-color="var(--accent-secondary)" />
-                <stop offset="100%" stop-color="var(--accent-warm)" />
-              </linearGradient>
-            </defs>
-
-            <!-- Outer rotating reticle -->
-            <g class="reverse-spin" opacity="0.55">
-              <circle cx="140" cy="140" r="128" fill="none" stroke="var(--accent-primary)" stroke-width="1.2" stroke-dasharray="18 10 4 10" />
-            </g>
-
-            <!-- Segmented outer ring (reference image style) -->
-            <circle cx="140" cy="140" r="112" fill="none" stroke="rgba(148,163,184,0.14)" stroke-width="18" stroke-dasharray="10 6" />
-            <circle
-              id="heroSegRing"
-              cx="140"
-              cy="140"
-              r="112"
-              fill="none"
-              stroke="url(#heroGrad)"
-              stroke-width="18"
-              stroke-dasharray="10 6"
-              stroke-dashoffset="0"
-              class="arc-animate"
-            />
-
-            <!-- Inner concentric ring -->
-            <circle cx="140" cy="140" r="88" fill="none" stroke="rgba(148,163,184,0.22)" stroke-width="1.5" />
-            <circle cx="140" cy="140" r="72" fill="rgba(5, 8, 15, 0.9)" stroke="var(--accent-primary)" stroke-width="2" stroke-opacity="0.65" />
-          </svg>
-
-          <div class="dial-center">
-            <span class="dial-kicker" id="heroKicker">PAYLOAD // 100%</span>
-            <span class="dial-primary" id="heroPrimary">MAIL ONLY</span>
-            <span class="dial-sub" id="heroSub">rob@robsalisbury.com</span>
-            <span class="dial-micro" id="heroMicro">CLICK DIAL TO CYCLE</span>
-          </div>
-        </div>
-
-        <div class="chip-row" aria-label="Quick hero status indicators">
-          <span class="chip-btn active" id="heroBadgeA">CMS LOAD: 0.0 KB</span>
-          <span class="chip-btn" id="heroBadgeB">NEWSLETTERS: 0</span>
-          <span class="chip-btn" id="heroBadgeC">SPAM TOLERANCE: LOW</span>
-        </div>
-
-        <div class="gauge-note" id="centerNote">
-          <span><strong>Status:</strong> Pure custom email address wrapper. No case studies or “let’s circle back”.</span>
-        </div>
-      </section>
-
-      <!-- RIGHT GAUGE: 120 / INBOX CAPACITY Concentric Ring Dial -->
-      <section class="gauge-card" aria-labelledby="rightGaugeTitle">
-        <div class="gauge-head">
-          <span id="rightGaugeTitle">03 // INBOX CAPACITY</span>
-          <span class="tag" id="rightTag">GAIN 120</span>
-        </div>
-
-        <div class="dial-stage" id="rightDial" onclick="boostSignal()" title="Click to test signal / boost gain">
-          <svg viewBox="0 0 280 280" aria-hidden="true">
-            <defs>
-              <linearGradient id="rightGrad" x1="100%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="var(--accent-warm)" />
-                <stop offset="100%" stop-color="var(--accent-primary)" />
-              </linearGradient>
-            </defs>
-
-            <!-- Outer ring -->
-            <circle cx="140" cy="140" r="122" fill="none" stroke="rgba(148,163,184,0.14)" stroke-width="2" stroke-dasharray="6 6" />
-            <circle cx="140" cy="140" r="105" fill="none" stroke="rgba(148,163,184,0.15)" stroke-width="15" />
-
-            <!-- Concentric active arc -->
-            <circle
-              id="rightArc"
-              cx="140"
-              cy="140"
-              r="105"
-              fill="none"
-              stroke="url(#rightGrad)"
-              stroke-width="15"
-              stroke-dasharray="460 660"
-              stroke-linecap="round"
-              transform="rotate(-90 140 140)"
-              class="arc-animate"
-            />
-
-            <!-- Inner diamond-framed core -->
-            <polygon points="140,86 194,140 140,194 86,140" fill="rgba(5, 8, 15, 0.88)" stroke="var(--accent-primary)" stroke-width="1.5" stroke-opacity="0.5" />
-            <circle cx="140" cy="140" r="64" fill="rgba(6, 11, 22, 0.94)" stroke="rgba(148,163,184,0.2)" stroke-width="1" />
-          </svg>
-
-          <div class="dial-center">
-            <span class="dial-kicker">INBOX CAPACITY</span>
-            <span class="dial-primary" id="rightPrimary">120</span>
-            <span class="dial-sub" id="rightSub">OPEN SLOTS // READY</span>
-            <span class="dial-micro" id="rightMicro">TEST SIGNAL / BOOST</span>
-          </div>
+            </div>
         </div>
 
-        <div class="chip-row" aria-label="Signal test controls">
-          <button type="button" class="chip-btn active" id="signalBtn" onclick="boostSignal()">Test Signal</button>
-          <button type="button" class="chip-btn" onclick="resetSignal()">Calibrate 120</button>
+        <!-- Retro TV Brand Badge Under Screen -->
+        <div class="mt-3 px-2 flex items-center justify-between text-stone-400 font-pixel text-[10px] sm:text-xs">
+            <span>BRITISH TELETEXT SYSTEM // PAL 625-LINE</span>
+            <span class="text-stone-300 tracking-widest">SALISBURYTRON MK-IV</span>
         </div>
-
-        <div class="gauge-note" id="rightNote">
-          <span><strong>Signal nominal:</strong> Rob’s inbox has room for normal human notes, not cold SaaS pitches.</span>
-        </div>
-      </section>
     </main>
 
-    <!-- 3. Bottom HUD Email Console Strip -->
-    <section class="console-strip" aria-label="Direct Email Console">
-      <div class="address-block">
-        <div>
-          <span class="address-label">Direct Endpoint</span>
-          <span class="address-value" id="emailText">rob@robsalisbury.com</span>
-        </div>
-        <button type="button" class="action-btn" id="copyBtn" onclick="copyEmail()">
-          Copy Email
-        </button>
-      </div>
+    <!-- Custom Toast / Message Box (No alert() used) -->
+    <div id="tt-toast" class="fixed bottom-4 right-4 z-50 hidden bg-ttYellow text-ttBlack border-4 border-ttBlack px-4 py-2 font-teletext text-2xl shadow-[6px_6px_0px_#00FFFF]">
+        <span id="tt-toast-text">COPIED TO CLIPBOARD</span>
+    </div>
 
-      <div class="subject-selector">
-        <label for="subjectSelect">Quick Subject Line Preset</label>
-        <select id="subjectSelect" class="subject-select" onchange="syncMailto()">
-          <option value="Just checking the address">Just checking the address</option>
-          <option value="Found your weird gauge page">Found your weird gauge page</option>
-          <option value="Not selling SEO">Not selling SEO</option>
-          <option value="Hello from the telemetry dashboard">Hello from the telemetry dashboard</option>
-        </select>
-      </div>
+    <script>
+        // --- State & Configuration ---
+        let currentPage = '100';
+        let isHeld = false;
+        let crtEnabled = true;
+        let digitBuffer = '';
+        let digitBufferTimeout = null;
+        let selectedDiagnostic = null;
 
-      <a
-        id="mailtoLaunch"
-        href="mailto:rob@robsalisbury.com?subject=Just%20checking%20the%20address"
-        class="action-btn primary-launch"
-      >
-        Open Mail App ↗
-      </a>
-    </section>
+        const randomSubjects = [
+            "Quick hello from your Ceefax page",
+            "Checking if rob@robsalisbury.com actually works",
+            "Put the kettle on — non-urgent message",
+            "I typed your URL by accident and stayed for Page 888",
+            "Definitely not trying to sell you SEO services",
+            "Urgent: Nothing is actually urgent"
+        ];
+        let subjectIndex = 0;
 
-    <!-- Footer with swappable homepage library note -->
-    <footer class="hud-footer">
-      <span>robsalisbury.com — static personal email landing page</span>
-      <span class="library-badge">
-        Swappable Homepage Library Slot: <code>hud-telemetry.html</code>
-      </span>
-    </footer>
-  </div>
+        // --- Toast Notification Helper ---
+        function showToast(msg) {
+            const toast = document.getElementById('tt-toast');
+            const text = document.getElementById('tt-toast-text');
+            text.textContent = msg;
+            toast.classList.remove('hidden');
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 2800);
+        }
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+        // --- Live Rolling Header Clock ---
+        function updateClock() {
+            if (isHeld) return;
+            const now = new Date();
+            const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+            const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
-  <script>
-    // Live UTC & Local Clocks
-    function updateClocks() {
-      const now = new Date();
-      const localStr = now.toLocaleTimeString([], { hour12: false });
-      const utcStr = now.toISOString().slice(11, 19);
-      document.getElementById('localClock').textContent = localStr;
-      document.getElementById('utcClock').textContent = utcStr;
-    }
-    updateClocks();
-    setInterval(updateClocks, 1000);
+            const dayStr = days[now.getDay()];
+            const dateNum = String(now.getDate()).padStart(2, '0');
+            const monthStr = months[now.getMonth()];
 
-    // Accent Mode Switcher (Cyan Telemetry vs Amber Overdrive)
-    function setAccentMode(mode) {
-      const isAmber = mode === 'amber';
-      document.body.classList.toggle('mode-amber', isAmber);
-      document.getElementById('btnCyan').classList.toggle('active', !isAmber);
-      document.getElementById('btnAmber').classList.toggle('active', isAmber);
-      document.getElementById('modePill').textContent = isAmber ? 'AMBER OVERDRIVE' : 'CYAN TELEMETRY';
-      showToast(isAmber ? 'Switched to Amber Pulse mode' : 'Switched to Cyan Telemetry mode');
-    }
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            const ss = String(now.getSeconds()).padStart(2, '0');
 
-    // Left Gauge: Visitor Intent Selector
-    const intents = [
-      {
-        label: 'HUMAN VISITOR',
-        ping: '4.2 ms',
-        dual: 'RX 15.3 · TX 45.7',
-        angle: -35,
-        arcDash: '155 679',
-        note: '<strong>Human detected:</strong> Welcome. If you meant <code>rob@robsalisbury.com</code>, the address is live.'
-      },
-      {
-        label: 'LOST BOT',
-        ping: '999 ms',
-        dual: 'SCRAPE 0.0 · BLOCKED',
-        angle: 78,
-        arcDash: '65 679',
-        note: '<strong>Bot flagged:</strong> Nothing to index here except a single polite email address.'
-      },
-      {
-        label: 'TYPO / EMAIL CHECK',
-        ping: '1.8 ms',
-        dual: 'MX OK · SPF OK',
-        angle: -8,
-        arcDash: '205 679',
-        note: '<strong>Address verified:</strong> Yes, <code>rob@robsalisbury.com</code> is a real inbox—no typo needed.'
-      },
-      {
-        label: 'CURIOUS WANDERER',
-        ping: '12.6 ms',
-        dual: 'FUN 100% · BLOG 0%',
-        angle: 34,
-        arcDash: '185 679',
-        note: '<strong>Wanderer logged:</strong> You found the entire site. Feel free to send a note below.'
-      }
-    ];
+            document.getElementById('header-date').textContent = `${dayStr} ${dateNum} ${monthStr}`;
+            document.getElementById('header-clock').textContent = `${hh}:${mm}:${ss}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
 
-    let currentIntent = 0;
+        // --- Remote Control Toggles ---
+        function toggleHold() {
+            isHeld = !isHeld;
+            const btn = document.getElementById('hold-btn');
+            const indicator = document.getElementById('hold-indicator');
+            btn.textContent = isHeld ? 'HOLD: ON' : 'HOLD: OFF';
+            btn.classList.toggle('bg-ttRed', isHeld);
+            btn.classList.toggle('text-ttWhite', isHeld);
+            indicator.classList.toggle('hidden', !isHeld);
+            showToast(isHeld ? 'PAGE & CLOCK FROZEN (HOLD)' : 'LIVE CLOCK RESUMED');
+        }
 
-    function selectIntent(index) {
-      currentIntent = index;
-      const item = intents[index];
+        function toggleCRT() {
+            crtEnabled = !crtEnabled;
+            const screen = document.getElementById('teletext-screen');
+            const btn = document.getElementById('crt-btn');
+            screen.classList.toggle('crt-scanlines', crtEnabled);
+            btn.textContent = crtEnabled ? 'CRT: ON' : 'CRT: OFF';
+            showToast(crtEnabled ? 'CRT SCANLINES ENABLED' : 'CRT SCANLINES DISABLED');
+        }
 
-      document.querySelectorAll('[data-intent]').forEach((btn) => {
-        btn.classList.toggle('active', Number(btn.dataset.intent) === index);
-      });
+        function jumpFromInput() {
+            const input = document.getElementById('page-jump-input');
+            const val = input.value.trim();
+            if (/^\d{3}$/.test(val)) {
+                loadPage(val);
+                input.value = '';
+            } else {
+                showToast('ENTER A 3-DIGIT PAGE (E.G. 100, 101, 200)');
+            }
+        }
 
-      document.getElementById('leftPrimary').textContent = item.ping;
-      document.getElementById('leftSub').textContent = item.label;
-      document.getElementById('leftDual').textContent = item.dual;
-      document.getElementById('leftNeedle').style.transform = `rotate(${item.angle}deg)`;
-      document.getElementById('leftArc').setAttribute('stroke-dasharray', item.arcDash);
-      document.getElementById('leftNote').innerHTML = `<span>${item.note}</span>`;
-    }
+        // --- Page Templates ---
+        const pages = {
+            '100': {
+                ticker: 'P100 MAIN INDEX — ROBSALISBURY.COM OPERATES NORMAL EMAIL SERVICE',
+                render: () => `
+                    <div class="bg-ttRed text-ttWhite px-2 py-1 font-bold tracking-wide">
+                        HEADLINE: DOMAIN STILL ONLY USED FOR EMAIL
+                    </div>
 
-    function cycleIntent() {
-      selectIntent((currentIntent + 1) % intents.length);
-    }
+                    <p class="text-ttWhite leading-snug">
+                        Welcome to <span class="text-ttYellow">robsalisbury.com</span>. Despite looking like a 1986 BBC television broadcast, this domain exists purely to power <span class="text-ttCyan">rob@robsalisbury.com</span>.
+                    </p>
 
-    // Center Hero Gauge: Funny Domain Status Telemetry
-    const heroStates = [
-      {
-        kicker: 'PAYLOAD // 100%',
-        primary: 'MAIL ONLY',
-        sub: 'rob@robsalisbury.com',
-        micro: 'CLICK DIAL TO CYCLE',
-        offset: '0',
-        note: '<strong>Status:</strong> Pure custom email address wrapper. No case studies or “let’s circle back”.'
-      },
-      {
-        kicker: 'CMS LOAD // 0.0 KB',
-        primary: 'ZERO BLOAT',
-        sub: 'STATIC HTML FRONT DOOR',
-        micro: 'CLICK DIAL TO CYCLE',
-        offset: '8',
-        note: '<strong>CMS Load: 0.0 KB.</strong> No cookies, no popups, no newsletter signup modal.'
-      },
-      {
-        kicker: 'NEWSLETTERS // 0',
-        primary: 'NO DIGEST',
-        sub: 'NOTHING TO SUBSCRIBE TO',
-        micro: 'CLICK DIAL TO CYCLE',
-        offset: '16',
-        note: '<strong>Newsletters: 0.</strong> You will never receive a “Weekly Insights” round-up from this URL.'
-      },
-      {
-        kicker: 'SPAM TOLERANCE // LOW',
-        primary: 'HUMAN MAIL',
-        sub: 'rob@robsalisbury.com',
-        micro: 'CLICK DIAL TO CYCLE',
-        offset: '24',
-        note: '<strong>Spam Tolerance: Low.</strong> Real messages get read; automated pitches get ignored.'
-      }
-    ];
+                    <p class="text-ttGreen leading-snug">
+                        There is no portfolio here, no thought-leadership blog, and no newsletter to unsubscribe from.
+                    </p>
 
-    let currentHero = 0;
+                    <div class="border-t-2 border-b-2 border-ttCyan py-2.5 my-2 space-y-1.5">
+                        <div class="text-ttYellow font-bold mb-1">ROBFAX DIRECTORY — SELECT PAGE:</div>
 
-    function cycleHeroTelemetry() {
-      currentHero = (currentHero + 1) % heroStates.length;
-      const st = heroStates[currentHero];
-      document.getElementById('heroKicker').textContent = st.kicker;
-      document.getElementById('heroPrimary').textContent = st.primary;
-      document.getElementById('heroSub').textContent = st.sub;
-      document.getElementById('heroMicro').textContent = st.micro;
-      document.getElementById('heroSegRing').setAttribute('stroke-dashoffset', st.offset);
-      document.getElementById('centerNote').innerHTML = `<span>${st.note}</span>`;
-    }
+                        <button onclick="loadPage('101')" class="w-full flex justify-between items-center text-left hover:bg-ttBlue px-1.5 py-0.5 cursor-pointer group">
+                            <span class="text-ttCyan group-hover:text-ttWhite">1. Why are you on this website?</span>
+                            <span class="text-ttYellow font-bold">101</span>
+                        </button>
 
-    // Right Gauge: 120 Inbox Capacity / Test Signal
-    const signalNotes = [
-      '<strong>Signal nominal:</strong> Rob’s inbox has room for normal human notes, not cold SaaS pitches.',
-      '<strong>Signal boosted (148):</strong> Loopback clean! <code>rob@robsalisbury.com</code> is ready for a friendly hello.',
-      '<strong>Signal peak (164):</strong> High clarity—ideal for saying “saw your gauge page” or confirming the address.',
-      '<strong>Signal stabilized (132):</strong> Packet loss 0.0%. Hit “Open Mail App” whenever you are ready.'
-    ];
-    let signalStep = 0;
+                        <button onclick="loadPage('200')" class="w-full flex justify-between items-center text-left hover:bg-ttBlue px-1.5 py-0.5 cursor-pointer group">
+                            <span class="text-ttCyan group-hover:text-ttWhite">2. Send an email to Rob</span>
+                            <span class="text-ttYellow font-bold">200</span>
+                        </button>
 
-    function boostSignal() {
-      signalStep = (signalStep + 1) % signalNotes.length;
-      const values = [120, 148, 164, 132];
-      const dashes = ['460 660', '545 660', '595 660', '498 660'];
-      const val = values[signalStep];
+                        <button onclick="loadPage('302')" class="w-full flex justify-between items-center text-left hover:bg-ttBlue px-1.5 py-0.5 cursor-pointer group">
+                            <span class="text-ttCyan group-hover:text-ttWhite">3. UK Weather &amp; Tea Outlook</span>
+                            <span class="text-ttYellow font-bold">302</span>
+                        </button>
 
-      document.getElementById('rightPrimary').textContent = String(val);
-      document.getElementById('rightTag').textContent = `GAIN ${val}`;
-      document.getElementById('rightSub').textContent = signalStep === 0 ? 'OPEN SLOTS // READY' : 'SIGNAL TEST // LOCKED';
-      document.getElementById('rightArc').setAttribute('stroke-dasharray', dashes[signalStep]);
-      document.getElementById('rightNote').innerHTML = `<span>${signalNotes[signalStep]}</span>`;
-    }
+                        <button onclick="loadPage('888')" class="w-full flex justify-between items-center text-left hover:bg-ttBlue px-1.5 py-0.5 cursor-pointer group">
+                            <span class="text-ttCyan group-hover:text-ttWhite">4. Ceefax Subtitles for the Hard of Hearing</span>
+                            <span class="text-ttYellow font-bold">888</span>
+                        </button>
+                    </div>
 
-    function resetSignal() {
-      signalStep = 0;
-      document.getElementById('rightPrimary').textContent = '120';
-      document.getElementById('rightTag').textContent = 'GAIN 120';
-      document.getElementById('rightSub').textContent = 'OPEN SLOTS // READY';
-      document.getElementById('rightArc').setAttribute('stroke-dasharray', '460 660');
-      document.getElementById('rightNote').innerHTML = `<span>${signalNotes[0]}</span>`;
-      showToast('Inbox capacity calibrated to 120');
-    }
+                    <div class="text-ttMagenta text-lg sm:text-xl">
+                        TIP: Type any 3-digit page number on your keyboard or press a colored button below.
+                    </div>
+                `
+            },
 
-    // Bottom Console: Copy Email & Sync Mailto
-    function copyEmail() {
-      const email = 'rob@robsalisbury.com';
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(email).catch(() => fallbackCopy(email));
-      } else {
-        fallbackCopy(email);
-      }
-      const btn = document.getElementById('copyBtn');
-      btn.textContent = 'Copied!';
-      showToast('Copied rob@robsalisbury.com');
-      setTimeout(() => {
-        btn.textContent = 'Copy Email';
-      }, 1800);
-    }
+            '101': {
+                ticker: 'P101 VISITOR DIAGNOSTIC — IDENTIFY YOUR REASON FOR BROWSING',
+                render: () => {
+                    const diagnostics = [
+                        {
+                            id: 1,
+                            label: '1. Checking if rob@robsalisbury.com is a real person',
+                            response: 'CONFIRMED: Rob is a real human being. Your email is safe to send and will not vanish into a corporate black hole.'
+                        },
+                        {
+                            id: 2,
+                            label: '2. Typed the wrong web address by mistake',
+                            response: 'NO HARM DONE: Better here than a dodgy pop-up site. Have a look at Page 302 for the tea forecast before you leave.'
+                        },
+                        {
+                            id: 3,
+                            label: '3. Looking for a completely different Rob Salisbury',
+                            response: 'WRONG ROB: Unless your Rob Salisbury enjoys 1980s Teletext aesthetics, you probably want another bloke.'
+                        },
+                        {
+                            id: 4,
+                            label: '4. Automated SEO bot / web crawler',
+                            response: 'ACCESS DENIED: Move along, silicon friend. There are zero backlinks, keywords, or affiliate widgets here.'
+                        }
+                    ];
 
-    function fallbackCopy(text) {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try {
-        document.execCommand('copy');
-      } catch (e) {}
-      document.body.removeChild(ta);
-    }
+                    const activeObj = diagnostics.find(d => d.id === selectedDiagnostic);
 
-    function syncMailto() {
-      const subj = document.getElementById('subjectSelect').value;
-      const link = document.getElementById('mailtoLaunch');
-      link.href = `mailto:rob@robsalisbury.com?subject=${encodeURIComponent(subj)}`;
-    }
+                    return `
+                        <div class="bg-ttGreen text-ttBlack px-2 py-1 font-bold tracking-wide">
+                            VISITOR DIAGNOSTIC: WHY ARE YOU HERE?
+                        </div>
 
-    let toastTimer = null;
-    function showToast(msg) {
-      const toast = document.getElementById('toast');
-      toast.textContent = msg;
-      toast.classList.add('show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toast.classList.remove('show'), 2100);
-    }
-  </script>
+                        <p class="text-ttCyan">
+                            Select the option that best describes your current predicament:
+                        </p>
+
+                        <div class="space-y-1.5">
+                            ${diagnostics.map(item => `
+                                <button
+                                    onclick="selectDiagnostic(${item.id})"
+                                    class="w-full text-left px-2 py-1 border ${selectedDiagnostic === item.id ? 'bg-ttYellow text-ttBlack border-ttYellow font-bold' : 'bg-ttBlack text-ttWhite border-ttBlue hover:border-ttCyan'} cursor-pointer block"
+                                >
+                                    ${item.label}
+                                </button>
+                            `).join('')}
+                        </div>
+
+                        <div class="border-2 border-ttMagenta p-2.5 bg-ttBlack min-h-[84px] flex items-center">
+                            ${activeObj
+                                ? `<p class="text-ttYellow leading-snug">${activeObj.response}</p>`
+                                : `<p class="text-ttMagenta">AWAITING SELECTION... CLICK AN OPTION ABOVE.</p>`
+                            }
+                        </div>
+                    `;
+                }
+            },
+
+            '200': {
+                ticker: 'P200 ROBMAIL DISPATCH — ELECTRONIC POSTAL TERMINAL',
+                render: () => `
+                    <div class="bg-ttCyan text-ttBlack px-2 py-1 font-bold tracking-wide">
+                        ROBMAIL DISPATCH TERMINAL
+                    </div>
+
+                    <div class="bg-ttBlue p-2.5 flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <span class="text-ttWhite text-lg block">DIRECT ELECTRONIC ADDRESS:</span>
+                            <span class="text-ttYellow font-bold text-2xl sm:text-3xl select-all">rob@robsalisbury.com</span>
+                        </div>
+                        <button
+                            onclick="copyEmail()"
+                            class="bg-ttYellow text-ttBlack font-bold px-3 py-1 hover:bg-ttWhite cursor-pointer teletext-btn uppercase"
+                        >
+                            COPY ADDRESS
+                        </button>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <label for="tt-subject" class="text-ttGreen">SUBJECT LINE:</label>
+                            <button
+                                onclick="cycleSubject()"
+                                class="text-ttCyan underline hover:text-ttYellow cursor-pointer text-lg"
+                            >
+                                [RANDOMIZE SUBJECT]
+                            </button>
+                        </div>
+                        <input
+                            id="tt-subject"
+                            type="text"
+                            value="${randomSubjects[subjectIndex]}"
+                            class="w-full bg-ttBlack text-ttYellow border-2 border-ttCyan px-2 py-1 font-teletext text-xl focus:outline-none focus:border-ttYellow"
+                        />
+
+                        <label for="tt-body" class="text-ttGreen block pt-1">SHORT MESSAGE (OPTIONAL):</label>
+                        <textarea
+                            id="tt-body"
+                            rows="2"
+                            placeholder="Write a quick note before launching your email app..."
+                            class="w-full bg-ttBlack text-ttWhite border-2 border-ttCyan px-2 py-1 font-teletext text-xl focus:outline-none focus:border-ttYellow"
+                        ></textarea>
+                    </div>
+
+                    <div class="pt-1 flex flex-wrap items-center justify-between gap-2">
+                        <button
+                            onclick="launchMailto()"
+                            class="bg-ttGreen text-ttBlack font-bold px-4 py-1.5 hover:bg-ttYellow cursor-pointer teletext-btn uppercase"
+                        >
+                            ► SEND VIA MAIL CLIENT
+                        </button>
+                        <span class="text-ttCyan text-lg">NO FORMS STORED ON SERVER</span>
+                    </div>
+                `
+            },
+
+            '302': {
+                ticker: 'P302 NATIONAL OUTLOOK — TEA BREWING & INBOX VISIBILITY',
+                render: () => `
+                    <div class="bg-ttMagenta text-ttWhite px-2 py-1 font-bold tracking-wide">
+                        UK WEATHER &amp; INBOX RESPONSE OUTLOOK
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="border-2 border-ttYellow p-2.5">
+                            <div class="text-ttYellow font-bold">TEA &amp; KETTLE FORECAST</div>
+                            <p class="text-ttWhite mt-1">
+                                Widespread drizzle across all regions. <span class="text-ttGreen">98% probability</span> of Builders tea with two sugars before noon.
+                            </p>
+                        </div>
+
+                        <div class="border-2 border-ttCyan p-2.5">
+                            <div class="text-ttCyan font-bold">INBOX VISIBILITY</div>
+                            <p class="text-ttWhite mt-1">
+                                Moderate to good. Genuine human emails replied to promptly; cold sales pitches drifting harmlessly into spam.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-ttBlue p-2 text-ttYellow">
+                        SHIPPING FORECAST: Dogger, Fisher, German Bight — Gentle breeze, kettle whistling Force 4, biscuits fair.
+                    </div>
+                `
+            },
+
+            '888': {
+                ticker: 'P888 CEEFAX SUBTITLES — PRESS 100 TO RETURN TO MAIN INDEX',
+                render: () => `
+                    <div class="flex items-center justify-between bg-ttWhite text-ttBlack px-2 py-1 font-bold">
+                        <span>CEEFAX SUBTITLES</span>
+                        <span>PAGE 888</span>
+                    </div>
+
+                    <div class="border-2 border-ttWhite p-4 my-2 space-y-3 text-center bg-ttBlack">
+                        <p class="text-ttYellow text-2xl sm:text-3xl">
+                            [SOUND OF KETTLE BOILING IN DISTANCE]
+                        </p>
+                        <p class="text-ttCyan text-2xl sm:text-3xl">
+                            [MAN STARES THOUGHTFULLY AT EMPTY INBOX]
+                        </p>
+                        <p class="text-ttGreen text-2xl sm:text-3xl">
+                            [GENTLE BRITISH TUTTING]
+                        </p>
+                        <p class="text-ttWhite text-xl pt-2">
+                            End of programme. Please email <span class="text-ttYellow">rob@robsalisbury.com</span> if you need anything.
+                        </p>
+                    </div>
+                `
+            }
+        };
+
+        // --- Navigation & Interaction Functions ---
+        function loadPage(pageNum) {
+            const normalized = String(pageNum).padStart(3, '0');
+            currentPage = normalized;
+
+            document.getElementById('header-page-code').textContent = `P${normalized}`;
+            document.getElementById('header-page-num').textContent = `1 ${normalized}`;
+
+            const pageObj = pages[normalized];
+            const container = document.getElementById('page-content');
+            const ticker = document.getElementById('status-ticker');
+
+            if (pageObj) {
+                container.innerHTML = pageObj.render();
+                ticker.textContent = pageObj.ticker;
+            } else {
+                ticker.textContent = `P${normalized} — PAGE NOT FOUND IN ROBFAX ARCHIVE`;
+                container.innerHTML = `
+                    <div class="bg-ttRed text-ttWhite px-2 py-1 font-bold">
+                        ERROR: PAGE ${normalized} NOT TRANSMITTED
+                    </div>
+                    <p class="text-ttWhite">
+                        Sorry, page <span class="text-ttYellow">${normalized}</span> is currently off-air.
+                    </p>
+                    <p class="text-ttCyan">
+                        Available ROBFAX pages: <span class="text-ttYellow">100</span> (Index), <span class="text-ttYellow">101</span> (Visitor Check), <span class="text-ttYellow">200</span> (Email Rob), <span class="text-ttYellow">302</span> (Outlook), <span class="text-ttYellow">888</span> (Subtitles).
+                    </p>
+                    <button onclick="loadPage('100')" class="bg-ttYellow text-ttBlack font-bold px-3 py-1 cursor-pointer teletext-btn">
+                        RETURN TO P100 INDEX
+                    </button>
+                `;
+            }
+        }
+
+        function selectDiagnostic(id) {
+            selectedDiagnostic = id;
+            loadPage('101');
+        }
+
+        function cycleSubject() {
+            subjectIndex = (subjectIndex + 1) % randomSubjects.length;
+            const input = document.getElementById('tt-subject');
+            if (input) {
+                input.value = randomSubjects[subjectIndex];
+            }
+        }
+
+        function copyEmail() {
+            const email = 'rob@robsalisbury.com';
+            const tempInput = document.createElement('input');
+            tempInput.value = email;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast('COPIED: rob@robsalisbury.com');
+        }
+
+        function launchMailto() {
+            const subjectEl = document.getElementById('tt-subject');
+            const bodyEl = document.getElementById('tt-body');
+            const subject = encodeURIComponent(subjectEl ? subjectEl.value : 'Hello Rob');
+            const body = encodeURIComponent(bodyEl ? bodyEl.value : '');
+            window.location.href = `mailto:rob@robsalisbury.com?subject=${subject}&body=${body}`;
+            showToast('OPENING EMAIL CLIENT...');
+        }
+
+        // --- Keyboard 3-Digit Teletext Navigation ---
+        document.addEventListener('keydown', (e) => {
+            // Ignore when typing inside inputs/textareas
+            if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                if (e.key === 'Enter' && document.activeElement.id === 'page-jump-input') {
+                    jumpFromInput();
+                }
+                return;
+            }
+
+            if (/^[0-9]$/.test(e.key)) {
+                digitBuffer += e.key;
+                document.getElementById('header-page-code').textContent = `P${digitBuffer.padEnd(3, '-')}`;
+                clearTimeout(digitBufferTimeout);
+
+                if (digitBuffer.length === 3) {
+                    const target = digitBuffer;
+                    digitBuffer = '';
+                    loadPage(target);
+                } else {
+                    digitBufferTimeout = setTimeout(() => {
+                        digitBuffer = '';
+                        document.getElementById('header-page-code').textContent = `P${currentPage}`;
+                    }, 2000);
+                }
+            }
+        });
+
+        // Initialize Page 100 on Load
+        window.onload = function () {
+            loadPage('100');
+        };
+    </script>
 </body>
 </html>
