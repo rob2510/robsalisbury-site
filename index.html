@@ -3,38 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SALISBURY'S COMIC — Mostly an Email Address (Price: Free or a Pint)</title>
+    <title>P100 ROBFAX — BBC Ceefax Personal Email Service (robsalisbury.com)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Anton & Bangers for 80s comic mastheads, Comic Neue for speech bubbles, Courier Prime for cheap classifieds -->
+    <!-- Retro Teletext / Pixel Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Comic+Neue:ital,wght@0,700;1,700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        masthead: ['Anton', 'sans-serif'],
-                        comic: ['Bangers', 'cursive'],
-                        bubble: ['Comic Neue', 'cursive'],
-                        print: ['Courier Prime', 'monospace'],
-                        corporate: ['Inter', 'sans-serif'],
+                        teletext: ['"VT323"', 'monospace'],
+                        pixel: ['"Silkscreen"', 'monospace'],
                     },
                     colors: {
-                        newsprint: '#F3EED9',
-                        newsprintDark: '#E5DEC3',
-                        ink: '#111111',
-                        vizRed: '#E31C24',
-                        vizYellow: '#FFD100',
-                        vizCyan: '#009FE3',
-                        poshBeige: '#F4F2EE',
-                    },
-                    boxShadow: {
-                        'comic': '5px 5px 0px 0px #111111',
-                        'comic-lg': '8px 8px 0px 0px #111111',
-                        'comic-sm': '3px 3px 0px 0px #111111',
+                        ttBlack: '#000000',
+                        ttWhite: '#FFFFFF',
+                        ttYellow: '#FFFF00',
+                        ttCyan: '#00FFFF',
+                        ttGreen: '#00FF00',
+                        ttMagenta: '#FF00FF',
+                        ttRed: '#FF0000',
+                        ttBlue: '#0000FF',
+                        crtBezel: '#272522',
+                        crtPlastic: '#3A3732',
                     }
                 }
             }
@@ -42,859 +37,666 @@
     </script>
 
     <style>
-        /* Cheap 1980s Newsprint & Ben-Day Halftone Patterns */
-        .bg-newsprint-paper {
-            background-color: #F3EED9;
-            background-image: 
-                radial-gradient(rgba(17, 17, 17, 0.08) 1px, transparent 0),
-                radial-gradient(rgba(227, 28, 36, 0.04) 1px, transparent 0);
-            background-size: 16px 16px;
-            background-position: 0 0, 8px 8px;
+        /* Classic Teletext Typography & Crisp Block Rendering */
+        body {
+            background-color: #121110;
+            color: #FFFFFF;
+            font-family: 'VT323', monospace;
+            overflow-x: hidden;
         }
 
-        .halftone-yellow {
-            background-color: #FFD100;
-            background-image: radial-gradient(#E31C24 1.5px, transparent 1.5px);
-            background-size: 8px 8px;
+        /* Retro 1980s CRT Television Casing */
+        .crt-casing {
+            background: linear-gradient(145deg, #3c3934 0%, #24221f 100%);
+            border: 4px solid #171614;
+            box-shadow:
+                inset 0 2px 4px rgba(255, 255, 255, 0.14),
+                inset 0 -4px 10px rgba(0, 0, 0, 0.7),
+                0 20px 50px rgba(0, 0, 0, 0.85);
         }
 
-        .halftone-cyan {
-            background-color: #009FE3;
-            background-image: radial-gradient(#111111 1.25px, transparent 1.25px);
-            background-size: 7px 7px;
+        .crt-inner-bezel {
+            background: #141312;
+            box-shadow: inset 0 6px 18px rgba(0, 0, 0, 0.95);
         }
 
-        .halftone-cream {
-            background-color: #FAF6E8;
-            background-image: radial-gradient(rgba(17, 17, 17, 0.14) 1.25px, transparent 1.25px);
-            background-size: 8px 8px;
-        }
-
-        /* Heavy Comic Text Stroke for Masthead */
-        .viz-logo-text {
-            color: #FFD100;
-            -webkit-text-stroke: 3px #111111;
-            text-shadow: 5px 5px 0px #111111;
-            letter-spacing: 0.02em;
-        }
-
-        @media (max-width: 640px) {
-            .viz-logo-text {
-                -webkit-text-stroke: 2px #111111;
-                text-shadow: 3px 3px 0px #111111;
-            }
-        }
-
-        /* Classic Comic Speech Bubble Pointer */
-        .speech-bubble {
+        /* Authentic Pure Black Teletext Screen */
+        .teletext-screen {
+            background-color: #000000;
             position: relative;
-            background: #FFFFFF;
-            border: 3px solid #111111;
-            border-radius: 9999px;
-        }
-        .speech-bubble::after {
-            content: '';
-            position: absolute;
-            bottom: -14px;
-            left: 28px;
-            border-width: 14px 12px 0 0;
-            border-style: solid;
-            border-color: #111111 transparent transparent transparent;
-        }
-        .speech-bubble::before {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 30px;
-            border-width: 10px 8px 0 0;
-            border-style: solid;
-            border-color: #FFFFFF transparent transparent transparent;
-            z-index: 1;
+            letter-spacing: 0.04em;
+            line-height: 1.25;
         }
 
-        /* Corporate Mode Overrides */
-        body.posh-mode {
-            background-color: #F4F2EE !important;
-            background-image: none !important;
-            font-family: 'Inter', sans-serif !important;
+        /* Subtle CRT Scanlines & Phosphor Vignette */
+        .crt-scanlines::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.34) 50%),
+                radial-gradient(circle at center, transparent 62%, rgba(0, 0, 0, 0.55) 100%);
+            background-size: 100% 4px, 100% 100%;
+            pointer-events: none;
+            z-index: 30;
         }
-        body.posh-mode .comic-border {
-            border-width: 1px !important;
-            border-color: #D1D5DB !important;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
-            border-radius: 8px !important;
+
+        /* Chunky Pixel Mosaic Blocks */
+        .mosaic-grid {
+            display: grid;
+            grid-template-columns: repeat(32, 1fr);
+            gap: 2px;
         }
-        body.posh-mode .halftone-yellow,
-        body.posh-mode .halftone-cyan,
-        body.posh-mode .halftone-cream {
-            background-image: none !important;
-            background-color: #FFFFFF !important;
+
+        .teletext-btn {
+            transition: transform 0.06s ease, filter 0.06s ease;
         }
-        body.posh-mode .viz-logo-text {
-            color: #1F2937 !important;
-            -webkit-text-stroke: 0px !important;
-            text-shadow: none !important;
+        .teletext-btn:active {
+            transform: translateY(2px);
+        }
+
+        /* Blinking Teletext Cursor / Status */
+        @keyframes tt-blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+        .animate-tt-blink {
+            animation: tt-blink 1s infinite;
+        }
+
+        /* Custom Scrollbar for Terminal Areas */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00FFFF;
         }
     </style>
 </head>
-<body class="bg-newsprint-paper text-ink font-print antialiased selection:bg-vizYellow selection:text-ink min-h-screen flex flex-col justify-between transition-all duration-200" id="page-body">
+<body class="min-h-screen flex flex-col items-center justify-center p-2 sm:p-5 select-none">
 
-    <!-- Top Newsagent Shelf Strip -->
-    <header class="border-b-4 border-ink bg-vizYellow sticky top-0 z-40 comic-border" id="top-strip">
-        <div class="max-w-5xl mx-auto px-3 sm:px-6 py-2 flex flex-wrap items-center justify-between gap-2 text-xs font-print font-bold">
-            <div class="flex items-center space-x-2">
-                <span class="bg-ink text-vizYellow px-2 py-0.5 uppercase tracking-wider" id="issue-tag">ISSUE No. 1</span>
-                <span class="hidden sm:inline uppercase" id="top-tagline">★ NOT FOR SALE TO CHILDREN OR POSH GITS ★</span>
-            </div>
+    <!-- Top TV Remote Control Strip -->
+    <div class="w-full max-w-4xl mb-3 bg-[#1E1D1B] border-2 border-[#3C3934] rounded-lg px-3 py-2 flex flex-wrap items-center justify-between gap-2 shadow-lg">
+        <div class="flex items-center gap-2">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-ttGreen shadow-[0_0_8px_#00FF00]" id="power-led"></span>
+            <span class="font-pixel text-[11px] sm:text-xs text-stone-300 tracking-wider uppercase">
+                TELETEXT DECODER // TYPE 3 DIGITS OR CLICK BUTTONS
+            </span>
+        </div>
 
-            <!-- Corporate Mode Toggle Switch -->
-            <div class="flex items-center space-x-2">
-                <span class="hidden md:inline uppercase text-ink" id="mode-label">EDITION: 1980s NEWSPRINT</span>
-                <button 
-                    id="corporate-toggle"
-                    onclick="toggleCorporateMode()"
-                    class="px-3 py-1 bg-white hover:bg-vizRed hover:text-white text-ink border-2 border-ink font-print font-bold uppercase shadow-comic-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer flex items-center gap-1.5"
+        <div class="flex flex-wrap items-center gap-2">
+            <!-- Quick 3-Digit Page Jumper -->
+            <div class="flex items-center bg-black border border-stone-600 rounded px-2 py-0.5">
+                <label for="page-jump-input" class="text-ttCyan text-lg mr-1.5">P</label>
+                <input
+                    id="page-jump-input"
+                    type="text"
+                    maxlength="3"
+                    inputmode="numeric"
+                    placeholder="100"
+                    aria-label="Enter 3-digit Teletext page number"
+                    class="w-11 bg-black text-ttYellow font-teletext text-xl focus:outline-none uppercase tracking-widest"
+                />
+                <button
+                    onclick="jumpFromInput()"
+                    class="ml-1 px-2 py-0.5 bg-ttCyan text-black font-pixel text-[10px] font-bold uppercase hover:bg-ttYellow cursor-pointer"
                 >
-                    <span id="toggle-icon">🎩</span>
-                    <span id="toggle-text">Posh Corporate Git Mode</span>
+                    GO
                 </button>
             </div>
-        </div>
-    </header>
 
-    <!-- Main Comic Page Container -->
-    <main class="max-w-5xl mx-auto w-full px-3 sm:px-6 py-6 sm:py-8 space-y-7">
+            <!-- HOLD Clock/Page Button -->
+            <button
+                id="hold-btn"
+                onclick="toggleHold()"
+                class="px-2.5 py-1 bg-stone-800 hover:bg-stone-700 text-ttYellow border border-stone-500 rounded font-pixel text-[10px] sm:text-xs uppercase cursor-pointer teletext-btn"
+            >
+                HOLD: OFF
+            </button>
 
-        <!-- CLASSIC 1980s VIZ MASTHEAD COVER -->
-        <section class="bg-vizRed border-4 border-ink shadow-comic-lg overflow-hidden comic-border" id="masthead-box">
-            <!-- Top Sub-banner -->
-            <div class="bg-ink text-newsprint px-3 py-1.5 flex flex-wrap items-center justify-between text-[11px] sm:text-xs font-print uppercase tracking-widest border-b-2 border-ink">
-                <span>INCORPORATING "EMAIL" &amp; "GENERAL TIMEWASTING"</span>
-                <span class="text-vizYellow font-bold">PRICE: FREE (OR A PINT)</span>
-            </div>
-
-            <div class="p-5 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 relative">
-                <!-- Left: Giant Block Masthead -->
-                <div class="text-center md:text-left space-y-2 z-10">
-                    <div class="inline-block bg-vizYellow text-ink border-2 border-ink px-2.5 py-0.5 font-comic text-base sm:text-lg tracking-wider transform -rotate-1 shadow-comic-sm" id="masthead-kicker">
-                        ROBSALISBURY.COM — EST. WHENEVER I BOUGHT THE DOMAIN
-                    </div>
-                    
-                    <h1 class="font-masthead text-6xl sm:text-7xl md:text-8xl uppercase leading-none viz-logo-text select-none" id="masthead-title">
-                        ROB'S COMIC
-                    </h1>
-                    
-                    <p class="font-bubble font-bold text-lg sm:text-xl text-white drop-shadow-[2px_2px_0px_#111111] max-w-xl pt-1" id="masthead-subtitle">
-                        "Britain’s Least Essential Website! Basically just a glorified Post Office box for <span class="bg-ink text-vizYellow px-1.5 py-0.5 font-print text-base">@robsalisbury.com</span>."
-                    </p>
-                </div>
-
-                <!-- Right: Scruffy 80s Comic Bloke with Mug of Tea + Speech Bubble -->
-                <div class="flex flex-col items-center shrink-0 z-10 max-w-xs" id="mascot-box">
-                    <!-- Speech Bubble -->
-                    <div class="speech-bubble px-4 py-3 mb-3 shadow-comic-sm transform rotate-1">
-                        <p class="font-bubble font-bold text-sm sm:text-base text-ink leading-tight text-center" id="mascot-speech">
-                            "Fnar, fnar! You’ve clicked on the wrong website, haven’t you?"
-                        </p>
-                    </div>
-
-                    <!-- Custom Inline SVG Doodle: Scruffy 80s Comic Bloke with Tea Mug -->
-                    <svg class="w-32 h-32 sm:w-36 sm:h-36 drop-shadow-[3px_3px_0px_#111111]" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Cartoon bloke holding a steaming mug of tea">
-                        <!-- Yellow Starburst Behind Head -->
-                        <polygon points="80,8 95,32 125,20 120,50 150,60 128,82 148,108 118,112 122,142 94,128 80,154 66,128 38,142 42,112 12,108 32,82 10,60 40,50 35,20 65,32" fill="#FFD100" stroke="#111111" stroke-width="3"/>
-                        <!-- Messy 80s Spiky Hair -->
-                        <path d="M44 64 L36 42 L55 50 L62 30 L78 46 L94 28 L100 48 L120 40 L112 64 Z" fill="#111111"/>
-                        <!-- Face / Head -->
-                        <ellipse cx="80" cy="78" rx="34" ry="36" fill="#FAD7B8" stroke="#111111" stroke-width="3.5"/>
-                        <!-- Wonky Googly Comic Eyes -->
-                        <circle cx="68" cy="70" r="8" fill="#FFFFFF" stroke="#111111" stroke-width="2.5"/>
-                        <circle cx="70" cy="70" r="2.5" fill="#111111"/>
-                        <circle cx="91" cy="69" r="9" fill="#FFFFFF" stroke="#111111" stroke-width="2.5"/>
-                        <circle cx="89" cy="71" r="2.5" fill="#111111"/>
-                        <!-- Big Comic Nose -->
-                        <path d="M78 73 C88 73, 92 86, 78 88" fill="#FAD7B8" stroke="#111111" stroke-width="3" stroke-linecap="round"/>
-                        <!-- Cheeky Toothless Grin -->
-                        <path d="M58 92 Q80 112 102 92 Z" fill="#E31C24" stroke="#111111" stroke-width="3"/>
-                        <rect x="72" y="93" width="7" height="6" fill="#FFFFFF" stroke="#111111" stroke-width="1.5"/>
-                        <rect x="82" y="93" width="7" height="6" fill="#FFFFFF" stroke="#111111" stroke-width="1.5"/>
-                        <!-- Stubble Dots -->
-                        <circle cx="62" cy="98" r="1.2" fill="#111111"/>
-                        <circle cx="67" cy="103" r="1.2" fill="#111111"/>
-                        <circle cx="94" cy="102" r="1.2" fill="#111111"/>
-                        <circle cx="99" cy="97" r="1.2" fill="#111111"/>
-                        <!-- Stripy 80s Jumper -->
-                        <path d="M40 144 C40 120, 120 120, 120 144 Z" fill="#009FE3" stroke="#111111" stroke-width="3.5"/>
-                        <path d="M46 132 L114 132" stroke="#FFD100" stroke-width="4"/>
-                        <!-- Mug of Builders Tea -->
-                        <rect x="98" y="106" width="28" height="32" rx="3" fill="#FFFFFF" stroke="#111111" stroke-width="3"/>
-                        <path d="M126 112 H134 C138 112, 138 130, 134 130 H126" fill="none" stroke="#111111" stroke-width="3"/>
-                        <text x="103" y="126" font-family="Anton, sans-serif" font-size="11" fill="#E31C24">TEA</text>
-                        <!-- Steam Lines -->
-                        <path d="M106 100 Q102 93 107 87" stroke="#111111" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M116 100 Q120 93 115 87" stroke="#111111" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                </div>
-            </div>
-        </section>
-
-        <!-- PANEL 1: "WHY ARE YOU HERE?" (4-Panel Comic Strip Selector) -->
-        <section class="bg-white border-4 border-ink shadow-comic comic-border" id="comic-strip-section">
-            <div class="bg-ink text-vizYellow px-4 py-2 flex flex-wrap items-center justify-between gap-2">
-                <h2 class="font-comic text-2xl sm:text-3xl tracking-wider uppercase" id="strip-heading">
-                    ★ WHY ARE YOU HERE? (PICK YOUR EXCUSE, SUNSHINE) ★
-                </h2>
-                <span class="font-print text-xs text-newsprint uppercase">CLICK A PANEL FOR INSTANT JUDGEMENT</span>
-            </div>
-
-            <div class="p-4 sm:p-6 halftone-cream">
-                <!-- 4 Comic Strip Panels -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="comic-panels">
-                    <!-- Panel 1 -->
-                    <button onclick="selectExcuse('legit')" data-excuse="legit" class="excuse-panel text-left bg-white border-3 border-ink p-3.5 shadow-comic-sm hover:bg-vizYellow/40 active:translate-x-[2px] active:translate-y-[2px] transition-all cursor-pointer flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between border-b-2 border-ink pb-1 mb-2">
-                                <span class="bg-ink text-white font-comic text-sm px-1.5">PANEL 1</span>
-                                <span class="font-print text-[11px] font-bold text-vizRed">SUSPICIOUS</span>
-                            </div>
-                            <p class="font-bubble font-bold text-base leading-snug">
-                                "Checking if <span class="underline">rob@robsalisbury.com</span> is a real bloke."
-                            </p>
-                        </div>
-                        <div class="mt-3 pt-2 border-t border-dashed border-ink font-print text-[11px] text-neutral-600">
-                            [Click to verify]
-                        </div>
-                    </button>
-
-                    <!-- Panel 2 -->
-                    <button onclick="selectExcuse('pints')" data-excuse="pints" class="excuse-panel text-left bg-white border-3 border-ink p-3.5 shadow-comic-sm hover:bg-vizYellow/40 active:translate-x-[2px] active:translate-y-[2px] transition-all cursor-pointer flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between border-b-2 border-ink pb-1 mb-2">
-                                <span class="bg-ink text-white font-comic text-sm px-1.5">PANEL 2</span>
-                                <span class="font-print text-[11px] font-bold text-vizCyan">WOBBLY</span>
-                            </div>
-                            <p class="font-bubble font-bold text-base leading-snug">
-                                "Fat-fingered a URL after three pints of bitter."
-                            </p>
-                        </div>
-                        <div class="mt-3 pt-2 border-t border-dashed border-ink font-print text-[11px] text-neutral-600">
-                            [Click for sympathy]
-                        </div>
-                    </button>
-
-                    <!-- Panel 3 -->
-                    <button onclick="selectExcuse('posh')" data-excuse="posh" class="excuse-panel text-left bg-white border-3 border-ink p-3.5 shadow-comic-sm hover:bg-vizYellow/40 active:translate-x-[2px] active:translate-y-[2px] transition-all cursor-pointer flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between border-b-2 border-ink pb-1 mb-2">
-                                <span class="bg-ink text-white font-comic text-sm px-1.5">PANEL 3</span>
-                                <span class="font-print text-[11px] font-bold text-emerald-700">WRONG ROB</span>
-                            </div>
-                            <p class="font-bubble font-bold text-base leading-snug">
-                                "Looking for a posh financial advisor or speaker."
-                            </p>
-                        </div>
-                        <div class="mt-3 pt-2 border-t border-dashed border-ink font-print text-[11px] text-neutral-600">
-                            [Click to be disappointed]
-                        </div>
-                    </button>
-
-                    <!-- Panel 4 -->
-                    <button onclick="selectExcuse('bot')" data-excuse="bot" class="excuse-panel text-left bg-white border-3 border-ink p-3.5 shadow-comic-sm hover:bg-vizYellow/40 active:translate-x-[2px] active:translate-y-[2px] transition-all cursor-pointer flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between border-b-2 border-ink pb-1 mb-2">
-                                <span class="bg-ink text-white font-comic text-sm px-1.5">PANEL 4</span>
-                                <span class="font-print text-[11px] font-bold text-purple-700">DODGY</span>
-                            </div>
-                            <p class="font-bubble font-bold text-base leading-snug">
-                                "I am a Nigerian Prince / cold-email SEO bot."
-                            </p>
-                        </div>
-                        <div class="mt-3 pt-2 border-t border-dashed border-ink font-print text-[11px] text-neutral-600">
-                            [Click at own peril]
-                        </div>
-                    </button>
-                </div>
-
-                <!-- Comic Punchline & Sound Effect Box -->
-                <div class="mt-5 bg-vizYellow border-3 border-ink p-4 sm:p-5 shadow-comic-sm flex flex-col sm:flex-row items-center gap-4" id="punchline-box">
-                    <!-- Comic Sound Effect Burst -->
-                    <div class="shrink-0 bg-vizRed text-vizYellow border-3 border-ink px-4 py-2 transform -rotate-3 shadow-comic-sm">
-                        <span class="font-comic text-3xl sm:text-4xl tracking-wider uppercase drop-shadow-[2px_2px_0px_#111111]" id="sfx-badge">
-                            OO-ER!
-                        </span>
-                    </div>
-                    <!-- Punchline Text -->
-                    <div class="text-center sm:text-left">
-                        <div class="font-print text-xs font-bold uppercase tracking-wider text-ink mb-0.5" id="excuse-subtitle">
-                            EDITOR'S VERDICT:
-                        </div>
-                        <p class="font-bubble font-bold text-lg sm:text-xl text-ink leading-snug" id="excuse-response">
-                            Go on then, click one of the four boxes above so we know what game you’re playing!
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- MIDDLE TWO-COLUMN SPREAD: LETTERBOCKS (Left) + TOP TIPS & PROFANISAURUS (Right) -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-7">
-
-            <!-- LEFT COLUMN (7 cols): LETTERBOCKS — SEND ROB AN ELECTRONIC LETTER -->
-            <section class="lg:col-span-7 bg-white border-4 border-ink shadow-comic flex flex-col justify-between comic-border" id="letterbocks-card">
-                <div>
-                    <!-- Header Banner -->
-                    <div class="bg-vizRed text-white px-4 py-2.5 border-b-4 border-ink flex items-center justify-between">
-                        <h2 class="font-comic text-2xl sm:text-3xl tracking-wider uppercase drop-shadow-[2px_2px_0px_#111111]" id="letterbocks-title">
-                            LETTERBOCKS! (SEND ROB AN EMAIL)
-                        </h2>
-                        <span class="bg-vizYellow text-ink font-print text-xs font-bold px-2 py-0.5 border-2 border-ink">
-                            POSTAGE PAID
-                        </span>
-                    </div>
-
-                    <div class="p-5 sm:p-6 space-y-5">
-                        <p class="font-bubble font-bold text-base sm:text-lg text-ink leading-snug" id="letterbocks-intro">
-                            Got something to say? Write in to our postbag! Every single email is read personally by Rob (usually while avoiding actual work).
-                        </p>
-
-                        <!-- Copy Email Strip -->
-                        <div class="bg-newsprint border-3 border-ink p-3 flex flex-wrap items-center justify-between gap-2">
-                            <div>
-                                <span class="block font-print text-[10px] font-bold uppercase text-neutral-600">ELECTRONIC PIGEON ADDRESS:</span>
-                                <code class="font-print text-base sm:text-lg font-bold select-all text-ink" id="email-address">rob@robsalisbury.com</code>
-                            </div>
-                            <button 
-                                onclick="copyEmail()"
-                                id="copy-btn"
-                                class="px-3.5 py-2 bg-vizYellow hover:bg-amber-300 text-ink border-2 border-ink font-print text-xs font-bold uppercase shadow-comic-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
-                            >
-                                Copy Address
-                            </button>
-                        </div>
-
-                        <!-- Subject Line & Top Tip Generator -->
-                        <div class="space-y-2">
-                            <div class="flex flex-wrap items-center justify-between gap-2">
-                                <label for="subject-input" class="font-print text-xs font-bold uppercase">
-                                    SUBJECT HEADING:
-                                </label>
-                                <button 
-                                    type="button"
-                                    onclick="generateSubject()"
-                                    class="px-2.5 py-1 bg-vizCyan text-white border-2 border-ink font-print text-xs font-bold uppercase shadow-comic-sm hover:brightness-110 active:translate-x-[1px] active:translate-y-[1px] cursor-pointer flex items-center gap-1"
-                                >
-                                    <span>🎲</span> Random Subject / Top Tip
-                                </button>
-                            </div>
-                            <input 
-                                type="text" 
-                                id="subject-input" 
-                                value="Fnar fnar - urgent business"
-                                oninput="updateBollocksMeter()"
-                                placeholder="Write your headline here..."
-                                class="w-full px-3 py-2.5 bg-newsprint border-3 border-ink font-print text-sm font-bold focus:outline-none focus:bg-white"
-                            >
-                        </div>
-
-                        <!-- BOLLOCKS-O-METER™ -->
-                        <div class="bg-newsprint border-3 border-ink p-3.5 space-y-2" id="bollocks-box">
-                            <div class="flex flex-wrap items-center justify-between gap-1 font-print text-xs">
-                                <span class="font-bold uppercase">⚠️ THE BOLLOCKS-O-METER™:</span>
-                                <span id="bollocks-label" class="font-bold bg-vizYellow px-2 py-0.5 border border-ink text-ink">
-                                    14% — ACCEPTABLE BANTER
-                                </span>
-                            </div>
-                            <div class="w-full h-4 bg-white border-2 border-ink overflow-hidden p-0.5">
-                                <div id="bollocks-bar" class="h-full bg-vizCyan transition-all duration-300" style="width: 14%;"></div>
-                            </div>
-                            <p id="bollocks-hint" class="font-bubble font-bold text-sm text-ink">
-                                Warning: Words like "synergy", "circle back", "kindly", or "SEO" will trigger immediate alarm bells.
-                            </p>
-                        </div>
-
-                        <!-- Launch Default Email App Button -->
-                        <button 
-                            onclick="launchEmail()"
-                            class="w-full py-3.5 px-4 bg-vizRed hover:bg-red-700 text-vizYellow font-comic text-2xl sm:text-3xl tracking-wider uppercase border-3 border-ink shadow-comic active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer flex items-center justify-center gap-2 drop-shadow-[1px_1px_0px_#111111]"
-                        >
-                            <span>✉️</span>
-                            <span id="launch-btn-text">SEND ELECTRONIC LETTER NOW!</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="bg-ink text-newsprint px-4 py-2 font-print text-[11px] flex items-center justify-between">
-                    <span>SPF / DKIM / DMARC: TICKETY-BOO</span>
-                    <span>NO SPAM, NO CRYPTO, NO NONSENSE</span>
-                </div>
-            </section>
-
-            <!-- RIGHT COLUMN (5 cols): ROB'S TOP TIPS + THE PROFANISAURUS STATUS -->
-            <div class="lg:col-span-5 flex flex-col justify-between gap-7">
-
-                <!-- ROB'S TOP TIPS BOX -->
-                <section class="bg-white border-4 border-ink shadow-comic comic-border overflow-hidden" id="toptips-card">
-                    <div class="bg-vizYellow px-4 py-2 border-b-4 border-ink flex items-center justify-between">
-                        <h2 class="font-comic text-2xl sm:text-3xl tracking-wider uppercase text-ink" id="toptips-title">
-                            ROB’S TOP TIPS!
-                        </h2>
-                        <!-- Thumbs Up Caricature SVG -->
-                        <svg class="w-9 h-9" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Thumbs up icon">
-                            <circle cx="24" cy="24" r="21" fill="#E31C24" stroke="#111111" stroke-width="3"/>
-                            <path d="M18 23 V35 H13 V23 H18 Z M20 35 H31 C33 35 34 33.5 34 32 L36 25 C36.5 23.5 35.2 22 33.5 22 H27 L28 16 C28.2 14.5 27 13 25.5 13 C24.5 13 23.8 13.6 23.4 14.5 L20 22 V35 Z" fill="#FFD100" stroke="#111111" stroke-width="2.2" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-
-                    <div class="p-5 halftone-cyan space-y-4">
-                        <div class="bg-white border-3 border-ink p-4 shadow-comic-sm relative">
-                            <span class="inline-block bg-ink text-vizYellow font-print text-[10px] font-bold px-2 py-0.5 uppercase mb-2" id="toptip-credit">
-                                SENT IN BY: A. BLOKE, NEWCASTLE
-                            </span>
-                            <p class="font-bubble font-bold text-base sm:text-lg text-ink leading-snug" id="toptip-text">
-                                "SAVE MONEY on expensive postage stamps by simply typing your message into an email and sending it to rob@robsalisbury.com instead."
-                            </p>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-2.5">
-                            <button 
-                                onclick="nextTopTip()"
-                                class="py-2 px-3 bg-vizYellow hover:bg-amber-300 text-ink border-2 border-ink font-print text-xs font-bold uppercase shadow-comic-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
-                            >
-                                ↻ Next Top Tip
-                            </button>
-                            <button 
-                                onclick="useTipAsSubject()"
-                                class="py-2 px-3 bg-white hover:bg-newsprint text-ink border-2 border-ink font-print text-xs font-bold uppercase shadow-comic-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
-                            >
-                                ✉️ Email This Tip
-                            </button>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- THE PROFANISAURUS / ROB'S CURRENT STATUS -->
-                <section class="bg-white border-4 border-ink shadow-comic comic-border overflow-hidden flex-1 flex flex-col justify-between" id="profanisaurus-card">
-                    <div>
-                        <div class="bg-ink text-white px-4 py-2 border-b-4 border-ink flex items-center justify-between">
-                            <h2 class="font-comic text-2xl tracking-wider uppercase text-vizYellow" id="prof-title">
-                                THE PROFANISAURUS
-                            </h2>
-                            <span class="font-print text-[11px] uppercase text-vizCyan font-bold">LIVE STATUS</span>
-                        </div>
-
-                        <div class="p-5 space-y-4">
-                            <!-- Dictionary Entry Style -->
-                            <div class="border-l-4 border-vizRed pl-3.5 py-1 bg-newsprint/60">
-                                <div class="flex items-baseline gap-2 flex-wrap">
-                                    <span class="font-print font-bold text-lg uppercase text-ink" id="status-word">
-                                        MAKING A BREW
-                                    </span>
-                                    <span class="font-print italic text-xs text-neutral-600" id="status-pos">
-                                        (verb, British)
-                                    </span>
-                                </div>
-                                <p class="font-bubble font-bold text-base text-ink mt-1 leading-snug" id="status-def">
-                                    The sacred 15-minute ritual of boiling a kettle and staring out the kitchen window to avoid replying to emails.
-                                </p>
-                            </div>
-
-                            <button 
-                                onclick="cycleProfanisaurus()"
-                                class="w-full py-2 px-3 bg-newsprint hover:bg-vizYellow text-ink border-2 border-ink font-print text-xs font-bold uppercase shadow-comic-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
-                            >
-                                📖 Flip Page (Update Rob’s Status)
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- FNAR FNAR Double-Entendre Counter Bar -->
-                    <div class="bg-vizYellow border-t-4 border-ink px-4 py-3 flex items-center justify-between gap-2">
-                        <div>
-                            <div class="font-comic text-lg leading-none uppercase text-ink">FINBARR’S FNAR BUTTON</div>
-                            <div class="font-print text-[11px] font-bold text-ink">Fnars given: <span id="fnar-count" class="bg-white px-1.5 border border-ink">0</span></div>
-                        </div>
-                        <button 
-                            onclick="triggerFnar()"
-                            class="px-3.5 py-1.5 bg-vizRed text-white font-comic text-xl tracking-wider uppercase border-2 border-ink shadow-comic-sm hover:brightness-110 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
-                        >
-                            FNAR! FNAR!
-                        </button>
-                    </div>
-                </section>
-
-            </div>
-        </div>
-
-        <!-- BACK-PAGE CHEAP CLASSIFIED ADVERTS -->
-        <section class="bg-newsprintDark border-4 border-ink shadow-comic p-4 sm:p-5 comic-border" id="classifieds-section">
-            <div class="border-b-2 border-ink pb-1.5 mb-3 flex flex-wrap items-center justify-between gap-2">
-                <h3 class="font-masthead text-xl sm:text-2xl uppercase tracking-wide text-ink" id="classifieds-header">
-                    SMALL ADS &amp; GENUINE BARGAINS (BACK PAGE)
-                </h3>
-                <span class="font-print text-[11px] font-bold uppercase">ALL SALES FINAL — NO REFUNDS</span>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 font-print text-xs">
-                <div class="bg-white border-2 border-ink p-3">
-                    <div class="font-bold uppercase bg-ink text-white px-1.5 py-0.5 inline-block mb-1.5">FOR SALE / NOT FOR SALE</div>
-                    <p class="leading-relaxed" id="ad-1">
-                        <strong>GENUINE PERSONAL DOMAIN.</strong> One careful owner (Rob). Used solely for sending emails and confusing nosey parkers. No timewasters.
-                    </p>
-                </div>
-                <div class="bg-white border-2 border-ink p-3">
-                    <div class="font-bold uppercase bg-vizRed text-white px-1.5 py-0.5 inline-block mb-1.5">PUBLIC NOTICE</div>
-                    <p class="leading-relaxed" id="ad-2">
-                        <strong>NO COOKIES OR TRACKERS.</strong> We don’t know who you are, where you live, or what biscuits you dunk in your tea. Carry on.
-                    </p>
-                </div>
-                <div class="bg-white border-2 border-ink p-3">
-                    <div class="font-bold uppercase bg-vizCyan text-white px-1.5 py-0.5 inline-block mb-1.5">WANTED</div>
-                    <p class="leading-relaxed" id="ad-3">
-                        <strong>ZERO COLD CALLERS.</strong> Recruitment consultants, crypto bros, and SEO wizards will be fed to the hounds. Proper humans welcome.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Comic Footer -->
-    <footer class="border-t-4 border-ink bg-ink text-newsprint mt-6">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 font-print text-xs">
-            <div>
-                PUBLISHED BY ROB SALISBURY • PRINTED ON 100% RECYCLED PIXELS • © <span id="year">2026</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="bg-vizYellow text-ink font-bold px-2 py-0.5 uppercase">END OF COMIC</span>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Comic Speech Toast Notification -->
-    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-28 opacity-0 transition-all duration-300 pointer-events-none max-w-xs sm:max-w-sm">
-        <div class="bg-vizYellow text-ink border-3 border-ink px-4 py-3 shadow-comic flex items-center gap-3">
-            <span class="bg-vizRed text-white font-comic text-lg px-2 py-0.5 border-2 border-ink uppercase shrink-0" id="toast-sfx">POW!</span>
-            <span class="font-bubble font-bold text-sm sm:text-base leading-tight" id="toast-message">Copied to clipboard!</span>
+            <!-- CRT Scanline Toggle -->
+            <button
+                id="crt-btn"
+                onclick="toggleCRT()"
+                class="px-2.5 py-1 bg-stone-800 hover:bg-stone-700 text-ttGreen border border-stone-500 rounded font-pixel text-[10px] sm:text-xs uppercase cursor-pointer teletext-btn"
+            >
+                CRT: ON
+            </button>
         </div>
     </div>
 
+    <!-- Retro 1980s Television Casing -->
+    <main class="w-full max-w-4xl crt-casing rounded-2xl p-3 sm:p-6">
+        <div class="crt-inner-bezel rounded-xl p-2 sm:p-3.5 border-2 border-black">
+
+            <!-- Pure Black Teletext Screen -->
+            <div id="teletext-screen" class="teletext-screen crt-scanlines rounded-lg p-3 sm:p-5 min-h-[540px] flex flex-col justify-between overflow-hidden">
+
+                <!-- TOP TELETEXT HEADER BAR -->
+                <div>
+                    <div class="flex flex-wrap items-center justify-between gap-2 text-xl sm:text-2xl border-b-2 border-ttBlue pb-1 mb-3">
+                        <div class="flex items-center gap-3">
+                            <span id="header-page-code" class="text-ttWhite font-bold">P100</span>
+                            <span class="bg-ttWhite text-ttBlack px-1.5 font-bold tracking-wider">ROBFAX</span>
+                            <span id="header-page-num" class="text-ttCyan">1 100</span>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <span id="hold-indicator" class="hidden bg-ttRed text-ttWhite px-1.5 font-bold text-lg">HOLD</span>
+                            <span id="header-date" class="text-ttCyan hidden sm:inline">SAT 14 NOV</span>
+                            <span id="header-clock" class="text-ttYellow font-bold">20:55:00</span>
+                        </div>
+                    </div>
+
+                    <!-- CHUNKY PIXEL-BLOCK MOSAIC BANNER -->
+                    <div class="bg-ttBlue p-2 sm:p-3 mb-4 border-2 border-ttCyan">
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                            <!-- Pixel Mosaic Logo -->
+                            <div class="flex items-center gap-3">
+                                <div class="grid grid-cols-4 gap-0.5 bg-black p-1 border border-ttYellow shrink-0" aria-hidden="true">
+                                    <span class="w-2.5 h-2.5 bg-ttYellow block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttYellow block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttYellow block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttBlue block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttYellow block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttBlue block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttYellow block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttBlue block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttYellow block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttYellow block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttBlue block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttBlue block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttYellow block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttBlue block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttYellow block"></span>
+                                    <span class="w-2.5 h-2.5 bg-ttYellow block"></span>
+                                </div>
+                                <div>
+                                    <h1 class="font-pixel text-2xl sm:text-4xl text-ttYellow tracking-widest leading-none drop-shadow-[2px_2px_0px_#000000]">
+                                        ROBFAX
+                                    </h1>
+                                    <p class="text-ttCyan text-lg sm:text-xl leading-none mt-1">
+                                        CEEFAX PERSONAL EMAIL SERVICE - ROBSALISBURY.COM
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Right Page Quick-Badges -->
+                            <div class="flex flex-wrap justify-center gap-1.5 text-lg">
+                                <button onclick="loadPage('100')" class="px-2 py-0.5 bg-ttBlack text-ttYellow border border-ttYellow hover:bg-ttYellow hover:text-ttBlack cursor-pointer">100</button>
+                                <button onclick="loadPage('101')" class="px-2 py-0.5 bg-ttBlack text-ttGreen border border-ttGreen hover:bg-ttGreen hover:text-ttBlack cursor-pointer">101</button>
+                                <button onclick="loadPage('200')" class="px-2 py-0.5 bg-ttBlack text-ttCyan border border-ttCyan hover:bg-ttCyan hover:text-ttBlack cursor-pointer">200</button>
+                                <button onclick="loadPage('302')" class="px-2 py-0.5 bg-ttBlack text-ttMagenta border border-ttMagenta hover:bg-ttMagenta hover:text-ttBlack cursor-pointer">302</button>
+                                <button onclick="loadPage('888')" class="px-2 py-0.5 bg-ttBlack text-ttWhite border border-ttWhite hover:bg-ttWhite hover:text-ttBlack cursor-pointer">888</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DYNAMIC TELETEXT PAGE CONTENT AREA -->
+                    <div id="page-content" class="space-y-4 text-xl sm:text-2xl">
+                        <!-- Rendered via JavaScript -->
+                    </div>
+                </div>
+
+                <!-- BOTTOM TELETEXT FOOTER & 4-COLOR FASTEXT BAR -->
+                <div class="mt-6 pt-2">
+                    <!-- Rolling Status Strip -->
+                    <div class="bg-ttBlue text-ttWhite px-2 py-0.5 text-lg sm:text-xl flex items-center justify-between mb-2">
+                        <span id="status-ticker" class="truncate">
+                            CEEFAX 1: ROBSALISBURY.COM — NO BLOGS, NO CRYPTO, JUST EMAIL
+                        </span>
+                        <span class="text-ttYellow font-bold ml-2 shrink-0 animate-tt-blink">■</span>
+                    </div>
+
+                    <!-- Authentic 4-Color Fastext Navigation Buttons -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-lg sm:text-xl font-bold text-center">
+                        <button
+                            onclick="loadPage('100')"
+                            class="bg-ttRed text-ttWhite py-1.5 px-2 hover:brightness-110 cursor-pointer teletext-btn uppercase tracking-wide"
+                        >
+                            INDEX 100
+                        </button>
+                        <button
+                            onclick="loadPage('101')"
+                            class="bg-ttGreen text-ttBlack py-1.5 px-2 hover:brightness-110 cursor-pointer teletext-btn uppercase tracking-wide"
+                        >
+                            WHY HERE? 101
+                        </button>
+                        <button
+                            onclick="loadPage('200')"
+                            class="bg-ttYellow text-ttBlack py-1.5 px-2 hover:brightness-110 cursor-pointer teletext-btn uppercase tracking-wide"
+                        >
+                            EMAIL ROB 200
+                        </button>
+                        <button
+                            onclick="loadPage('888')"
+                            class="bg-ttCyan text-ttBlack py-1.5 px-2 hover:brightness-110 cursor-pointer teletext-btn uppercase tracking-wide"
+                        >
+                            SUBTITLES 888
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Retro TV Brand Badge Under Screen -->
+        <div class="mt-3 px-2 flex items-center justify-between text-stone-400 font-pixel text-[10px] sm:text-xs">
+            <span>BRITISH TELETEXT SYSTEM // PAL 625-LINE</span>
+            <span class="text-stone-300 tracking-widest">SALISBURYTRON MK-IV</span>
+        </div>
+    </main>
+
+    <!-- Custom Toast / Message Box (No alert() used) -->
+    <div id="tt-toast" class="fixed bottom-4 right-4 z-50 hidden bg-ttYellow text-ttBlack border-4 border-ttBlack px-4 py-2 font-teletext text-2xl shadow-[6px_6px_0px_#00FFFF]">
+        <span id="tt-toast-text">COPIED TO CLIPBOARD</span>
+    </div>
+
     <script>
-        // Set current year dynamically
-        document.getElementById('year').textContent = new Date().getFullYear();
+        // --- State & Configuration ---
+        let currentPage = '100';
+        let isHeld = false;
+        let crtEnabled = true;
+        let digitBuffer = '';
+        let digitBufferTimeout = null;
+        let selectedDiagnostic = null;
 
-        // State
-        let isCorporateMode = false;
-        let currentTipIndex = 0;
-        let currentProfIndex = 0;
-        let currentSubjectIndex = 0;
-        let fnarCount = 0;
-        let activeExcuse = null;
-
-        // 1. Excuse Panels Data (Why are you here?)
-        const excuseData = {
-            legit: {
-                sfx: "TICKETY-BOO!",
-                verdict: "VERIFIED REAL BLOKE:",
-                casual: "Put your magnifying glass away, Sherlock! Yes, Rob Salisbury is an actual living human and @robsalisbury.com is his genuine email address. Not a scammer in sight!",
-                corporate: "Identity verification complete. Correspondence originating from @robsalisbury.com is fully authenticated via enterprise DMARC protocols."
-            },
-            pints: {
-                sfx: "HIC! OO-ER!",
-                verdict: "PUB NAVIGATOR DETECTED:",
-                casual: "Been down the Dog & Duck, have we? Happens to the best of us. Have a glass of water, click the Fnar button a couple of times, and mind the step on your way out.",
-                corporate: "Navigational anomaly logged. Please utilize your browser's back functionality to return to your intended enterprise workflow."
-            },
-            posh: {
-                sfx: "BOG OFF!",
-                verdict: "MISTAKEN IDENTITY:",
-                casual: "Wrong Rob Salisbury, mate! If you’re after a fancy leadership guru, motivational speaker, or bloke in a pinstriped suit, you’ve taken a wrong turn at the roundabout.",
-                corporate: "Disambiguation alert: This domain is privately held and unaffiliated with similarly named corporate consultancy entities."
-            },
-            bot: {
-                sfx: "CRIVVENS!",
-                verdict: "DODGY ALGORITHM SPOTTED:",
-                casual: "01000010 01101111 01100111 00100000 01101111 01100110 01100110! Go scrape someone else’s inbox—Rob’s spam filter eats cold-outreach bots for breakfast.",
-                corporate: "Automated crawler acknowledged. Please respect robots.txt directives and exclude this endpoint from outbound lead-generation sequences."
-            }
-        };
-
-        // 2. Rob's Top Tips Data
-        const topTips = [
-            {
-                credit: "SENT IN BY: A. BLOKE, NEWCASTLE",
-                tip: "\"SAVE MONEY on expensive postage stamps by simply typing your message into an email and sending it to rob@robsalisbury.com instead.\""
-            },
-            {
-                credit: "SENT IN BY: MRS. M. MIGGINS, HULL",
-                tip: "\"FOOL FRIENDS into thinking you’re a high-powered tech mogul by buying your own surname as a .com and doing absolutely nothing with it.\""
-            },
-            {
-                credit: "SENT IN BY: D. TRUMPET, BASINGSTOKE",
-                tip: "\"AVOID HAVING TO REPLY to tedious work emails by pretending your internet has gone down and making another mug of Builders tea.\""
-            },
-            {
-                credit: "SENT IN BY: G. WHEEZER, SUNDERLAND",
-                tip: "\"RECRUITERS! Save valuable hours of your day by NOT emailing Rob about an 'exciting Synergy Ninja role' in another city.\""
-            },
-            {
-                credit: "SENT IN BY: T. TOSSPOT, LEEDS",
-                tip: "\"CONVINCE PEOPLE you have a bustling social life by sending yourself emails from your own domain and laughing loudly at your phone on the bus.\""
-            }
+        const randomSubjects = [
+            "Quick hello from your Ceefax page",
+            "Checking if rob@robsalisbury.com actually works",
+            "Put the kettle on — non-urgent message",
+            "I typed your URL by accident and stayed for Page 888",
+            "Definitely not trying to sell you SEO services",
+            "Urgent: Nothing is actually urgent"
         ];
+        let subjectIndex = 0;
 
-        // 3. The Profanisaurus Status Entries
-        const profanisaurusEntries = [
-            {
-                word: "MAKING A BREW",
-                pos: "(verb, British)",
-                def: "The sacred 15-minute ritual of boiling a kettle and staring out the kitchen window to avoid replying to emails."
-            },
-            {
-                word: "ON THE BOG",
-                pos: "(prep. phrase)",
-                def: "Temporarily indisposed in the smallest room in the house with a copy of Viz and zero intention of rushing."
-            },
-            {
-                word: "DOWN THE BOOZER",
-                pos: "(adverbial, Friday)",
-                def: "Conducting vital face-to-face networking over three pints of lukewarm ale and a packet of dry-roasted peanuts."
-            },
-            {
-                word: "LOOKING BUSY",
-                pos: "(gerund, corporate)",
-                def: "Frowning intensely at a spreadsheet while actually deciding what to have for tea."
-            },
-            {
-                word: "INBOX DODGING",
-                pos: "(extreme sport)",
-                def: "Marking an email as 'Unread' three weeks in a row until the problem quietly resolves itself."
-            }
-        ];
-
-        // 4. Cheeky Email Subjects
-        const cheekySubjects = [
-            "Fnar fnar - urgent business",
-            "TOP TIP: Save money on stamps by emailing Rob",
-            "Have you seen my missing wheelie bin?",
-            "Checking if you're a real bloke",
-            "Can I buy you a pint? (Just kidding)",
-            "Found your comic on the internet",
-            "Genuine human inquiry (zero synergy)"
-        ];
-
-        const fnarQuips = [
-            "Fnar, fnar! Oo-er missus!",
-            "Said the actress to the bishop! Fnar!",
-            "Ooh, matron! Steady on!",
-            "Fnar, fnar! Right up your alley!",
-            "Oo-er! Mind how you handle that!"
-        ];
-
-        // Toast Notification Helper
-        let toastTimer;
-        function showComicToast(sfx, msg) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-sfx').textContent = sfx;
-            document.getElementById('toast-message').textContent = msg;
-
-            toast.classList.remove('translate-y-28', 'opacity-0');
-            toast.classList.add('translate-y-0', 'opacity-100');
-
-            clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => {
-                toast.classList.remove('translate-y-0', 'opacity-100');
-                toast.classList.add('translate-y-28', 'opacity-0');
+        // --- Toast Notification Helper ---
+        function showToast(msg) {
+            const toast = document.getElementById('tt-toast');
+            const text = document.getElementById('tt-toast-text');
+            text.textContent = msg;
+            toast.classList.remove('hidden');
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => {
+                toast.classList.add('hidden');
             }, 2800);
         }
 
-        // Select Excuse Panel
-        function selectExcuse(key) {
-            activeExcuse = key;
-            const data = excuseData[key];
-            if (!data) return;
+        // --- Live Rolling Header Clock ---
+        function updateClock() {
+            if (isHeld) return;
+            const now = new Date();
+            const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+            const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
-            document.querySelectorAll('.excuse-panel').forEach(panel => {
-                if (panel.dataset.excuse === key) {
-                    panel.classList.remove('bg-white');
-                    panel.classList.add('bg-vizYellow');
-                } else {
-                    panel.classList.remove('bg-vizYellow');
-                    panel.classList.add('bg-white');
+            const dayStr = days[now.getDay()];
+            const dateNum = String(now.getDate()).padStart(2, '0');
+            const monthStr = months[now.getMonth()];
+
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            const ss = String(now.getSeconds()).padStart(2, '0');
+
+            document.getElementById('header-date').textContent = `${dayStr} ${dateNum} ${monthStr}`;
+            document.getElementById('header-clock').textContent = `${hh}:${mm}:${ss}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // --- Remote Control Toggles ---
+        function toggleHold() {
+            isHeld = !isHeld;
+            const btn = document.getElementById('hold-btn');
+            const indicator = document.getElementById('hold-indicator');
+            btn.textContent = isHeld ? 'HOLD: ON' : 'HOLD: OFF';
+            btn.classList.toggle('bg-ttRed', isHeld);
+            btn.classList.toggle('text-ttWhite', isHeld);
+            indicator.classList.toggle('hidden', !isHeld);
+            showToast(isHeld ? 'PAGE & CLOCK FROZEN (HOLD)' : 'LIVE CLOCK RESUMED');
+        }
+
+        function toggleCRT() {
+            crtEnabled = !crtEnabled;
+            const screen = document.getElementById('teletext-screen');
+            const btn = document.getElementById('crt-btn');
+            screen.classList.toggle('crt-scanlines', crtEnabled);
+            btn.textContent = crtEnabled ? 'CRT: ON' : 'CRT: OFF';
+            showToast(crtEnabled ? 'CRT SCANLINES ENABLED' : 'CRT SCANLINES DISABLED');
+        }
+
+        function jumpFromInput() {
+            const input = document.getElementById('page-jump-input');
+            const val = input.value.trim();
+            if (/^\d{3}$/.test(val)) {
+                loadPage(val);
+                input.value = '';
+            } else {
+                showToast('ENTER A 3-DIGIT PAGE (E.G. 100, 101, 200)');
+            }
+        }
+
+        // --- Page Templates ---
+        const pages = {
+            '100': {
+                ticker: 'P100 MAIN INDEX — ROBSALISBURY.COM OPERATES NORMAL EMAIL SERVICE',
+                render: () => `
+                    <div class="bg-ttRed text-ttWhite px-2 py-1 font-bold tracking-wide">
+                        HEADLINE: DOMAIN STILL ONLY USED FOR EMAIL
+                    </div>
+
+                    <p class="text-ttWhite leading-snug">
+                        Welcome to <span class="text-ttYellow">robsalisbury.com</span>. Despite looking like a 1986 BBC television broadcast, this domain exists purely to power <span class="text-ttCyan">rob@robsalisbury.com</span>.
+                    </p>
+
+                    <p class="text-ttGreen leading-snug">
+                        There is no portfolio here, no thought-leadership blog, and no newsletter to unsubscribe from.
+                    </p>
+
+                    <div class="border-t-2 border-b-2 border-ttCyan py-2.5 my-2 space-y-1.5">
+                        <div class="text-ttYellow font-bold mb-1">ROBFAX DIRECTORY — SELECT PAGE:</div>
+
+                        <button onclick="loadPage('101')" class="w-full flex justify-between items-center text-left hover:bg-ttBlue px-1.5 py-0.5 cursor-pointer group">
+                            <span class="text-ttCyan group-hover:text-ttWhite">1. Why are you on this website?</span>
+                            <span class="text-ttYellow font-bold">101</span>
+                        </button>
+
+                        <button onclick="loadPage('200')" class="w-full flex justify-between items-center text-left hover:bg-ttBlue px-1.5 py-0.5 cursor-pointer group">
+                            <span class="text-ttCyan group-hover:text-ttWhite">2. Send an email to Rob</span>
+                            <span class="text-ttYellow font-bold">200</span>
+                        </button>
+
+                        <button onclick="loadPage('302')" class="w-full flex justify-between items-center text-left hover:bg-ttBlue px-1.5 py-0.5 cursor-pointer group">
+                            <span class="text-ttCyan group-hover:text-ttWhite">3. UK Weather &amp; Tea Outlook</span>
+                            <span class="text-ttYellow font-bold">302</span>
+                        </button>
+
+                        <button onclick="loadPage('888')" class="w-full flex justify-between items-center text-left hover:bg-ttBlue px-1.5 py-0.5 cursor-pointer group">
+                            <span class="text-ttCyan group-hover:text-ttWhite">4. Ceefax Subtitles for the Hard of Hearing</span>
+                            <span class="text-ttYellow font-bold">888</span>
+                        </button>
+                    </div>
+
+                    <div class="text-ttMagenta text-lg sm:text-xl">
+                        TIP: Type any 3-digit page number on your keyboard or press a colored button below.
+                    </div>
+                `
+            },
+
+            '101': {
+                ticker: 'P101 VISITOR DIAGNOSTIC — IDENTIFY YOUR REASON FOR BROWSING',
+                render: () => {
+                    const diagnostics = [
+                        {
+                            id: 1,
+                            label: '1. Checking if rob@robsalisbury.com is a real person',
+                            response: 'CONFIRMED: Rob is a real human being. Your email is safe to send and will not vanish into a corporate black hole.'
+                        },
+                        {
+                            id: 2,
+                            label: '2. Typed the wrong web address by mistake',
+                            response: 'NO HARM DONE: Better here than a dodgy pop-up site. Have a look at Page 302 for the tea forecast before you leave.'
+                        },
+                        {
+                            id: 3,
+                            label: '3. Looking for a completely different Rob Salisbury',
+                            response: 'WRONG ROB: Unless your Rob Salisbury enjoys 1980s Teletext aesthetics, you probably want another bloke.'
+                        },
+                        {
+                            id: 4,
+                            label: '4. Automated SEO bot / web crawler',
+                            response: 'ACCESS DENIED: Move along, silicon friend. There are zero backlinks, keywords, or affiliate widgets here.'
+                        }
+                    ];
+
+                    const activeObj = diagnostics.find(d => d.id === selectedDiagnostic);
+
+                    return `
+                        <div class="bg-ttGreen text-ttBlack px-2 py-1 font-bold tracking-wide">
+                            VISITOR DIAGNOSTIC: WHY ARE YOU HERE?
+                        </div>
+
+                        <p class="text-ttCyan">
+                            Select the option that best describes your current predicament:
+                        </p>
+
+                        <div class="space-y-1.5">
+                            ${diagnostics.map(item => `
+                                <button
+                                    onclick="selectDiagnostic(${item.id})"
+                                    class="w-full text-left px-2 py-1 border ${selectedDiagnostic === item.id ? 'bg-ttYellow text-ttBlack border-ttYellow font-bold' : 'bg-ttBlack text-ttWhite border-ttBlue hover:border-ttCyan'} cursor-pointer block"
+                                >
+                                    ${item.label}
+                                </button>
+                            `).join('')}
+                        </div>
+
+                        <div class="border-2 border-ttMagenta p-2.5 bg-ttBlack min-h-[84px] flex items-center">
+                            ${activeObj
+                                ? `<p class="text-ttYellow leading-snug">${activeObj.response}</p>`
+                                : `<p class="text-ttMagenta">AWAITING SELECTION... CLICK AN OPTION ABOVE.</p>`
+                            }
+                        </div>
+                    `;
                 }
-            });
+            },
 
-            document.getElementById('sfx-badge').textContent = data.sfx;
-            document.getElementById('excuse-subtitle').textContent = data.verdict;
-            document.getElementById('excuse-response').textContent = isCorporateMode ? data.corporate : data.casual;
+            '200': {
+                ticker: 'P200 ROBMAIL DISPATCH — ELECTRONIC POSTAL TERMINAL',
+                render: () => `
+                    <div class="bg-ttCyan text-ttBlack px-2 py-1 font-bold tracking-wide">
+                        ROBMAIL DISPATCH TERMINAL
+                    </div>
+
+                    <div class="bg-ttBlue p-2.5 flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <span class="text-ttWhite text-lg block">DIRECT ELECTRONIC ADDRESS:</span>
+                            <span class="text-ttYellow font-bold text-2xl sm:text-3xl select-all">rob@robsalisbury.com</span>
+                        </div>
+                        <button
+                            onclick="copyEmail()"
+                            class="bg-ttYellow text-ttBlack font-bold px-3 py-1 hover:bg-ttWhite cursor-pointer teletext-btn uppercase"
+                        >
+                            COPY ADDRESS
+                        </button>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <label for="tt-subject" class="text-ttGreen">SUBJECT LINE:</label>
+                            <button
+                                onclick="cycleSubject()"
+                                class="text-ttCyan underline hover:text-ttYellow cursor-pointer text-lg"
+                            >
+                                [RANDOMIZE SUBJECT]
+                            </button>
+                        </div>
+                        <input
+                            id="tt-subject"
+                            type="text"
+                            value="${randomSubjects[subjectIndex]}"
+                            class="w-full bg-ttBlack text-ttYellow border-2 border-ttCyan px-2 py-1 font-teletext text-xl focus:outline-none focus:border-ttYellow"
+                        />
+
+                        <label for="tt-body" class="text-ttGreen block pt-1">SHORT MESSAGE (OPTIONAL):</label>
+                        <textarea
+                            id="tt-body"
+                            rows="2"
+                            placeholder="Write a quick note before launching your email app..."
+                            class="w-full bg-ttBlack text-ttWhite border-2 border-ttCyan px-2 py-1 font-teletext text-xl focus:outline-none focus:border-ttYellow"
+                        ></textarea>
+                    </div>
+
+                    <div class="pt-1 flex flex-wrap items-center justify-between gap-2">
+                        <button
+                            onclick="launchMailto()"
+                            class="bg-ttGreen text-ttBlack font-bold px-4 py-1.5 hover:bg-ttYellow cursor-pointer teletext-btn uppercase"
+                        >
+                            ► SEND VIA MAIL CLIENT
+                        </button>
+                        <span class="text-ttCyan text-lg">NO FORMS STORED ON SERVER</span>
+                    </div>
+                `
+            },
+
+            '302': {
+                ticker: 'P302 NATIONAL OUTLOOK — TEA BREWING & INBOX VISIBILITY',
+                render: () => `
+                    <div class="bg-ttMagenta text-ttWhite px-2 py-1 font-bold tracking-wide">
+                        UK WEATHER &amp; INBOX RESPONSE OUTLOOK
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="border-2 border-ttYellow p-2.5">
+                            <div class="text-ttYellow font-bold">TEA &amp; KETTLE FORECAST</div>
+                            <p class="text-ttWhite mt-1">
+                                Widespread drizzle across all regions. <span class="text-ttGreen">98% probability</span> of Builders tea with two sugars before noon.
+                            </p>
+                        </div>
+
+                        <div class="border-2 border-ttCyan p-2.5">
+                            <div class="text-ttCyan font-bold">INBOX VISIBILITY</div>
+                            <p class="text-ttWhite mt-1">
+                                Moderate to good. Genuine human emails replied to promptly; cold sales pitches drifting harmlessly into spam.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-ttBlue p-2 text-ttYellow">
+                        SHIPPING FORECAST: Dogger, Fisher, German Bight — Gentle breeze, kettle whistling Force 4, biscuits fair.
+                    </div>
+                `
+            },
+
+            '888': {
+                ticker: 'P888 CEEFAX SUBTITLES — PRESS 100 TO RETURN TO MAIN INDEX',
+                render: () => `
+                    <div class="flex items-center justify-between bg-ttWhite text-ttBlack px-2 py-1 font-bold">
+                        <span>CEEFAX SUBTITLES</span>
+                        <span>PAGE 888</span>
+                    </div>
+
+                    <div class="border-2 border-ttWhite p-4 my-2 space-y-3 text-center bg-ttBlack">
+                        <p class="text-ttYellow text-2xl sm:text-3xl">
+                            [SOUND OF KETTLE BOILING IN DISTANCE]
+                        </p>
+                        <p class="text-ttCyan text-2xl sm:text-3xl">
+                            [MAN STARES THOUGHTFULLY AT EMPTY INBOX]
+                        </p>
+                        <p class="text-ttGreen text-2xl sm:text-3xl">
+                            [GENTLE BRITISH TUTTING]
+                        </p>
+                        <p class="text-ttWhite text-xl pt-2">
+                            End of programme. Please email <span class="text-ttYellow">rob@robsalisbury.com</span> if you need anything.
+                        </p>
+                    </div>
+                `
+            }
+        };
+
+        // --- Navigation & Interaction Functions ---
+        function loadPage(pageNum) {
+            const normalized = String(pageNum).padStart(3, '0');
+            currentPage = normalized;
+
+            document.getElementById('header-page-code').textContent = `P${normalized}`;
+            document.getElementById('header-page-num').textContent = `1 ${normalized}`;
+
+            const pageObj = pages[normalized];
+            const container = document.getElementById('page-content');
+            const ticker = document.getElementById('status-ticker');
+
+            if (pageObj) {
+                container.innerHTML = pageObj.render();
+                ticker.textContent = pageObj.ticker;
+            } else {
+                ticker.textContent = `P${normalized} — PAGE NOT FOUND IN ROBFAX ARCHIVE`;
+                container.innerHTML = `
+                    <div class="bg-ttRed text-ttWhite px-2 py-1 font-bold">
+                        ERROR: PAGE ${normalized} NOT TRANSMITTED
+                    </div>
+                    <p class="text-ttWhite">
+                        Sorry, page <span class="text-ttYellow">${normalized}</span> is currently off-air.
+                    </p>
+                    <p class="text-ttCyan">
+                        Available ROBFAX pages: <span class="text-ttYellow">100</span> (Index), <span class="text-ttYellow">101</span> (Visitor Check), <span class="text-ttYellow">200</span> (Email Rob), <span class="text-ttYellow">302</span> (Outlook), <span class="text-ttYellow">888</span> (Subtitles).
+                    </p>
+                    <button onclick="loadPage('100')" class="bg-ttYellow text-ttBlack font-bold px-3 py-1 cursor-pointer teletext-btn">
+                        RETURN TO P100 INDEX
+                    </button>
+                `;
+            }
         }
 
-        // Cycle Top Tips
-        function nextTopTip() {
-            currentTipIndex = (currentTipIndex + 1) % topTips.length;
-            const item = topTips[currentTipIndex];
-            document.getElementById('toptip-credit').textContent = item.credit;
-            document.getElementById('toptip-text').textContent = item.tip;
+        function selectDiagnostic(id) {
+            selectedDiagnostic = id;
+            loadPage('101');
         }
 
-        // Load current Top Tip into Email Subject
-        function useTipAsSubject() {
-            const rawTip = topTips[currentTipIndex].tip.replace(/^"|"$/g, '');
-            const shortTip = rawTip.length > 58 ? rawTip.substring(0, 55) + "..." : rawTip;
-            document.getElementById('subject-input').value = "TOP TIP: " + shortTip;
-            updateBollocksMeter();
-            showComicToast("BOSH!", "Top Tip loaded into Letterbocks!");
+        function cycleSubject() {
+            subjectIndex = (subjectIndex + 1) % randomSubjects.length;
+            const input = document.getElementById('tt-subject');
+            if (input) {
+                input.value = randomSubjects[subjectIndex];
+            }
         }
 
-        // Cycle Profanisaurus Status
-        function cycleProfanisaurus() {
-            currentProfIndex = (currentProfIndex + 1) % profanisaurusEntries.length;
-            const entry = profanisaurusEntries[currentProfIndex];
-            document.getElementById('status-word').textContent = entry.word;
-            document.getElementById('status-pos').textContent = entry.pos;
-            document.getElementById('status-def').textContent = entry.def;
-        }
-
-        // Finbarr Saunders Fnar Button
-        function triggerFnar() {
-            fnarCount++;
-            document.getElementById('fnar-count').textContent = fnarCount;
-            const quip = fnarQuips[fnarCount % fnarQuips.length];
-            showComicToast("FNAR!", quip);
-        }
-
-        // Copy Email (iframe-safe document.execCommand)
         function copyEmail() {
-            const email = "rob@robsalisbury.com";
-            const tempInput = document.createElement("textarea");
+            const email = 'rob@robsalisbury.com';
+            const tempInput = document.createElement('input');
             tempInput.value = email;
-            tempInput.style.position = "fixed";
-            tempInput.style.opacity = "0";
             document.body.appendChild(tempInput);
             tempInput.select();
-
-            try {
-                document.execCommand("copy");
-                const btn = document.getElementById('copy-btn');
-                btn.textContent = "NICKED IT!";
-                btn.classList.add('bg-vizCyan', 'text-white');
-                showComicToast("YOINK!", "rob@robsalisbury.com copied to clipboard!");
-
-                setTimeout(() => {
-                    btn.textContent = "Copy Address";
-                    btn.classList.remove('bg-vizCyan', 'text-white');
-                }, 2000);
-            } catch (err) {
-                showComicToast("BLIMEY!", "Select rob@robsalisbury.com and copy manually!");
-            }
+            document.execCommand('copy');
             document.body.removeChild(tempInput);
+            showToast('COPIED: rob@robsalisbury.com');
         }
 
-        // Randomize Subject Line
-        function generateSubject() {
-            currentSubjectIndex = (currentSubjectIndex + 1) % cheekySubjects.length;
-            document.getElementById('subject-input').value = cheekySubjects[currentSubjectIndex];
-            updateBollocksMeter();
-        }
-
-        // Live Bollocks-o-Meter™
-        function updateBollocksMeter() {
-            const val = document.getElementById('subject-input').value.toLowerCase();
-            const bar = document.getElementById('bollocks-bar');
-            const label = document.getElementById('bollocks-label');
-            const hint = document.getElementById('bollocks-hint');
-
-            const bollocksWords = [
-                'synergy', 'circle back', 'kindly', 'seo', 'leads', 'crypto',
-                'bitcoin', 'web3', 'nft', 'bandwidth', 'touch base', 'quick question',
-                'leverage', 'paradigm', 'disrupt', 'thought leader', 'roi', 'dear sir'
-            ];
-
-            let score = 12;
-            if (val.trim().length === 0) score = 40;
-            if (val === val.toUpperCase() && val.length > 5) score += 30;
-
-            bollocksWords.forEach(word => {
-                if (val.includes(word)) score += 32;
-            });
-
-            score = Math.min(100, Math.max(5, score));
-            bar.style.width = score + "%";
-
-            if (score < 35) {
-                bar.className = "h-full bg-vizCyan transition-all duration-300";
-                label.className = "font-bold bg-vizYellow px-2 py-0.5 border border-ink text-ink";
-                label.textContent = `${score}% — ACCEPTABLE BANTER`;
-                hint.textContent = "Grand job! Reads like a proper human being, not a suit.";
-            } else if (score < 70) {
-                bar.className = "h-full bg-vizYellow transition-all duration-300";
-                label.className = "font-bold bg-amber-300 px-2 py-0.5 border border-ink text-ink";
-                label.textContent = `${score}% — BIT PONGY`;
-                hint.textContent = "Careful now, you’re starting to sound like a middle manager.";
-            } else {
-                bar.className = "h-full bg-vizRed transition-all duration-300";
-                label.className = "font-bold bg-vizRed px-2 py-0.5 border border-ink text-white animate-pulse";
-                label.textContent = `${score}% — UTTER BALDERDASH!`;
-                hint.textContent = "ALARM! Corporate waffle detected! Rob’s spam bin awaits!";
-            }
-        }
-
-        // Launch Email Client
-        function launchEmail() {
-            const subject = encodeURIComponent(document.getElementById('subject-input').value || "Hello from Rob's Comic");
-            const body = encodeURIComponent(
-                isCorporateMode
-                ? "Dear Rob,\n\nI visited robsalisbury.com and wished to connect regarding...\n\nKind regards,"
-                : "Alright Rob,\n\nJust saw your comic on robsalisbury.com and thought I'd drop you a line.\n\nCheers,"
-            );
+        function launchMailto() {
+            const subjectEl = document.getElementById('tt-subject');
+            const bodyEl = document.getElementById('tt-body');
+            const subject = encodeURIComponent(subjectEl ? subjectEl.value : 'Hello Rob');
+            const body = encodeURIComponent(bodyEl ? bodyEl.value : '');
             window.location.href = `mailto:rob@robsalisbury.com?subject=${subject}&body=${body}`;
-            showComicToast("POSTIE!", "Firing up your email contraption...");
+            showToast('OPENING EMAIL CLIENT...');
         }
 
-        // Posh Corporate Git Mode Toggle
-        function toggleCorporateMode() {
-            isCorporateMode = !isCorporateMode;
-            const body = document.getElementById('page-body');
-            const toggleText = document.getElementById('toggle-text');
-            const toggleIcon = document.getElementById('toggle-icon');
-            const modeLabel = document.getElementById('mode-label');
-
-            if (isCorporateMode) {
-                body.classList.add('posh-mode');
-                modeLabel.textContent = "EDITION: STERILE LINKEDIN BEIGE";
-                toggleIcon.textContent = "📰";
-                toggleText.textContent = "Back to 1980s Comic";
-
-                document.getElementById('masthead-box').classList.remove('bg-vizRed');
-                document.getElementById('masthead-box').classList.add('bg-white');
-                document.getElementById('masthead-title').textContent = "Rob Salisbury";
-                document.getElementById('masthead-subtitle').classList.remove('text-white');
-                document.getElementById('masthead-subtitle').classList.add('text-neutral-700');
-                document.getElementById('masthead-subtitle').textContent = "Principal Email Domain Holder & Asynchronous Communications Specialist.";
-
-                showComicToast("URGH!", "Put it back! It's all sterile and beige!");
-            } else {
-                body.classList.remove('posh-mode');
-                modeLabel.textContent = "EDITION: 1980s NEWSPRINT";
-                toggleIcon.textContent = "🎩";
-                toggleText.textContent = "Posh Corporate Git Mode";
-
-                document.getElementById('masthead-box').classList.remove('bg-white');
-                document.getElementById('masthead-box').classList.add('bg-vizRed');
-                document.getElementById('masthead-title').textContent = "ROB'S COMIC";
-                document.getElementById('masthead-subtitle').classList.remove('text-neutral-700');
-                document.getElementById('masthead-subtitle').classList.add('text-white');
-                document.getElementById('masthead-subtitle').innerHTML = `"Britain’s Least Essential Website! Basically just a glorified Post Office box for <span class="bg-ink text-vizYellow px-1.5 py-0.5 font-print text-base">@robsalisbury.com</span>."`;
-
-                showComicToast("PHEW!", "Proper 1980s cheap newsprint restored!");
+        // --- Keyboard 3-Digit Teletext Navigation ---
+        document.addEventListener('keydown', (e) => {
+            // Ignore when typing inside inputs/textareas
+            if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                if (e.key === 'Enter' && document.activeElement.id === 'page-jump-input') {
+                    jumpFromInput();
+                }
+                return;
             }
 
-            if (activeExcuse) {
-                selectExcuse(activeExcuse);
-            }
-        }
+            if (/^[0-9]$/.test(e.key)) {
+                digitBuffer += e.key;
+                document.getElementById('header-page-code').textContent = `P${digitBuffer.padEnd(3, '-')}`;
+                clearTimeout(digitBufferTimeout);
 
-        window.addEventListener('DOMContentLoaded', () => {
-            updateBollocksMeter();
+                if (digitBuffer.length === 3) {
+                    const target = digitBuffer;
+                    digitBuffer = '';
+                    loadPage(target);
+                } else {
+                    digitBufferTimeout = setTimeout(() => {
+                        digitBuffer = '';
+                        document.getElementById('header-page-code').textContent = `P${currentPage}`;
+                    }, 2000);
+                }
+            }
         });
+
+        // Initialize Page 100 on Load
+        window.onload = function () {
+            loadPage('100');
+        };
     </script>
 </body>
 </html>
